@@ -37,10 +37,14 @@ const Contact = () => {
             Send
           </button>
         </form>
-        <div className="text-center mt-6 text-blue-700">
+        <div className="text-center mt-6 text-blue-700 space-y-1">
           <p>St. Louis, Missouri</p>
-          <p>Phone: 314-376-9667 | 973-782-3985</p>
-          <p>Email: admin@domiwebsites.com</p>
+          <p>
+            Phone: <a href="tel:3143769667" className="hover:underline">314-376-9667</a> | <a href="tel:9737823985" className="hover:underline">973-782-3985</a>
+          </p>
+          <p>
+            Email: <a href="mailto:admin@domiwebsites.com" className="hover:underline">admin@domiwebsites.com</a>
+          </p>
         </div>
       </div>
     </section>

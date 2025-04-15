@@ -11,14 +11,14 @@ const Pricing = () => {
   return (
     <section id="pricing" className="py-16 bg-gray-100">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-8">
+        <h2 className="text-4xl font-bold text-center mb-8 animate-pulse">
           Our <span className="text-red-600">Prices</span>
         </h2>
 
         <div className="text-center mb-10">
           <button
             onClick={toggleServices}
-            className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            className="px-6 py-2 bg-gradient-to-r from-red-600 to-blue-600 text-white rounded-full hover:scale-110 shadow-lg animate-bounce transition duration-300 ease-in-out"
             type="button"
           >
             {showHosting ? 'Show Web Design Services' : 'Show Hosting Packages'}
@@ -27,14 +27,16 @@ const Pricing = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {(!showHosting ? webDesignServices : hostingPackages).map((service, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-              <h3 className="text-xl font-semibold mb-4 text-red-600">{service.title}</h3>
-              <ul className="text-gray-700 space-y-2 mb-4">
-                {service.features.map((feature, i) => (
-                  <li key={i} className="list-disc list-inside">{feature}</li>
-                ))}
-              </ul>
-              <a href="#contact" className="inline-block mt-2 px-5 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+            <div key={idx} className="flex flex-col justify-between bg-white p-6 rounded-lg shadow-xl border-t-4 border-red-600 hover:scale-105 hover:border-blue-600 transition duration-300 ease-in-out">
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-red-600 text-center animate-pulse">{service.title}</h3>
+                <ul className="text-gray-700 space-y-2 mb-4 text-center">
+                  {service.features.map((feature, i) => (
+                    <li key={i} className="list-disc list-inside">{feature}</li>
+                  ))}
+                </ul>
+              </div>
+              <a href="#contact" className="inline-block mt-2 px-6 py-3 bg-gradient-to-r from-red-600 to-blue-600 text-white rounded-full shadow-lg hover:scale-110 animate-pulse transition duration-300 ease-in-out text-center">
                 Get a Quote
               </a>
             </div>
