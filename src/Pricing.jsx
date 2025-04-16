@@ -1,4 +1,3 @@
-// COMPONENTE: Pricing.jsx
 import React, { useState } from 'react';
 
 const Pricing = () => {
@@ -9,17 +8,26 @@ const Pricing = () => {
   };
 
   return (
-    <section id="pricing" className="py-16 bg-gray-100">
+    <section
+      id="pricing"
+      className="py-14 bg-white text-gray-900"
+      aria-labelledby="pricing-heading"
+    >
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-8 animate-pulse">
-          Our <span className="text-red-600">Prices</span>
+        <h2
+          id="pricing-heading"
+          className="text-4xl font-extrabold text-center mb-8"
+        >
+          Our <span className="text-red-800">Prices</span>
         </h2>
 
         <div className="text-center mb-10">
           <button
             onClick={toggleServices}
-            className="px-6 py-2 bg-gradient-to-r from-red-600 to-blue-600 text-white rounded-full hover:scale-110 shadow-lg animate-bounce transition duration-300 ease-in-out"
+            className="px-6 py-2 bg-gradient-to-r from-red-700 to-blue-700 text-white rounded-full hover:scale-110 shadow-lg transition duration-300 ease-in-out"
             type="button"
+            aria-pressed={showHosting}
+            aria-label={showHosting ? 'Show web design services' : 'Show hosting packages'}
           >
             {showHosting ? 'Show Web Design Services' : 'Show Hosting Packages'}
           </button>
@@ -27,19 +35,34 @@ const Pricing = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {(!showHosting ? webDesignServices : hostingPackages).map((service, idx) => (
-            <div key={idx} className="flex flex-col justify-between bg-white p-6 rounded-lg shadow-xl border-t-4 border-red-600 hover:scale-105 hover:border-blue-600 transition duration-300 ease-in-out">
+            <article
+              key={idx}
+              className="flex flex-col justify-between bg-gray-50 p-6 rounded-lg shadow-xl border-t-4 border-red-700 hover:scale-105 hover:border-blue-700 transition duration-300 ease-in-out"
+              role="region"
+              aria-labelledby={`service-${idx}`}
+            >
               <div>
-                <h3 className="text-2xl font-bold mb-4 text-red-600 text-center animate-pulse">{service.title}</h3>
-                <ul className="text-gray-700 space-y-2 mb-4 text-center">
+                <h3
+                  id={`service-${idx}`}
+                  className="text-xl font-bold mb-4 text-red-800 text-center"
+                >
+                  {service.title}
+                </h3>
+                <ul className="text-gray-800 space-y-2 mb-4 list-disc list-inside">
                   {service.features.map((feature, i) => (
-                    <li key={i} className="list-disc list-inside">{feature}</li>
+                    <li key={i}>{feature}</li>
                   ))}
                 </ul>
               </div>
-              <a href="#contact" className="inline-block mt-2 px-6 py-3 bg-gradient-to-r from-red-600 to-blue-600 text-white rounded-full shadow-lg hover:scale-110 animate-pulse transition duration-300 ease-in-out text-center">
+              <a
+                href="#contact"
+                className="inline-block mt-2 px-6 py-3 bg-gradient-to-r from-red-700 to-blue-700 text-white rounded-full shadow-lg hover:scale-110 transition duration-300 ease-in-out text-center"
+                role="button"
+                aria-label={`Request quote for ${service.title}`}
+              >
                 Get a Quote
               </a>
-            </div>
+            </article>
           ))}
         </div>
       </div>

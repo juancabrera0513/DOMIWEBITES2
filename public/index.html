@@ -1,18 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- Google Ads Global Site Tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16964586391"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'AW-16964586391');
+    </script>
+
+    <!-- Event snippet for Contact conversion -->
+<script>
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof url !== 'undefined') {
+        window.location = url;
+      }
+    };
+    gtag('event', 'conversion', {
+      'send_to': 'AW-16964586391/Z3h0CMnS4rMaEJeXrJk_',
+      'event_callback': callback
+    });
+    return false;
+  }
+</script>
+
+
+    <!-- Meta -->
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta
-      name="description"
-      content="Website created for Domi Websites with Tailwind CSS"
-    />
-    <title>Domi Websites</title>
+    <meta name="description" content="Affordable, custom websites for small businesses. We offer web design, hosting, and site maintenance with excellent support." />
+    <meta name="keywords" content="web design, small business, hosting, SEO, custom websites, Domi Websites" />
+    <meta name="theme-color" content="#1f242d" />
+
+    <!-- Open Graph SEO -->
+    <meta property="og:title" content="Domi Websites | Professional Web Design for Small Businesses" />
+    <meta property="og:description" content="Custom websites, hosting & maintenance to grow your small business online. Built with accessibility and performance in mind." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/DomiLogo.png" />
+
+    <title>Domi Websites | Web Design, Hosting & Maintenance</title>
+
+    <!-- Favicon & Sitemap -->
+    <link rel="icon" type="image/png" href="/DomiLogo.png" sizes="64x64" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://domiwebsites.com/sitemap.xml" />
+    
   </head>
-  <body class="bg-white">
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+  <body class="bg-white text-black">
     <div id="root"></div>
+
   </body>
 </html>
