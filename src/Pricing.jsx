@@ -75,7 +75,7 @@ const webPackages = [
     features: [
       '1-page design',
       'Mobile responsive',
-      'Hosting required ($20/mo)',
+      'Hosting required',
       'Basic contact form',
       'Custom layout'
     ],
