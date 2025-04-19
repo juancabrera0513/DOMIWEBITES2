@@ -32,11 +32,15 @@ const Home = () => {
           Your business deserves a website that works as hard as you do. Domi Websites delivers tailored web solutions for growth.
         </p>
 
+        <p className="text-sm text-yellow-300 font-medium mb-2 animate-pulse">
+          Only a few free consultations left this week!
+        </p>
+
         <a
           href="#contact"
-          className="inline-block px-6 py-3 bg-red-600 rounded-full hover:bg-red-700 transition text-white font-semibold text-lg animate-pulse focus:outline focus:ring-2 focus:ring-white"
+          className="inline-block px-5 py-3 bg-gradient-to-r from-red-600 to-blue-600 rounded-full hover:scale-105 transition transform text-white font-semibold text-lg shadow-lg animate-bounce focus:outline focus:ring-2 focus:ring-white"
         >
-          Contact us today!
+          🎯 Free Consultation!
         </a>
       </div>
     </section>
