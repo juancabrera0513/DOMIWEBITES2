@@ -33,14 +33,14 @@ const Home = () => {
         </p>
 
         <p className="text-sm text-yellow-300 font-medium mb-2 animate-pulse">
-          Only a few free consultations left this week!
+          Limited spots available this month!
         </p>
 
         <a
           href="#contact"
           className="inline-block px-5 py-3 bg-gradient-to-r from-red-600 to-blue-600 rounded-full hover:scale-105 transition transform text-white font-semibold text-lg shadow-lg animate-bounce focus:outline focus:ring-2 focus:ring-white"
         >
-          🎯 Free Consultation!
+          🎯 Claim Your Free Website Today!
         </a>
       </div>
     </section>

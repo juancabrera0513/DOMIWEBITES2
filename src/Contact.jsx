@@ -1,8 +1,21 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import emailjs from 'emailjs-com';
 
 const Contact = () => {
   const form = useRef();
+  const [subjectValue, setSubjectValue] = useState('');
+
+  // Leer subject desde la URL (hash con query param)
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.includes('?')) {
+      const query = new URLSearchParams(hash.split('?')[1]);
+      const subject = query.get('subject');
+      if (subject) {
+        setSubjectValue(subject);
+      }
+    }
+  }, []);
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -16,7 +29,7 @@ const Contact = () => {
       )
       .then(() => {
         alert("Message sent successfully!");
-        gtag_report_conversion(); // Marca la conversión aquí
+        gtag_report_conversion(); // Google Ads conversion
       })
       .catch(() => {
         alert("Failed to send message. Please try again.");
@@ -34,6 +47,7 @@ const Contact = () => {
         >
           Contact <span className="text-red-700">Us</span>
         </h2>
+
         <form
           ref={form}
           onSubmit={sendEmail}
@@ -65,6 +79,8 @@ const Contact = () => {
             type="text"
             name="subject"
             placeholder="Subject"
+            value={subjectValue}
+            onChange={(e) => setSubjectValue(e.target.value)}
             className="w-full p-3 border rounded"
             required
           />

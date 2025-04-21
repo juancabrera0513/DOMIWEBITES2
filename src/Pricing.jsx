@@ -3,20 +3,34 @@ import React, { useState } from 'react';
 const Pricing = () => {
   const [showSocial, setShowSocial] = useState(false);
 
-  const toggleCategory = () => {
-    setShowSocial(!showSocial);
+  const handleAutofill = (title) => {
+    const subjectInput = document.querySelector('input[name="subject"]');
+    if (subjectInput) {
+      subjectInput.value = title;
+    }
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <section id="pricing" className="py-14 bg-white text-gray-900" aria-labelledby="pricing-heading">
+    <section
+      id="pricing"
+      className="py-14 bg-gray-100 text-gray-900"
+      aria-labelledby="pricing-heading"
+    >
       <div className="max-w-6xl mx-auto px-4">
-        <h2 id="pricing-heading" className="text-4xl font-extrabold text-center mb-8">
+        <h2
+          id="pricing-heading"
+          className="text-4xl font-extrabold text-center mb-8"
+        >
           Our <span className="text-red-800">Packages</span>
         </h2>
 
         <div className="text-center mb-10">
           <button
-            onClick={toggleCategory}
+            onClick={() => setShowSocial(!showSocial)}
             className="px-6 py-2 bg-gradient-to-r from-red-700 to-blue-700 text-white rounded-full shadow-lg transition duration-300 ease-in-out hover:scale-105"
             type="button"
             aria-pressed={showSocial}
@@ -29,7 +43,7 @@ const Pricing = () => {
           {(!showSocial ? webPackages : socialPackages).map((pkg, idx) => (
             <article
               key={idx}
-              className={`flex flex-col justify-between bg-gray-50 p-6 rounded-lg shadow-xl border-t-4 transition duration-300 ease-in-out
+              className={`flex flex-col justify-between bg-white p-6 rounded-lg shadow-xl border-t-4 transition duration-300 ease-in-out
                 hover:scale-105 hover:border-blue-700 ${pkg.highlight ? 'border-blue-700' : 'border-red-700'}`}
               role="region"
               aria-labelledby={`package-${idx}`}
@@ -37,29 +51,36 @@ const Pricing = () => {
               <div>
                 <h3
                   id={`package-${idx}`}
-                  className="text-xl font-bold mb-4 text-center text-red-800"
+                  className="text-xl font-bold mb-2 text-center text-red-800"
                 >
                   {pkg.title}
                 </h3>
-                <p className={`text-center text-3xl font-semibold mb-4 ${
-                  pkg.price === 'Free' ? 'text-green-600 font-extrabold animate-bounce' : 'text-blue-700'
-                }`}>
-                  {pkg.price}
-                </p>
+                {pkg.price && (
+                  <p className={`text-center text-3xl font-semibold mb-4 ${
+                    pkg.price === 'Free' ? 'text-green-600 font-extrabold animate-bounce' : 'text-blue-700'
+                  }`}>
+                    {pkg.price}
+                  </p>
+                )}
+                {pkg.notice && (
+                  <p className="text-center text-sm font-medium text-yellow-600 mb-2">
+                    {pkg.notice}
+                  </p>
+                )}
                 <ul className="text-gray-800 space-y-2 mb-4 list-disc list-inside">
                   {pkg.features.map((feature, i) => (
                     <li key={i}>{feature}</li>
                   ))}
                 </ul>
               </div>
-              <a
-                href="#contact"
+              <button
+                onClick={() => handleAutofill(pkg.title)}
                 className="inline-block mt-2 px-5 py-2.5 bg-gradient-to-r from-red-700 to-blue-700 text-white rounded-full shadow-md hover:scale-110 transition duration-300 ease-in-out text-center animate-pulse"
                 role="button"
                 aria-label={`Get started with ${pkg.title}`}
               >
                 {pkg.button || 'Get Started'}
-              </a>
+              </button>
             </article>
           ))}
         </div>
@@ -70,40 +91,41 @@ const Pricing = () => {
 
 const webPackages = [
   {
-    title: 'Starter Website',
+    title: 'Essential Start',
     price: 'Free',
     features: [
-      '1-page design',
-      'Mobile responsive',
-      'Hosting required',
+      'Custom one-page website',
+      'Mobile responsive design',
+      'Hosting required (not included)',
       'Basic contact form',
-      'Custom layout'
+      'Fast delivery'
     ],
+    notice: 'Limited availability – this month only!',
     highlight: false,
     button: 'Claim Now'
   },
   {
-    title: 'Business Website',
-    price: '$299',
+    title: 'Smart Launch',
+    price: 'Starting at $299+',
     features: [
-      'Up to 5 pages',
-      'Custom design',
-      'Contact form & map',
+      'Everything in Essential Start',
+      'Up to 5 custom pages',
+      'Interactive contact form & map',
       'Mobile optimization',
-      'Basic SEO'
+      'Basic SEO setup'
     ],
     highlight: true,
     button: 'Most Popular'
   },
   {
-    title: 'Pro Website',
-    price: '$499+',
+    title: 'Elite Presence',
+    price: 'Starting at $499+',
     features: [
+      'Everything in Smart Launch',
       '10+ pages or e-commerce',
-      'Advanced design',
-      'Custom integrations',
-      'SEO & analytics setup',
-      'Priority support'
+      'Custom animations and effects',
+      'Advanced SEO & analytics setup',
+      'Priority support & updates'
     ],
     highlight: false
   }
@@ -112,37 +134,37 @@ const webPackages = [
 const socialPackages = [
   {
     title: 'Basic Social Media Boost',
-    price: '$99/mo',
     features: [
       'Weekly content ideas',
       'Profile optimization',
       'Hashtag strategy',
       'Caption templates',
-      'Google review support'
-    ]
+      'Google review encouragement'
+    ],
+    button: 'Inquire Now'
   },
   {
     title: 'Social Media Management',
-    price: '$199/mo',
     features: [
+      'Everything in Basic Boost',
       'Up to 3 posts/week',
-      'Basic engagement',
-      'Monthly performance summary',
-      'Content calendar',
-      'Google review support'
+      'Monthly content calendar',
+      'Basic engagement handling',
+      'Performance reporting'
     ],
-    highlight: true
+    highlight: true,
+    button: 'Grow With Us'
   },
   {
-    title: 'Growth Strategy',
-    price: '$349/mo',
+    title: 'Growth Strategy Plan',
     features: [
-      'Full content creation',
+      'Everything in Management',
       'Reels and carousel posts',
-      'Engagement plan',
-      'Social ads support',
+      'Audience growth strategy',
+      'Social ad support',
       'Google & Facebook review push'
-    ]
+    ],
+    button: 'Let’s Scale'
   }
 ];
 
