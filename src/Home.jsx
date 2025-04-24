@@ -15,7 +15,7 @@ const Home = () => {
         playsInline
         aria-hidden="true"
       >
-        <source src="/bg-video2.mp4" type="video/mp4" />
+        <source src="/domi-websites-hero-video.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
 
