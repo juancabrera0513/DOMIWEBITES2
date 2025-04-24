@@ -1,42 +1,49 @@
 import React from 'react';
 
 const About = () => (
-  <section id="about" className="py-16 bg-gray-100 text-gray-900" aria-labelledby="about-heading">
-    <div className="max-w-4xl mx-auto px-4 text-center">
-      <h2 id="about-heading" className="text-4xl font-bold mb-10">
-        About <span className="text-red-700">Us</span>
+  <section id="about" className="py-20 bg-gray-100 text-gray-900" aria-labelledby="about-heading">
+    <div className="max-w-5xl mx-auto px-6 text-center">
+      <h2 id="about-heading" className="text-4xl font-extrabold mb-8 [text-shadow:_0_1px_2px_rgb(0_0_0_/_15%)]">
+        Who <span className="text-red-700">We Are</span>
       </h2>
 
-      <div className="space-y-10 text-gray-800 text-left">
-        <article aria-labelledby="commitment-heading">
-          <h3 id="commitment-heading" className="text-2xl font-semibold text-blue-800 mb-2">
-            Our Commitment
-          </h3>
-          <p>
-            We work closely with you to ensure every detail aligns with your goals. Our mission is to help your business thrive
-            through a strong, impactful online presence.
-          </p>
-        </article>
+      <p className="text-lg text-gray-700 mb-12 max-w-3xl mx-auto leading-relaxed">
+        At <span className="font-semibold text-blue-700">Domi Websites</span>, we don’t just build websites — we build digital experiences
+        designed to help small businesses grow and get noticed online.
+      </p>
 
-        <article aria-labelledby="expertise-heading">
-          <h3 id="expertise-heading" className="text-2xl font-semibold text-blue-800 mb-2">
-            Our Expertise
-          </h3>
+      <div className="space-y-10 text-left text-gray-800">
+        <div>
+          <h3 className="text-2xl font-bold text-blue-800 mb-2">Personal Approach</h3>
           <p>
-            With years of experience in web design, we craft digital experiences that reflect your brand identity, speak to your audience,
-            and drive results. From modern UI/UX to technical SEO, we’ve got you covered.
+            You won't be just another number. We take time to understand your business, your audience, and your goals. 
+            Every site is crafted with intention and heart.
           </p>
-        </article>
+        </div>
 
-        <article aria-labelledby="innovation-heading">
-          <h3 id="innovation-heading" className="text-2xl font-semibold text-blue-800 mb-2">
-            Innovation and Excellence
-          </h3>
+        <div>
+          <h3 className="text-2xl font-bold text-blue-800 mb-2">Professional Quality</h3>
           <p>
-            We use the latest technologies to develop beautiful, functional, and user-friendly websites. Whether it’s a simple landing page
-            or a complex e-commerce platform, we deliver solutions that grow with your business.
+            Expect clean design, fast load times, and mobile-first development. We keep things simple, modern, and focused on real results.
           </p>
-        </article>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-bold text-blue-800 mb-2">Built to Get You Clients</h3>
+          <p>
+            Every page is structured to inspire trust and make it easy for customers to reach you. Our goal is to help you attract and convert — not just exist online.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-14 text-md text-gray-600">
+        <p>
+          🚀 We're currently expanding our local presence and would love for your business to be part of it.
+          <br />
+          <a href="#contact" className="text-blue-600 hover:underline font-medium">
+            Let’s talk and see if we’re a good fit.
+          </a>
+        </p>
       </div>
     </div>
   </section>

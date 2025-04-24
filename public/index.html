@@ -10,49 +10,51 @@
       gtag('config', 'AW-16964586391');
     </script>
 
-    <!-- Event snippet for Contact conversion -->
-<script>
-  function gtag_report_conversion(url) {
-    var callback = function () {
-      if (typeof url !== 'undefined') {
-        window.location = url;
+    <!-- Conversion tracking -->
+    <script>
+      function gtag_report_conversion(url) {
+        var callback = function () {
+          if (typeof url !== 'undefined') {
+            window.location = url;
+          }
+        };
+        gtag('event', 'conversion', {
+          'send_to': 'AW-16964586391/Z3h0CMnS4rMaEJeXrJk_',
+          'event_callback': callback
+        });
+        return false;
       }
-    };
-    gtag('event', 'conversion', {
-      'send_to': 'AW-16964586391/Z3h0CMnS4rMaEJeXrJk_',
-      'event_callback': callback
-    });
-    return false;
-  }
-</script>
+    </script>
 
-
-    <!-- Meta -->
+    <!-- Meta SEO -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Claim your free website today! Domi Websites builds affordable, high-quality websites for small businesses. Limited spots available." />
-    <meta name="keywords" content="free website, small business web design, St. Louis websites, custom websites, affordable websites, Domi Websites" />
+    <meta name="description" content="Custom websites for small businesses across the U.S. — built fast, mobile-ready, and designed to convert. Claim this month’s offer with Domi Websites." />
+    <meta name="keywords" content="web design, small business websites, custom website design, Domi Websites, mobile websites, St. Louis web design, SEO ready websites" />
     <meta name="theme-color" content="#1f242d" />
-    
+    <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph SEO -->
-    <meta property="og:title" content="Domi Websites | Professional Web Design for Small Businesses" />
-    <meta property="og:description" content="Custom websites, hosting & maintenance to grow your small business online. Built with accessibility and performance in mind." />
+    <!-- Open Graph (Social Sharing) -->
+    <meta property="og:title" content="Domi Websites – Custom Websites That Convert" />
+    <meta property="og:description" content="We build fast, mobile-friendly websites for small businesses in the U.S. Designed to help you grow and stand out online." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/DomiLogo.png" />
+    <meta property="og:url" content="https://domiwebsites.com/" />
 
-    <title>Domi Websites | Web Design, Hosting & Maintenance</title>
-
-    <!-- Favicon & Sitemap -->
+    <!-- Canonical & Icons -->
     <link rel="canonical" href="https://domiwebsites.com/" />
     <link rel="icon" type="image/png" href="/DomiLogo.png" sizes="64x64" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://domiwebsites.com/sitemap.xml" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+
+    <title>Domi Websites | Web Design, Hosting & Maintenance</title>
   </head>
 
   <body class="bg-white text-black">
     <div id="root"></div>
-
   </body>
 </html>
