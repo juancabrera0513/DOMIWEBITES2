@@ -14,14 +14,27 @@ const features = (items) => (
 
 const Services = () => {
   return (
-    <section id="services" className="py-20 bg-white">
-      <h2 className="text-4xl font-bold text-center mb-12">
+    <section
+      id="services"
+      className="py-20 bg-white"
+      aria-labelledby="services-heading"
+      data-aos="fade-up"
+    >
+      <h2
+        id="services-heading"
+        className="text-4xl font-bold text-center mb-12"
+        data-aos="fade-up"
+      >
         What We <span className="text-red-600">Offer</span>
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
         {/* Website Design */}
-        <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+        <div
+          className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
           <Globe className="w-10 h-10 text-red-600 mb-4" />
           <h3 className="text-xl font-bold text-blue-800 mb-2">Website Design</h3>
           <p className="text-gray-700 text-sm">
@@ -41,7 +54,11 @@ const Services = () => {
         </div>
 
         {/* Maintenance */}
-        <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+        <div
+          className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
           <Wrench className="w-10 h-10 text-red-600 mb-4" />
           <h3 className="text-xl font-bold text-blue-800 mb-2">Maintenance</h3>
           <p className="text-gray-700 text-sm">
@@ -61,7 +78,11 @@ const Services = () => {
         </div>
 
         {/* Hosting */}
-        <div className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+        <div
+          className="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition"
+          data-aos="fade-up"
+          data-aos-delay="300"
+        >
           <Server className="w-10 h-10 text-red-600 mb-4" />
           <h3 className="text-xl font-bold text-blue-800 mb-2">Hosting & Speed</h3>
           <p className="text-gray-700 text-sm">

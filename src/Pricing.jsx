@@ -15,9 +15,18 @@ const Pricing = () => {
   };
 
   return (
-    <section id="pricing" className="py-14 bg-gray-100 text-gray-900" aria-labelledby="pricing-heading">
+    <section
+      id="pricing"
+      className="py-14 bg-gray-100 text-gray-900"
+      aria-labelledby="pricing-heading"
+      data-aos="fade-up"
+    >
       <div className="max-w-6xl mx-auto px-4">
-        <h2 id="pricing-heading" className="text-4xl font-extrabold text-center mb-8">
+        <h2
+          id="pricing-heading"
+          className="text-4xl font-extrabold text-center mb-8"
+          data-aos="fade-up"
+        >
           Our <span className="text-red-600">Packages</span>
         </h2>
 
@@ -25,10 +34,13 @@ const Pricing = () => {
           {webPackages.map((pkg, idx) => (
             <article
               key={idx}
-              className={`flex flex-col justify-between bg-white p-6 rounded-lg shadow-xl border-t-4 transition duration-300 ease-in-out
-              hover:scale-105 hover:border-blue-700 ${pkg.highlight ? 'border-blue-700' : 'border-red-600'}`}
+              className={`flex flex-col justify-between bg-white p-6 rounded-lg shadow-xl border-t-4 transition duration-300 ease-in-out hover:scale-105 hover:border-blue-700 ${
+                pkg.highlight ? 'border-blue-700' : 'border-red-600'
+              }`}
               role="region"
               aria-labelledby={`package-${idx}`}
+              data-aos="fade-up"
+              data-aos-delay={100 * (idx + 1)}
             >
               <div>
                 <h3
@@ -41,7 +53,11 @@ const Pricing = () => {
                   {pkg.oldPrice && (
                     <p className="text-sm text-gray-400 line-through">{pkg.oldPrice}</p>
                   )}
-                  <p className={`text-3xl font-bold ${pkg.price === 'Free' ? 'text-green-600 animate-bounce' : 'text-blue-700'}`}>
+                  <p
+                    className={`text-3xl font-bold ${
+                      pkg.price === 'Free' ? 'text-green-600 animate-bounce' : 'text-blue-700'
+                    }`}
+                  >
                     {pkg.price}
                   </p>
                 </div>

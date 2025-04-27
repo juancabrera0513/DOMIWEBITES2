@@ -42,11 +42,14 @@ const Contact = () => {
       id="contact"
       className="py-16 bg-gradient-to-br from-gray-100 to-white text-gray-900"
       aria-labelledby="contact-heading"
+      data-aos="fade-up"
     >
       <div className="max-w-4xl mx-auto px-4">
         <h2
           id="contact-heading"
           className="text-4xl font-bold text-center mb-10"
+          data-aos="fade-up"
+          data-aos-delay="100"
         >
           Contact <span className="text-red-600">Us</span>
         </h2>
@@ -56,6 +59,8 @@ const Contact = () => {
           onSubmit={sendEmail}
           className="space-y-5 bg-white p-6 rounded-lg shadow-md"
           aria-label="Contact form"
+          data-aos="fade-up"
+          data-aos-delay="200"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -106,7 +111,11 @@ const Contact = () => {
           </button>
         </form>
 
-        <div className="text-center mt-10 text-blue-700 space-y-2">
+        <div
+          className="text-center mt-10 text-blue-700 space-y-2"
+          data-aos="fade-up"
+          data-aos-delay="300"
+        >
           <p>📍 St. Louis, Missouri</p>
           <p>
             📞 Phone:{' '}
