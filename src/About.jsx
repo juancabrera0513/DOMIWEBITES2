@@ -4,7 +4,7 @@ const About = () => (
   <section id="about" className="py-20 bg-gray-100 text-gray-900" aria-labelledby="about-heading">
     <div className="max-w-5xl mx-auto px-6 text-center">
       <h2 id="about-heading" className="text-4xl font-extrabold mb-8 [text-shadow:_0_1px_2px_rgb(0_0_0_/_15%)]">
-        Who <span className="text-red-700">We Are</span>
+        Who <span className="text-red-600">We Are</span>
       </h2>
 
       <p className="text-lg text-gray-700 mb-12 max-w-3xl mx-auto leading-relaxed">

@@ -48,7 +48,7 @@ const Contact = () => {
           id="contact-heading"
           className="text-4xl font-bold text-center mb-10"
         >
-          Contact <span className="text-red-700">Us</span>
+          Contact <span className="text-red-600">Us</span>
         </h2>
 
         <form
@@ -100,7 +100,7 @@ const Contact = () => {
           <button
             type="submit"
             onClick={() => gtag_report_conversion()}
-            className="bg-gradient-to-r from-red-700 to-blue-800 text-white px-6 py-3 rounded-full hover:scale-105 hover:shadow-lg transition duration-300 ease-in-out font-semibold w-full md:w-auto"
+            className="bg-gradient-to-r from-red-600 to-blue-800 text-white px-6 py-3 rounded-full hover:scale-105 hover:shadow-lg transition duration-300 ease-in-out font-semibold w-full md:w-auto"
           >
             Send Message
           </button>

@@ -26,23 +26,19 @@ const Home = () => {
           id="home-heading"
           className="text-4xl md:text-5xl font-extrabold mb-4 text-white leading-tight [text-shadow:_0_1px_2px_rgb(0_0_0_/_90%)]"
         >
-          A <span className="text-red-400">Custom Website</span> for Your Business?{' '}
+          A Custom Website for Your Business?{' '}
           <br className="hidden md:block" />
-          Let’s <span className="text-blue-400">Make It Happen</span>.
+          Let’s Make It Happen.
         </h1>
 
-        <h2 className="text-lg md:text-xl font-medium mb-4 text-gray-200 [text-shadow:_0_1px_2px_rgb(0_0_0_/_80%)]">
-          If you don’t have a website,{' '}
-          <span className="text-orange-400 font-semibold">you’re losing customers</span>.
-          <br /> Let’s fix that —{' '}
-          <span className="text-green-400 font-medium">without stress or complexity</span>.
+        <h2 className="text-lg md:text-xl font-medium mb-4 text-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_80%)]">
+          If you don’t have a website, you’re losing customers.
+          <br /> Let’s fix that — without stress or complexity.
         </h2>
 
-        <p className="mb-6 text-gray-300 max-w-xl text-md md:text-lg [text-shadow:_0_1px_2px_rgb(0_0_0_/_70%)]">
-          We create <span className="text-white font-semibold">professional websites</span> for small businesses across the U.S. — 
-          <span className="text-blue-400 font-semibold"> custom-built</span>, 
-          <span className="text-white font-semibold"> fast</span>, and 
-          <span className="text-red-300 font-semibold"> designed to look amazing on any device</span>.
+        <p className="mb-6 text-white max-w-xl text-md md:text-lg [text-shadow:_0_1px_2px_rgb(0_0_0_/_70%)]">
+          We create professional websites for small businesses across the U.S. —
+          custom-built, fast, and mobile-optimized.
         </p>
 
         <a
