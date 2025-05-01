@@ -46,7 +46,7 @@ const Home = () => {
           href="#pricing"
           className="inline-block px-6 py-3 bg-gradient-to-r from-red-600 to-blue-600 rounded-full hover:scale-105 transition transform text-white font-semibold text-lg shadow-lg animate-bounce focus:outline focus:ring-2 focus:ring-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_85%)]"
         >
-          Claim This April’s Offer
+          Claim This May’s Offer
         </a>
       </div>
     </section>
