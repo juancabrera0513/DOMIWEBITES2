@@ -102,14 +102,14 @@ const webPackages = [
       'Optimized for conversions',
       'Delivered in 3-5 business days'
     ],
-    notice: 'Limited availability – April only!',
+    notice: 'Limited to 5 businesses this month – Act fast!',
     highlight: false,
-    button: 'Claim Now'
+    button: 'Claim Your Free Site'
   },
   {
     title: 'Smart Launch',
-    price: '$299',
-    oldPrice: '$499',
+    price: '$499',
+    oldPrice: '$699',
     features: [
       'Everything in Essential Start',
       'Up to 5 custom pages',
@@ -118,12 +118,12 @@ const webPackages = [
       'Basic analytics integration'
     ],
     highlight: true,
-    button: 'Most Popular'
+    button: 'Best Value – Start Now'
   },
   {
     title: 'Elite Presence',
-    price: '$499',
-    oldPrice: '$799',
+    price: '$799',
+    oldPrice: '$999',
     features: [
       'Everything in Smart Launch',
       'Up to 10 pages',
@@ -132,12 +132,12 @@ const webPackages = [
       'Priority delivery'
     ],
     highlight: false,
-    button: 'Get Started'
+    button: 'Get My Premium Site'
   },
   {
     title: 'Power Pro',
-    price: '$999',
-    oldPrice: '$1,499',
+    price: '$1,499',
+    oldPrice: '$1,999',
     features: [
       'Everything in Elite Presence',
       'E-commerce or booking integration',
@@ -146,8 +146,9 @@ const webPackages = [
       '1 month post-launch support'
     ],
     highlight: false,
-    button: 'Let’s Build'
+    button: 'Start My Business Site'
   }
 ];
+
 
 export default Pricing;
