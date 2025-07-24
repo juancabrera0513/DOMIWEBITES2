@@ -27,26 +27,26 @@ const Home = () => {
           id="home-heading"
           className="text-4xl md:text-5xl font-extrabold mb-4 text-white leading-tight [text-shadow:_0_1px_2px_rgb(0_0_0_/_90%)]"
         >
-          A Custom Website for Your Business?{' '}
+          Want a Professional Website for Your Business?{' '}
           <br className="hidden md:block" />
           Let’s Make It Happen.
         </h1>
 
         <h2 className="text-lg md:text-xl font-medium mb-4 text-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_80%)]">
-          If you don’t have a website, you’re losing customers.
-          <br /> Let’s fix that — without stress or complexity.
+          Stop losing customers without a website.
+          <br /> Let’s launch your online presence without stress.
         </h2>
 
         <p className="mb-6 text-white max-w-xl text-md md:text-lg [text-shadow:_0_1px_2px_rgb(0_0_0_/_70%)]">
-          We create professional websites for small businesses across the U.S. —
-          custom-built, fast, and mobile-optimized.
+          We create fast, professional websites for small businesses across the U.S. — custom-built, SEO-ready, and mobile-optimized.
         </p>
 
         <a
-          href="#pricing"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-red-600 to-blue-600 rounded-full hover:scale-105 transition transform text-white font-semibold text-lg shadow-lg animate-bounce focus:outline focus:ring-2 focus:ring-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_85%)]"
+          href="#contact"
+          className="inline-block px-6 py-3 bg-gradient-to-r from-red-600 to-blue-600 rounded-full hover:scale-105 transition transform text-white font-semibold text-lg shadow-lg focus:outline focus:ring-2 focus:ring-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_85%)]"
         >
-Request Your Free Website (Limited Spots)        </a>
+          Book Your Free Consultation
+        </a>
       </div>
     </section>
   );
