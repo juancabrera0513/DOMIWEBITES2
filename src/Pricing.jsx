@@ -17,12 +17,16 @@ const Pricing = () => {
           {packages.map((pkg, idx) => (
             <article
               key={idx}
-              className={`flex flex-col justify-between bg-white p-6 rounded-lg shadow-xl border-t-4 ${
-                pkg.highlight ? 'border-blue-700' : 'border-red-600'
+              className={`flex flex-col justify-between bg-white p-6 rounded-lg shadow-xl border-t-4 transition-transform duration-300 ease-in-out hover:scale-105 ${
+                pkg.highlight ? 'border-blue-700 animate-pulse' : 'border-red-600'
               }`}
             >
               <div>
                 <h3 className="text-xl font-bold mb-2 text-center text-red-600">{pkg.title}</h3>
+                {pkg.highlight && (
+                  <p className="text-center text-sm font-semibold text-yellow-600 mb-1">⭐ Best Value</p>
+                )}
+                <p className="text-center text-sm text-gray-700">Starting at</p>
                 <p className="text-center text-3xl font-bold text-blue-700 mb-4">{pkg.price}</p>
                 <ul className="mb-4 space-y-2 text-sm text-gray-800">
                   {pkg.features.map((feature, i) => (
@@ -70,7 +74,7 @@ const packages = [
       'Google Analytics setup',
       'Contact form with map'
     ],
-    highlight: true
+    highlight: true // Best Value
   },
   {
     title: 'Business Pro',
