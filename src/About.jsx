@@ -13,7 +13,7 @@ const About = () => (
         className="text-4xl font-extrabold mb-8 [text-shadow:_0_1px_2px_rgb(0_0_0_/_15%)]"
         data-aos="fade-up"
       >
-        Who <span className="text-red-600">We Are</span>
+        About <span className="text-red-600">Domi Websites</span>
       </h2>
 
       <p
@@ -21,8 +21,8 @@ const About = () => (
         data-aos="fade-up"
         data-aos-delay="100"
       >
-        At <span className="font-semibold text-blue-700">Domi Websites</span>, we don’t just build websites — we build digital experiences
-        designed to help small businesses grow and get noticed online.
+        At <span className="font-semibold text-blue-700">Domi Websites</span>, we build high-quality, custom websites for small businesses and entrepreneurs — with a personal touch. 
+        Based in St. Louis and serving clients across the U.S., we specialize in fast, SEO-ready websites that are mobile-friendly and built to help your business grow online.
       </p>
 
       <div className="space-y-10 text-left text-gray-800">
@@ -51,7 +51,7 @@ const About = () => (
 
       <div className="mt-14 text-md text-gray-600" data-aos="zoom-in" data-aos-delay="500">
         <p>
-          🚀 We're currently expanding our local presence and would love for your business to be part of it.
+          🚀 We’re proud to help local businesses in St. Louis and small business owners across the U.S. build their online presence.
           <br />
           <a href="#contact" className="text-blue-600 hover:underline font-medium">
             Let’s talk and see if we’re a good fit.

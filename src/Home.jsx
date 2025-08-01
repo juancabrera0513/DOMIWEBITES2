@@ -27,18 +27,15 @@ const Home = () => {
           id="home-heading"
           className="text-4xl md:text-5xl font-extrabold mb-4 text-white leading-tight [text-shadow:_0_1px_2px_rgb(0_0_0_/_90%)]"
         >
-          Want a Professional Website for Your Business?{' '}
-          <br className="hidden md:block" />
-          Let’s Make It Happen.
+          Web Design for Small Businesses in St. Louis
         </h1>
 
         <h2 className="text-lg md:text-xl font-medium mb-4 text-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_80%)]">
-          Stop losing customers without a website.
-          <br /> Let’s launch your online presence without stress.
+          Want a Professional Website for Your Business? <br className="hidden md:block" /> Let’s Make It Happen.
         </h2>
 
         <p className="mb-6 text-white max-w-xl text-md md:text-lg [text-shadow:_0_1px_2px_rgb(0_0_0_/_70%)]">
-          We create fast, professional websites for small businesses across the U.S. — custom-built, SEO-ready, and mobile-optimized.
+          At Domi Websites, we build fast, mobile-optimized websites for small business owners in St. Louis and throughout the U.S. Our custom websites are SEO-ready and designed to help your business grow online.
         </p>
 
         <a

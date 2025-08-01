@@ -2,9 +2,17 @@ import React from 'react';
 
 const Pricing = () => {
   return (
-    <section id="pricing" className="py-14 bg-gray-100 text-gray-900" aria-labelledby="pricing-heading">
+    <section
+      id="pricing"
+      className="py-14 bg-gray-100 text-gray-900"
+      aria-labelledby="pricing-heading"
+      role="region"
+    >
       <div className="max-w-6xl mx-auto px-4">
-        <h2 id="pricing-heading" className="text-4xl font-extrabold text-center mb-8">
+        <h2
+          id="pricing-heading"
+          className="text-4xl font-extrabold text-center mb-8"
+        >
           Website Packages for Your Business
         </h2>
 
@@ -20,18 +28,40 @@ const Pricing = () => {
               className={`flex flex-col justify-between bg-white p-6 rounded-lg shadow-xl border-t-4 transition-transform duration-300 ease-in-out hover:scale-105 ${
                 pkg.highlight ? 'border-blue-700 animate-pulse' : 'border-red-600'
               }`}
+              aria-describedby={`pkg-desc-${idx}`}
             >
               <div>
-                <h3 className="text-xl font-bold mb-2 text-center text-red-600">{pkg.title}</h3>
+                <h3
+                  className="text-xl font-bold mb-2 text-center text-red-600"
+                  id={`pkg-title-${idx}`}
+                >
+                  {pkg.title}
+                </h3>
                 {pkg.highlight && (
-                  <p className="text-center text-sm font-semibold text-yellow-600 mb-1">⭐ Best Value</p>
+                  <p
+                  className="text-center text-sm font-semibold text-yellow-800 mb-1"
+                  aria-label="Best Value Package"
+                >
+                  ⭐ Best Value
+                </p>
                 )}
                 <p className="text-center text-sm text-gray-700">Starting at</p>
-                <p className="text-center text-3xl font-bold text-blue-700 mb-4">{pkg.price}</p>
-                <ul className="mb-4 space-y-2 text-sm text-gray-800">
+                <p
+                  className="text-center text-3xl font-bold text-blue-700 mb-4"
+                  aria-label={`Price: ${pkg.price}`}
+                >
+                  {pkg.price}
+                </p>
+                <ul
+                  className="mb-4 space-y-2 text-sm text-gray-800"
+                  id={`pkg-desc-${idx}`}
+                  aria-label={`Features of ${pkg.title} package`}
+                >
                   {pkg.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span className="text-blue-600">✔</span>
+                      <span className="text-blue-600" aria-hidden="true">
+                        ✔
+                      </span>
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -40,6 +70,7 @@ const Pricing = () => {
               <a
                 href="#contact"
                 className="mt-2 px-5 py-2.5 bg-gradient-to-r from-red-600 to-blue-700 text-white rounded-full shadow-md text-center font-medium hover:scale-105 transition"
+                aria-describedby={`pkg-title-${idx}`}
               >
                 Book Consultation
               </a>
@@ -60,9 +91,9 @@ const packages = [
       'Custom design and branding',
       'Mobile responsive',
       'Basic SEO setup',
-      'Contact form integration'
+      'Contact form integration',
     ],
-    highlight: false
+    highlight: false,
   },
   {
     title: 'Smart Launch',
@@ -72,9 +103,9 @@ const packages = [
       'Mobile optimized and fast-loading',
       'SEO optimization',
       'Google Analytics setup',
-      'Contact form with map'
+      'Contact form with map',
     ],
-    highlight: true // Best Value
+    highlight: true, // Best Value
   },
   {
     title: 'Business Pro',
@@ -84,9 +115,9 @@ const packages = [
       'Blog or gallery included',
       'Advanced SEO and speed optimization',
       'Animations and branding consistency',
-      '1 month post-launch support'
+      '1 month post-launch support',
     ],
-    highlight: false
+    highlight: false,
   },
   {
     title: 'E-Commerce Pro',
@@ -96,10 +127,10 @@ const packages = [
       'Payment gateway integration',
       'Inventory management setup',
       'Advanced SEO & speed optimization',
-      'Training for managing your store'
+      'Training for managing your store',
     ],
-    highlight: false
-  }
+    highlight: false,
+  },
 ];
 
 export default Pricing;
