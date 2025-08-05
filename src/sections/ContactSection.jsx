@@ -1,40 +1,50 @@
-import React, { useEffect, useRef, useState } from 'react';
-import emailjs from 'emailjs-com';
+import React, { useEffect, useRef, useState } from "react";
+import emailjs from "emailjs-com";
 
-const Contact = () => {
+const ContactSection = () => {
   const form = useRef();
-  const [subjectValue, setSubjectValue] = useState('');
+  const [subjectValue, setSubjectValue] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
+    // Extrae subject de la URL si existe
     const hash = window.location.hash;
-    if (hash.includes('?')) {
-      const query = new URLSearchParams(hash.split('?')[1]);
-      const subject = query.get('subject');
-      if (subject) {
-        setSubjectValue(subject);
-      }
+    if (hash.includes("?")) {
+      const query = new URLSearchParams(hash.split("?")[1]);
+      const subject = query.get("subject");
+      if (subject) setSubjectValue(subject);
     }
   }, []);
 
   const sendEmail = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setFeedback(null);
 
     emailjs
       .sendForm(
-        'service_ywkf6l7',
-        'template_68t4i9b',
+        "service_ywkf6l7",
+        "template_68t4i9b",
         form.current,
-        'QomFGcKltdQDXhSSp'
+        "QomFGcKltdQDXhSSp"
       )
       .then(() => {
-        alert('Message sent successfully!');
-        gtag_report_conversion();
+        setFeedback({ type: "success", msg: "Message sent successfully!" });
+        setIsSubmitting(false);
+        e.target.reset();
+        setSubjectValue("");
+        // Google conversion (solo al éxito)
+        if (typeof window.gtag_report_conversion === "function") {
+          window.gtag_report_conversion();
+        }
       })
       .catch(() => {
-        alert('Failed to send message. Please try again.');
+        setFeedback({ type: "error", msg: "Failed to send message. Please try again." });
+        setIsSubmitting(false);
+        // Focus en el nombre al error
+        if (form.current?.fullName) form.current.fullName.focus();
       });
-
-    e.target.reset();
   };
 
   return (
@@ -66,50 +76,80 @@ const Contact = () => {
             <input
               type="text"
               name="fullName"
-              placeholder="Full Name"
+              placeholder="Full Name*"
               className="p-3 border rounded w-full"
+              autoComplete="name"
               required
+              aria-label="Full Name"
+              disabled={isSubmitting}
             />
             <input
               type="email"
               name="email"
-              placeholder="Email"
+              placeholder="Email*"
               className="p-3 border rounded w-full"
+              autoComplete="email"
               required
+              aria-label="Email"
+              disabled={isSubmitting}
             />
             <input
               type="tel"
               name="phone"
-              placeholder="Phone"
+              placeholder="Phone*"
               className="p-3 border rounded w-full"
+              autoComplete="tel"
               required
+              aria-label="Phone"
+              disabled={isSubmitting}
             />
             <input
               type="text"
               name="subject"
-              placeholder="Subject"
+              placeholder="Subject*"
               value={subjectValue}
               onChange={(e) => setSubjectValue(e.target.value)}
               className="p-3 border rounded w-full"
               required
+              aria-label="Subject"
+              disabled={isSubmitting}
             />
           </div>
 
           <textarea
             name="message"
-            placeholder="Your Message"
+            placeholder="Your Message*"
             className="w-full p-3 border rounded h-32"
             required
+            aria-label="Your Message"
+            disabled={isSubmitting}
           ></textarea>
 
           <button
             type="submit"
-            onClick={() => gtag_report_conversion()}
-            className="bg-gradient-to-r from-red-600 to-blue-800 text-white px-6 py-3 rounded-full hover:scale-105 hover:shadow-lg transition duration-300 ease-in-out font-semibold w-full md:w-auto"
+            disabled={isSubmitting}
+            className={`bg-gradient-to-r from-red-600 to-blue-800 text-white px-6 py-3 rounded-full font-semibold w-full md:w-auto transition duration-300 ease-in-out
+              ${isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:scale-105 hover:shadow-lg"}
+            `}
+            aria-busy={isSubmitting}
+            aria-label="Send message"
           >
-            Send Message
+            {isSubmitting ? "Sending..." : "Send Message"}
           </button>
         </form>
+
+        {feedback && (
+          <div
+            className={`mt-6 text-center text-base font-semibold ${
+              feedback.type === "success"
+                ? "text-green-600"
+                : "text-red-600"
+            }`}
+            role="alert"
+          >
+            {feedback.msg}
+          </div>
+        )}
 
         <div
           className="text-center mt-10 text-blue-700 space-y-2"
@@ -118,11 +158,11 @@ const Contact = () => {
         >
           <p>📍 St. Louis, Missouri</p>
           <p>
-            📞 Phone:{' '}
+            📞 Phone:{" "}
             <a href="tel:3143769667" className="hover:underline text-blue-500">
               314-376-9667
-            </a>{' '}
-            |{' '}
+            </a>{" "}
+            |{" "}
             <a
               href="https://wa.me/13143769667"
               target="_blank"
@@ -133,7 +173,7 @@ const Contact = () => {
             </a>
           </p>
           <p>
-            📧 Email:{' '}
+            📧 Email:{" "}
             <a
               href="mailto:admin@domiwebsites.com"
               className="hover:underline text-blue-500"
@@ -147,4 +187,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactSection;

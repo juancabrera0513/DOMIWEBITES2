@@ -1,37 +1,38 @@
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // Importa los estilos de AOS
+import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
-import Header from './Header';
-import Home from './Home';
-import About from './About';
-import Services from './Services';
-import Pricing from './Pricing';
-import Contact from './Contact';
-import Footer from './Footer';
-import './index.css';
+import HomePage from "./pages/HomePage";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Pricing from "./pages/Pricing";
+import Contact from "./pages/Contact";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 const App = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Animaciones de 1000ms
-      once: true,     // Animar solo la primera vez que aparece en pantalla
-      easing: 'ease-in-out', // Animación suave
+      duration: 1000,   // tiempo total de la animación
+      offset: 100,      // retrasa el inicio hasta que haya más desplazamiento
+      once: true,       // se anima solo una vez
+      easing: "ease-in-out",
     });
-  }, []);
+      }, []);
 
+  
   return (
-    <div>
-      <Header />
-      <Home />
-      <About />
-      <Services />
-      <Pricing />
-      <Contact />
-      <Footer />
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/pricing" element={<Pricing />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
+    </Routes>
   );
 };
 
 export default App;
- 
