@@ -33,6 +33,7 @@
     }
     h1 {
       color: #d62828;
+      margin-top: 0.5rem;
     }
     a {
       color: #1d4ed8;
@@ -45,16 +46,18 @@
       text-align: center;
       margin-bottom: 2rem;
     }
+    /* Logo tamaño fijo para evitar deformación */
     img {
-      max-height: 50px;
       width: 150px;
-      height: 90px;
+      height: auto;
+      max-height: 50px;
+      object-fit: contain;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="/DomiLogo.webp" alt="Domi Websites Logo" width="150" height="90" style="max-height:50px;" />
+    <img src="/DomiLogo.webp" alt="Domi Websites Logo" />
     <h1>Privacy Policy</h1>
   </header>
 
@@ -69,6 +72,7 @@
     <ul>
       <li>Contact details you provide through our forms (name, email, phone).</li>
       <li>Cookies and usage data via Google Ads and Google Analytics.</li>
+      <li>Payment information processed securely through Stripe.</li>
     </ul>
 
     <h2>How We Use Your Information</h2>
@@ -76,16 +80,22 @@
       <li>To respond to inquiries and provide services.</li>
       <li>To analyze website traffic and improve user experience.</li>
       <li>For advertising and retargeting purposes via Google Ads.</li>
+      <li>To securely process payments through Stripe.</li>
     </ul>
 
     <h2>Third-Party Services</h2>
-    <p>We use tools like Google Ads, Google Analytics, and EmailJS to operate our business. These may collect anonymous usage or technical data.</p>
+    <p>We use tools like Google Ads, Google Analytics, EmailJS, and Stripe to operate our business. These services may collect anonymous usage or technical data and have their own privacy policies:</p>
+    <ul>
+      <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+      <li><a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe Privacy Policy</a></li>
+      <li><a href="https://www.emailjs.com/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">EmailJS Privacy Policy</a></li>
+    </ul>
 
     <h2>Cookies</h2>
     <p>We use cookies to enhance site functionality. By using our website, you consent to the use of cookies. You can manage your preferences via your browser settings.</p>
 
     <h2>Data Protection</h2>
-    <p>Your data is stored securely and only accessed by authorized personnel. We never sell your personal information.</p>
+    <p>Your data is stored securely and only accessed by authorized personnel. We implement industry-standard security measures such as SSL encryption to protect your information during transmission. We never sell your personal information.</p>
 
     <h2>Contact Us</h2>
     <p>If you have questions about this policy, contact us at <a href="mailto:admin@domiwebsites.com">admin@domiwebsites.com</a>.</p>
