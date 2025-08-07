@@ -28,7 +28,7 @@ const Footer = () => (
         </p>
         <p>
           <a
-            href="/privacy-policy.html"
+            href="/privacy.html"
             className="underline hover:text-gray-200 py-2 px-2 inline-block text-base"
             style={{ minWidth: 48, minHeight: 48 }}
           >

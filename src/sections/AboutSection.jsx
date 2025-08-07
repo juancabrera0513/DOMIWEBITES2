@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 
 const AboutSection = () => (
   <section
@@ -9,35 +8,11 @@ const AboutSection = () => (
     aria-labelledby="about-heading"
     data-aos="fade-up"
   >
-    {/* SEO Structured Data for AboutPage */}
-    <Helmet>
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "AboutPage",
-          "name": "About Domi Websites",
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://domiwebsites.com/about"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "Domi Websites",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://domiwebsites.com/DomiLogo.webp"
-            }
-          },
-          "description": "Learn more about Domi Websites: Our mission, approach, and the results we bring for small businesses across the U.S."
-        })}
-      </script>
-    </Helmet>
-
     <div className="max-w-5xl mx-auto px-6 text-center">
       <h2
         id="about-heading"
         tabIndex="-1"
-        className="text-4xl font-extrabold mb-8 [text-shadow:_0_1px_2px_rgb(0_0_0_/_15%)] focus:outline-none"
+        className="text-4xl font-extrabold mb-8 focus:outline-none"
         data-aos="fade-up"
       >
         About <span className="text-red-600">Domi Websites</span>

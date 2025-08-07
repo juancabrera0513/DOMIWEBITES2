@@ -8,7 +8,6 @@ const ContactSection = () => {
   const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
-    // Extrae subject de la URL si existe
     const hash = window.location.hash;
     if (hash.includes("?")) {
       const query = new URLSearchParams(hash.split("?")[1]);
@@ -30,19 +29,24 @@ const ContactSection = () => {
         "QomFGcKltdQDXhSSp"
       )
       .then(() => {
-        setFeedback({ type: "success", msg: "Message sent successfully!" });
         setIsSubmitting(false);
         e.target.reset();
         setSubjectValue("");
-        // Google conversion (solo al éxito)
+
+        // Reportar conversión a Google (opcional)
         if (typeof window.gtag_report_conversion === "function") {
           window.gtag_report_conversion();
         }
+
+        // ✅ Redirección a página de agradecimiento
+        window.location.href = "/thank-you";
       })
       .catch(() => {
-        setFeedback({ type: "error", msg: "Failed to send message. Please try again." });
+        setFeedback({
+          type: "error",
+          msg: "Failed to send message. Please try again.",
+        });
         setIsSubmitting(false);
-        // Focus en el nombre al error
         if (form.current?.fullName) form.current.fullName.focus();
       });
   };
@@ -138,13 +142,9 @@ const ContactSection = () => {
           </button>
         </form>
 
-        {feedback && (
+        {feedback && feedback.type === "error" && (
           <div
-            className={`mt-6 text-center text-base font-semibold ${
-              feedback.type === "success"
-                ? "text-green-600"
-                : "text-red-600"
-            }`}
+            className="mt-6 text-center text-base font-semibold text-red-600"
             role="alert"
           >
             {feedback.msg}
