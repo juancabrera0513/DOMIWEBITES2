@@ -57,7 +57,6 @@ const description =
 const HomePage = () => (
   <>
     <Helmet>
-
       {/* TITLE */}
       <title>Web Design St. Louis | Small Business Websites | Domi Websites</title>
       {/* META DESCRIPTION */}

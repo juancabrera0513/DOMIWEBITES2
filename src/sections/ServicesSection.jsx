@@ -1,11 +1,19 @@
 import React from 'react';
-import { Globe, Wrench, Server, CheckCircle, MapPin, BarChart2, Briefcase } from 'lucide-react';
+import {
+  Globe,
+  Wrench,
+  Server,
+  CheckCircle,
+  MapPin,
+  BarChart2,
+  Briefcase,
+} from 'lucide-react';
 
 const features = (items) => (
-  <ul className="space-y-2 mt-4" style={{ textAlign: 'justify' }}>
+  <ul className="space-y-2 mt-4">
     {items.map((item, i) => (
       <li key={i} className="flex items-start text-sm text-gray-700">
-        <CheckCircle className="w-4 h-4 text-blue-600 mt-1 mr-2 flex-shrink-0" />
+        <CheckCircle className="w-4 h-4 text-blue-600 mt-1 mr-2" />
         <span>{item}</span>
       </li>
     ))}
@@ -13,73 +21,122 @@ const features = (items) => (
 );
 
 const services = [
-  { icon: <Globe className="w-10 h-10 text-red-600 mb-4 mx-auto" />, title: 'Website Design', description: 'Custom websites that look great and perform even better. Fast loading, mobile-ready, and built to impress.', features: ['Fully custom layout', 'SEO-ready structure', 'Mobile & tablet optimization'], cta: 'See Packages', link: '/pricing' },
-  { icon: <MapPin className="w-10 h-10 text-red-600 mb-4 mx-auto" />, title: 'Local SEO Optimization', description: 'Improve your visibility in local search results and get found by nearby customers actively searching for your services.', features: ['Google Maps & Business listings', 'Localized keyword targeting', 'On-page SEO for service areas'], cta: 'Boost My Local SEO', link: '/contact' },
-  { icon: <Wrench className="w-10 h-10 text-red-600 mb-4 mx-auto" />, title: 'Maintenance', description: 'We take care of security, updates, backups and ongoing changes so your site always runs smoothly.', features: ['Security & uptime monitoring', 'Monthly content updates', 'Hands-off support'], cta: 'Request a Plan', link: '/contact' },
-  { icon: <Server className="w-10 h-10 text-red-600 mb-4 mx-auto" />, title: 'Hosting & Speed', description: 'High-performance hosting with 99.9% uptime, fast load speeds and daily backups for peace of mind.', features: ['Blazing fast performance', 'SSL & daily backups', '99.9% uptime guaranteed'], cta: 'Explore Hosting Plans', link: '/pricing' },
-  { icon: <BarChart2 className="w-10 h-10 text-red-600 mb-4 mx-auto" />, title: 'Google Analytics Setup', description: 'Track visitors, pageviews and conversions with a complete Google Analytics + Tag Manager configuration.', features: ['Google Analytics 4 (GA4)', 'Event tracking setup', 'Conversion optimization insights'], cta: 'Get Tracking Setup', link: '/contact' },
-  { icon: <Briefcase className="w-10 h-10 text-red-600 mb-4 mx-auto" />, title: 'Google Business Profile', description: 'We optimize your Google Business Profile to improve credibility and increase calls and visits from local customers.', features: ['Profile creation & verification', 'Review strategy & response guide', 'Photo, hours & service optimization'], cta: 'Optimize My Profile', link: '/contact' },
+  {
+    icon: <Globe className="w-10 h-10 text-red-600 mb-4" />,
+    title: 'Website Design',
+    description:
+      'Custom websites that look great and perform even better. Fast loading, mobile-ready, and built to impress.',
+    features: [
+      'Fully custom layout',
+      'SEO-ready structure',
+      'Mobile & tablet optimization',
+    ],
+    cta: 'See Packages',
+    link: '/pricing',
+  },
+  {
+    icon: <MapPin className="w-10 h-10 text-red-600 mb-4" />,
+    title: 'Local SEO Optimization',
+    description:
+      'Improve your visibility in local search results and get found by nearby customers actively searching for your services.',
+    features: [
+      'Google Maps & Business listings',
+      'Localized keyword targeting',
+      'On-page SEO for service areas',
+    ],
+    cta: 'Boost My Local SEO',
+    link: '/contact',
+  },
+  {
+    icon: <Wrench className="w-10 h-10 text-red-600 mb-4" />,
+    title: 'Maintenance',
+    description:
+      'We take care of security, updates, backups and ongoing changes so your site always runs smoothly.',
+    features: [
+      'Security & uptime monitoring',
+      'Monthly content updates',
+      'Hands-off support',
+    ],
+    cta: 'Request a Plan',
+    link: '/contact',
+  },
+  {
+    icon: <Server className="w-10 h-10 text-red-600 mb-4" />,
+    title: 'Hosting & Speed',
+    description:
+      'High-performance hosting with 99.9% uptime, fast load speeds and daily backups for peace of mind.',
+    features: [
+      'Blazing fast performance',
+      'SSL & daily backups',
+      '99.9% uptime guaranteed',
+    ],
+    cta: 'Explore Hosting Plans',
+    link: '/pricing',
+  },
+  {
+    icon: <BarChart2 className="w-10 h-10 text-red-600 mb-4" />,
+    title: 'Google Analytics Setup',
+    description:
+      'Track visitors, pageviews and conversions with a complete Google Analytics + Tag Manager configuration.',
+    features: [
+      'Google Analytics 4 (GA4)',
+      'Event tracking setup',
+      'Conversion optimization insights',
+    ],
+    cta: 'Get Tracking Setup',
+    link: '/contact',
+  },
+  {
+    icon: <Briefcase className="w-10 h-10 text-red-600 mb-4" />,
+    title: 'Google Business Profile',
+    description:
+      'We optimize your Google Business Profile to improve credibility and increase calls and visits from local customers.',
+    features: [
+      'Profile creation & verification',
+      'Review strategy & response guide',
+      'Photo, hours & service optimization',
+    ],
+    cta: 'Optimize My Profile',
+    link: '/contact',
+  },
 ];
 
-const getAosProps = (index) => {
-  const col = index % 3;
-  const row = Math.floor(index / 3);
-  const anims = ['fade-right', 'fade-down', 'fade-left'];
-  const baseDelays = [0, 100, 200];
-  const delay = (row === 0 ? baseDelays[col] : baseDelays[col] + 240);
-  return { aos: anims[col], delay: String(delay) };
-};
-
 const ServicesSection = () => (
-  <section id="services" className="py-20 bg-white" aria-labelledby="services-heading">
+  <section
+    id="services"
+    className="py-20 bg-white"
+    aria-labelledby="services-heading"
+    
+  >
     <h2
       id="services-heading"
       className="text-4xl font-bold text-center mb-12"
       data-aos="fade-up"
-      data-aos-duration="800"
     >
       What We <span className="text-red-600">Offer</span>
     </h2>
 
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
-      {services.map((service, index) => {
-        const { aos, delay } = getAosProps(index);
-        return (
-          <div
-            key={index}
-            className="bg-gray-50 p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.03] transition duration-300 ease-in-out focus-within:ring-2 focus-within:ring-blue-500"
-            data-aos={aos}
-            data-aos-delay={delay}
-            data-aos-offset="200"
-            data-aos-duration="800"
-            data-aos-easing="ease-out-cubic"
+      {services.map((service, index) => (
+        <div
+          key={index}
+          className="bg-gray-50 p-6 sm:p-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.03] transition duration-300 ease-in-out focus-within:ring-2 focus-within:ring-blue-500"
+          data-aos={["fade-left", "zoom-in", "fade-right"][index % 3]}
+          data-aos-delay={String(index * 100)}
+        >
+          {service.icon}
+          <h3 className="text-xl font-bold text-blue-800 mb-2">{service.title}</h3>
+          <p className="text-gray-700 text-sm leading-relaxed">{service.description}</p>
+          {features(service.features)}
+          <a
+            href={service.link}
+            aria-label={`Learn more about ${service.title}`}
+            className="inline-block mt-6 text-sm bg-gradient-to-r from-blue-600 to-red-600 text-white px-5 py-2 rounded-full font-semibold hover:scale-105 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600 transition"
           >
-            {service.icon}
-
-            <h3 className="text-xl font-bold text-blue-800 mb-2 text-center">
-              {service.title}
-            </h3>
-
-            <p className="text-gray-700 text-sm leading-relaxed" style={{ textAlign: 'justify' }}>
-              {service.description}
-            </p>
-
-            {features(service.features)}
-
-            <a
-              href={service.link}
-              aria-label={`Learn more about ${service.title}`}
-              className="mt-6 w-fit mx-auto inline-flex items-center justify-center
-                         text-sm bg-gradient-to-r from-blue-600 to-red-600 text-white
-                         px-5 py-2 rounded-full font-semibold
-                         hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600
-                         transition"
-            >
-              {service.cta}
-            </a>
-          </div>
-        );
-      })}
+            {service.cta}
+          </a>
+        </div>
+      ))}
     </div>
   </section>
 );

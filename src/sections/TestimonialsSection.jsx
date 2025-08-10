@@ -5,8 +5,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Star } from "lucide-react";
 
-
-
 const reviews = [
   {
     name: "Melii Soler",
