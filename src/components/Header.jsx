@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const handleLinkClick = () => {
-    setMenuOpen(false);
-  };
+  const handleLinkClick = () => setMenuOpen(false);
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -17,10 +16,19 @@ const Header = () => {
     { name: 'Blog', path: '/blog' },
   ];
 
+  const openContactModal = () => {
+    if (location.pathname === '/') {
+      window.dispatchEvent(new CustomEvent('open-contact-modal'));
+    } else {
+      navigate('/?contact=1');
+    }
+    if (window.gtag) window.gtag('event', 'click_cta', { place: 'header', action: 'open_modal' });
+    setMenuOpen(false);
+  };
+
   return (
     <header className="bg-white shadow fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 h-20 relative">
-        {/* Logo */}
         <Link
           to="/"
           className="z-20 flex items-center"
@@ -43,7 +51,6 @@ const Header = () => {
           />
         </Link>
 
-        {/* Mobile menu button */}
         <button
           className="md:hidden text-3xl z-30"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -55,7 +62,6 @@ const Header = () => {
           {menuOpen ? '×' : '☰'}
         </button>
 
-        {/* Navigation menu */}
         <nav
           id="main-navigation"
           className={`fixed top-16 left-0 w-full bg-white md:static md:flex md:flex-row md:items-center md:justify-end md:gap-6 p-6 md:p-0 shadow md:shadow-none rounded md:rounded-none transition-transform duration-300 ease-in-out z-20 ${
@@ -89,13 +95,13 @@ const Header = () => {
             </Link>
           ))}
 
-          <Link
-            to="/contact"
-            onClick={handleLinkClick}
-            className="block w-full md:w-auto bg-gradient-to-r from-red-600 to-blue-800 text-white px-6 py-2 rounded-full shadow-md hover:scale-105 hover:shadow-lg transition duration-300 ease-in-out text-center mt-4 md:mt-0 animate-pulse"
+          <button
+            type="button"
+            onClick={openContactModal}
+            className="block w-full md:w-auto bg-gradient-to-r from-red-600 to-blue-800 text-white px-6 py-2 rounded-full shadow-md hover:scale-105 hover:shadow-lg transition duration-300 ease-in-out text-center mt-4 md:mt-0"
           >
             Contact
-          </Link>
+          </button>
         </nav>
       </div>
     </header>
