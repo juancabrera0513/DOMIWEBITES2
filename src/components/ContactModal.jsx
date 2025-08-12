@@ -12,7 +12,7 @@ const ContactModal = ({ open, onClose }) => {
   const emailRef = useRef(null);
   const msgRef = useRef(null);
 
-  const PUBLIC_KEY  = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || `QomFGcKltdQDXhSSp`;
+  const PUBLIC_KEY  = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'QomFGcKltdQDXhSSp';
   const SERVICE_ID  = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_ywkf6l7';
   const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_okjps2i';
 
