@@ -6,52 +6,6 @@ import { blogPosts } from "../data/blogPosts";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-// Review Snippet Schema.org for SEO
-const reviews = [
-  {
-    name: "Melii Soler",
-    rating: 5,
-    text:
-      "I got the best service on the world. I got all what I expect, now my business has an online presence and my customers are satisfied and happy. Thanks so much!",
-    date: "2025-08-01",
-  },
-  {
-    name: "Katherine Areche",
-    rating: 5,
-    text:
-      "I am delighted with your services. I have already completed three procedures with you and I highly recommend you.",
-    date: "2025-08-01",
-  },
-  {
-    name: "Ana Silvia Amador Aquino",
-    rating: 5,
-    text: "The best service in the world ❤️",
-    date: "2025-08-01",
-  },
-  {
-    name: "Darkis De Leon Soler",
-    rating: 5,
-    text:
-      "Excellent service. Very customizable and patient with feedback. I’m very happy with the results!!!!",
-    date: "2025-07-30",
-  },
-  {
-    name: "Maria Cabrera",
-    rating: 5,
-    text: "Excellent service, thank you",
-    date: "2025-07-28",
-  },
-];
-
-const reviewsWithText = reviews.filter((r) => r.text && r.text.length > 0);
-const avgRating =
-  reviewsWithText.length > 0
-    ? (
-        reviewsWithText.reduce((acc, r) => acc + r.rating, 0) /
-        reviewsWithText.length
-      ).toFixed(1)
-    : "5.0";
-
 const Blog = () => (
   <>
     <Helmet>
@@ -64,32 +18,23 @@ const Blog = () => (
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Blog",
-          name: "Domi Websites Blog",
-          url: "https://domiwebsites.com/blog",
-          image: "https://domiwebsites.com/DomiLogo.webp",
-          description:
+          "@type": "CollectionPage", // también puedes usar "Blog"
+          "name": "Domi Websites Blog",
+          "url": "https://domiwebsites.com/blog",
+          "image": "https://domiwebsites.com/DomiLogo.webp",
+          "description":
             "Custom websites for small businesses in St. Louis and the U.S. Mobile-optimized, SEO-ready, and professionally designed to help you grow online.",
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: avgRating,
-            bestRating: "5",
-            reviewCount: reviewsWithText.length,
-          },
-          review: reviewsWithText.map((r) => ({
-            "@type": "Review",
-            reviewRating: {
-              "@type": "Rating",
-              ratingValue: r.rating,
-              bestRating: "5",
-            },
-            author: {
-              "@type": "Person",
-              name: r.name,
-            },
-            reviewBody: r.text,
-            datePublished: r.date,
-          })),
+          "mainEntity": blogPosts.map((p) => ({
+            "@type": "BlogPosting",
+            "headline": p.title,
+            "datePublished": p.date,
+            "dateModified": p.date,
+            "image": `https://domiwebsites.com${p.image}`,
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `https://domiwebsites.com/blog/${p.slug}`
+            }
+          }))
         })}
       </script>
     </Helmet>

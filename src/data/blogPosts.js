@@ -253,7 +253,7 @@ export const blogPosts = [
     {
       slug: "how-to-get-more-reviews-google",
       title: "How to Get More Google Reviews for Your Small Business",
-      date: "2025-08-20",
+      date: "2025-08-18",
       summary: "Five simple ways to collect more 5-star reviews and boost your local credibility in St. Louis (and everywhere else!).",
       image: "/blog-images/google-reviews.webp",
       content: `

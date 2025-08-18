@@ -38,13 +38,14 @@ const BlogPost = () => {
   const blogUrl = `https://domiwebsites.com/blog/${post.slug}`;
   const imageUrl = post.image
     ? `https://domiwebsites.com${post.image}`
-    : "/DomiLogo.webp";
+    : "https://domiwebsites.com/DomiLogo.webp";
 
+  // JSON-LD schema for a single blog post
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
-    image: imageUrl,
+    image: imageUrl, // absolute url
     author: {
       "@type": "Person",
       name: "Juan Cabrera",
@@ -58,7 +59,7 @@ const BlogPost = () => {
       },
     },
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.date, // update this if you edit the post later
     description: post.summary,
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -72,11 +73,18 @@ const BlogPost = () => {
         <title>{`${post.title} | Domi Websites Blog`}</title>
         <meta name="description" content={post.summary} />
         <link rel="canonical" href={blogUrl} />
+        {/* Open Graph */}
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.summary} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:url" content={blogUrl} />
         <meta property="og:type" content="article" />
+        {/* Twitter Cards (optional but helpful) */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.summary} />
+        <meta name="twitter:image" content={imageUrl} />
+        {/* Structured data */}
         <script type="application/ld+json">{JSON.stringify(blogSchema)}</script>
       </Helmet>
 
@@ -105,7 +113,7 @@ const BlogPost = () => {
 
           {post.image && (
             <img
-              src={post.image}
+              src={imageUrl} // use absolute for consistency
               alt={post.title}
               className="mb-6 w-full h-56 object-cover rounded"
               loading="lazy"

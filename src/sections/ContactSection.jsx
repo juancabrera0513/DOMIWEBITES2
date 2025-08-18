@@ -42,6 +42,14 @@ const ContactSection = () => {
     }
   }, []);
 
+  // Accessibility: focus title on mount to reduce scroll “saltos”
+  useEffect(() => {
+    const h = document.getElementById("contact-heading");
+    if (h) h.focus();
+    // Optional: fuerza al tope si vienes de otra ruta
+    window.scrollTo(0, 0);
+  }, []);
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
@@ -61,7 +69,7 @@ const ContactSection = () => {
     if (trimmed.fullName.length < MIN_NAME) next.fullName = `Please enter at least ${MIN_NAME} characters.`;
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(trimmed.email);
     if (!emailOk) next.email = "Please enter a valid email.";
-    // Phone is optional, but if present, must be plausible (7+ chars of digits/space/+()-)
+    // Phone optional; if present, must be plausible
     if (trimmed.phone && !/^[\d\s()+-]{7,}$/.test(trimmed.phone)) {
       next.phone = "Please enter a valid phone (digits, spaces, +, (), -).";
     }
@@ -131,14 +139,15 @@ const ContactSection = () => {
 
   return (
     <section
-    id="contact"
-    className="pt-28 pb-16 bg-gradient-to-br from-gray-100 to-white text-gray-900 scroll-mt-24 md:scroll-mt-28"
-    aria-labelledby="contact-heading"
-    data-aos="fade-up"
-  >
+      id="contact"
+      className="pt-28 pb-16 bg-gradient-to-br from-gray-100 to-white text-gray-900 scroll-mt-24 md:scroll-mt-28"
+      aria-labelledby="contact-heading"
+      data-aos="fade-up"
+    >
       <div className="max-w-4xl mx-auto px-4">
         <h2
           id="contact-heading"
+          tabIndex="-1"
           className="text-4xl font-bold text-center"
           data-aos="fade-up"
           data-aos-delay="80"
@@ -291,7 +300,7 @@ const ContactSection = () => {
           </div>
         )}
 
-        {/* FAQ */}
+        {/* FAQ - 4 preguntas enfocadas a conversión */}
         <section
           aria-labelledby="faq-heading"
           className="mt-12"
@@ -305,54 +314,38 @@ const ContactSection = () => {
           <div className="bg-white rounded-xl shadow divide-y divide-gray-200">
             <details className="group p-4">
               <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                How much does a website cost and what’s included?
+                How long does it take to build a website?
                 <svg className="ml-3 h-4 w-4 text-gray-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fillRule="evenodd" d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z" clipRule="evenodd" />
                 </svg>
               </summary>
               <p className="mt-2 text-gray-700 text-sm">
-                It depends on scope (pages, features, content). Every project includes custom design,
-                mobile-first build, basic on-page SEO, performance best practices, and a lead form.
-                We’ll send a tailored quote after a short discovery call.
+                Most small business websites are ready in <span className="font-semibold">2–4 weeks</span> once we have your content.
+                We’ll confirm your exact timeline during your free quote.
               </p>
             </details>
 
             <details className="group p-4">
               <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                How long will it take?
+                Do I need to provide content and images?
                 <svg className="ml-3 h-4 w-4 text-gray-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fillRule="evenodd" d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z" clipRule="evenodd" />
                 </svg>
               </summary>
               <p className="mt-2 text-gray-700 text-sm">
-                Small marketing sites (1–5 sections) are often done in <span className="font-semibold">1–3 weeks</span>.
-                Larger sites or special features may need more time. You’ll get a clear timeline upfront.
+                We can use what you already have or help source photos and write copy that fits your brand. Tell us what you need during your consultation.
               </p>
             </details>
 
             <details className="group p-4">
               <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                Do you handle hosting and domains?
+                Will my site be easy to update later?
                 <svg className="ml-3 h-4 w-4 text-gray-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fillRule="evenodd" d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z" clipRule="evenodd" />
                 </svg>
               </summary>
               <p className="mt-2 text-gray-700 text-sm">
-                Yes. We can use your existing setup or provide managed hosting (SSL, backups, monitoring) and help with domain
-                purchase/connection. We’ll recommend the most convenient option.
-              </p>
-            </details>
-
-            <details className="group p-4">
-              <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                Is SEO or Analytics included?
-                <svg className="ml-3 h-4 w-4 text-gray-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fillRule="evenodd" d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z" clipRule="evenodd" />
-                </svg>
-              </summary>
-              <p className="mt-2 text-gray-700 text-sm">
-                We ship with basic on-page SEO, performance optimizations, and <span className="font-semibold">Google Analytics 4</span> set up.
-                Local SEO and Google Business Profile optimization are available as add-ons.
+                Yes. We use user-friendly tools so you can update text, photos, or products yourself. If you prefer, we also offer ongoing support.
               </p>
             </details>
 
@@ -364,21 +357,7 @@ const ContactSection = () => {
                 </svg>
               </summary>
               <p className="mt-2 text-gray-700 text-sm">
-                We offer maintenance plans for updates, security, backups, and small content changes. Or we can hand it off with
-                training—your call.
-              </p>
-            </details>
-
-            <details className="group p-4">
-              <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                How do you handle my data?
-                <svg className="ml-3 h-4 w-4 text-gray-500 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fillRule="evenodd" d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z" clipRule="evenodd" />
-                </svg>
-              </summary>
-              <p className="mt-2 text-gray-700 text-sm">
-                We never share or sell your information. We use it only to respond to your inquiry and deliver services. You can
-                request deletion at any time. See our <a href="/privacy" className="underline">Privacy Policy</a>.
+                We provide post-launch support to ensure everything runs smoothly, plus tips to attract more clients online. Ask about SEO & Local Marketing add-ons during your free quote.
               </p>
             </details>
           </div>

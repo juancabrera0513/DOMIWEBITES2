@@ -1,10 +1,10 @@
+// src/sections/PricingSection.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const packages = [
   {
     title: 'Starter Presence',
-    price: '$799',
     features: [
       'Single-page website',
       'Custom design and branding',
@@ -16,7 +16,6 @@ const packages = [
   },
   {
     title: 'Smart Launch',
-    price: '$1,299',
     features: [
       'Up to 3 custom pages',
       'Mobile optimized and fast-loading',
@@ -28,7 +27,6 @@ const packages = [
   },
   {
     title: 'Business Pro',
-    price: '$1,899',
     features: [
       'Up to 5 pages',
       'Blog or gallery included',
@@ -40,7 +38,6 @@ const packages = [
   },
   {
     title: 'E-Commerce Pro',
-    price: '$2,799',
     features: [
       'Online store setup (up to 20 products)',
       'Payment gateway integration',
@@ -61,19 +58,19 @@ const PricingSection = () => {
       role="region"
     >
       <div className="max-w-6xl mx-auto px-4">
-      <h2
-  id="pricing-heading"
-  className="text-4xl font-extrabold text-center mb-8"
-  data-aos="fade-up"
->
-  Website Packages for <span className="text-red-600">Your Business</span>
-</h2>
+        <h2
+          id="pricing-heading"
+          className="text-4xl font-extrabold text-center mb-8"
+          data-aos="fade-up"
+        >
+          Website Packages for <span className="text-red-600">Your Business</span>
+        </h2>
 
         <p className="text-center max-w-2xl mx-auto mb-10 text-lg">
           We build professional, fast, and SEO-ready websites to help your business attract more clients online.
           <br />
           <span className="font-semibold text-blue-700">
-            Book your free consultation to find the best fit for your goals.
+            Custom-tailored pricing based on your goals, scope, and timeline.
           </span>
         </p>
 
@@ -99,18 +96,15 @@ const PricingSection = () => {
 
               <div>
                 <h3
-                  className="text-xl font-bold mb-2 text-center text-red-600"
+                  className="text-xl font-bold mb-3 text-center text-red-600"
                   id={`pkg-title-${idx}`}
                 >
                   {pkg.title}
                 </h3>
 
-                <p className="text-center text-sm text-gray-700">Starting at</p>
-                <p
-                  className="text-center text-3xl font-bold text-blue-700 mb-4"
-                  aria-label={`Price: ${pkg.price}`}
-                >
-                  {pkg.price}
+                {/* Mensaje en lugar de precios */}
+                <p className="text-center text-base font-semibold text-blue-700 mb-3">
+                  Get a custom quote — no obligation
                 </p>
 
                 <ul
@@ -129,20 +123,24 @@ const PricingSection = () => {
 
               <Link
                 to="/contact"
-                className={`mt-2 px-5 py-2.5 rounded-full shadow-md text-center font-semibold transition 
+                className={`px-5 py-2.5 rounded-full shadow-md text-center font-semibold transition 
                   ${
                     pkg.highlight
                       ? 'bg-gradient-to-r from-blue-700 to-red-600 text-white hover:from-blue-800 hover:to-red-700 scale-105'
                       : 'bg-gradient-to-r from-red-600 to-blue-700 text-white hover:from-red-700 hover:to-blue-800'
                   }
                 `}
-                aria-label={`Book consultation for ${pkg.title} package`}
+                aria-label={`Get custom quote for ${pkg.title}`}
               >
-                Book Consultation
+                Get My Free Quote
               </Link>
             </article>
           ))}
         </div>
+
+        <p className="text-center text-sm text-gray-600 mt-6">
+          Tell us your goals and an estimated timeline to receive the fastest, most accurate quote.
+        </p>
       </div>
     </section>
   );
