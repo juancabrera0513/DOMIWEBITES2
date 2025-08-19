@@ -1,130 +1,119 @@
-// src/pages/Blog.jsx
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+// src/pages/BlogPost.jsx
+import React from "react";
+import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { blogPosts } from "../data/blogPosts";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-// --- Elimina JSON-LD de reseñas SOLO en /blog ---
-function stripReviewSchemas() {
-  try {
-    var nodes = document.querySelectorAll('script[type="application/ld+json"]');
-    var badTypes = { Review: true, AggregateRating: true };
+const BlogPost = () => {
+  const { slug } = useParams();
+  const post = blogPosts.find((p) => p.slug === slug);
 
-    nodes.forEach(function (s) {
-      // No tocar nuestro script del listado del blog
-      if (s.id === "blog-listing-ld") return;
-
-      var txt = s.textContent || "";
-      // Rápido: evita parsear si no aparecen palabras clave
-      if (!/\"@type\"\s*:/.test(txt)) return;
-
-      try {
-        var json = JSON.parse(txt);
-        var typesRaw = json && json["@type"];
-        var types = Array.isArray(typesRaw) ? typesRaw : (typesRaw ? [typesRaw] : []);
-
-        var hasBadType =
-          types.some(function (t) { return !!badTypes[t]; }) ||
-          (json && json.itemReviewed && badTypes[json.itemReviewed["@type"]]);
-
-        if (hasBadType) {
-          s.parentElement && s.parentElement.removeChild(s);
-        }
-      } catch (e) {
-        // Si falla el parseo, lo ignoramos
-      }
-    });
-  } catch (e) {
-    // Silencioso
+  if (!post) {
+    return (
+      <>
+        <Helmet>
+          <title>Post Not Found | Domi Websites Blog</title>
+          <meta
+            name="description"
+            content="The requested blog post could not be found on Domi Websites."
+          />
+          <link rel="canonical" href="https://domiwebsites.com/blog" />
+        </Helmet>
+        <Header />
+        <section className="min-h-screen flex items-center justify-center bg-white">
+          <div className="text-center p-6">
+            <h1 className="text-3xl font-bold text-red-600 mb-4">Post not found</h1>
+            <Link to="/blog" className="text-blue-700 underline">
+              ← Back to Blog
+            </Link>
+          </div>
+        </section>
+        <Footer />
+      </>
+    );
   }
-}
 
-const Blog = () => {
-  useEffect(() => {
-    // Solo en /blog (esta página)
-    stripReviewSchemas();
-  }, []);
+  const blogUrl = `https://domiwebsites.com/blog/${post.slug}`;
+  const imageUrl = post.image
+    ? `https://domiwebsites.com${post.image}`
+    : "https://domiwebsites.com/DomiLogo.webp";
+
+  // JSON-LD para un post individual (sin reseñas)
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    image: imageUrl,
+    author: { "@type": "Person", name: "Juan Cabrera" },
+    publisher: {
+      "@type": "Organization",
+      name: "Domi Websites",
+      logo: { "@type": "ImageObject", url: "https://domiwebsites.com/DomiLogo.webp" },
+    },
+    datePublished: post.date,
+    dateModified: post.date,
+    description: post.summary,
+    mainEntityOfPage: { "@type": "WebPage", "@id": blogUrl },
+  };
 
   return (
     <>
       <Helmet>
-        <title>Domi Websites Blog | Insights & Web Design Tips</title>
-        <meta
-          name="description"
-          content="Read the Domi Websites blog for tips on web design, SEO, and digital strategy tailored for small businesses in St. Louis and across the U.S."
-        />
-        <link rel="canonical" href="https://domiwebsites.com/blog" />
-
-        {/* JSON-LD correcto del listado (sin reseñas). 
-            Le ponemos id para NO borrarlo en stripReviewSchemas(). */}
-        <script id="blog-listing-ld" type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Blog",
-            "name": "Domi Websites Blog",
-            "url": "https://domiwebsites.com/blog",
-            "image": "https://domiwebsites.com/DomiLogo.webp",
-            "description":
-              "Custom websites for small businesses in St. Louis and the U.S. Mobile-optimized, SEO-ready, and professionally designed to help you grow online.",
-            "publisher": {
-              "@type": "Organization",
-              "name": "Domi Websites",
-              "logo": { "@type": "ImageObject", "url": "https://domiwebsites.com/DomiLogo.webp" }
-            },
-            "hasPart": blogPosts.map(function (p) {
-              return {
-                "@type": "BlogPosting",
-                "headline": p.title,
-                "url": "https://domiwebsites.com/blog/" + p.slug,
-                "mainEntityOfPage": { "@type": "WebPage", "@id": "https://domiwebsites.com/blog/" + p.slug },
-                "image": "https://domiwebsites.com" + p.image,
-                "datePublished": p.date,
-                "dateModified": p.date,
-                "author": { "@type": "Person", "name": "Juan Cabrera" }
-              };
-            })
-          })}
-        </script>
+        <title>{`${post.title} | Domi Websites Blog`}</title>
+        <meta name="description" content={post.summary} />
+        <link rel="canonical" href={blogUrl} />
+        {/* Open Graph */}
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.summary} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:url" content={blogUrl} />
+        <meta property="og:type" content="article" />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.summary} />
+        <meta name="twitter:image" content={imageUrl} />
+        {/* Structured data */}
+        <script type="application/ld+json">{JSON.stringify(blogSchema)}</script>
       </Helmet>
 
       <Header />
-      <section className="py-24 bg-white min-h-screen" aria-labelledby="blog-heading">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 id="blog-heading" className="text-4xl font-bold mb-8 text-center pt-10">
-            <span className="text-red-600">Domi Websites</span> Blog
-          </h1>
-          <div className="space-y-10">
-            {blogPosts.map((post) => (
-              <article
-                key={post.slug}
-                className="bg-gray-50 p-6 rounded-lg shadow hover:shadow-lg transition"
-              >
-                {post.image && (
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="mb-4 w-full h-48 object-cover rounded"
-                    loading="lazy"
-                  />
-                )}
-                <h2 className="text-2xl font-bold mb-2 text-blue-800">
-                  <Link to={`/blog/${post.slug}`}>{post.title}</Link>
-                </h2>
-                <p className="text-gray-600 text-sm mb-3">
-                  {new Date(post.date).toLocaleDateString()}
-                </p>
-                <p className="text-gray-700 mb-4">{post.summary}</p>
-                <Link
-                  to={`/blog/${post.slug}`}
-                  className="text-blue-600 font-semibold hover:underline"
-                  aria-label={`Read more about ${post.title}`}
-                >
-                  Read More →
-                </Link>
-              </article>
-            ))}
+      <section className="py-24 bg-white min-h-screen">
+        <div className="max-w-3xl mx-auto px-4">
+          {/* Breadcrumbs */}
+          <nav className="mb-4 text-sm text-gray-600">
+            <Link to="/" className="hover:underline text-blue-600">Home</Link>
+            <span className="mx-2">/</span>
+            <Link to="/blog" className="hover:underline text-blue-600">Blog</Link>
+            <span className="mx-2">/</span>
+            <span className="text-gray-700">{post.title}</span>
+          </nav>
+
+          <h1 className="text-3xl font-extrabold mb-2 text-blue-900">{post.title}</h1>
+          <p className="text-gray-600 mb-6">
+            {new Date(post.date).toLocaleDateString()}
+          </p>
+
+          {post.image && (
+            <img
+              src={imageUrl}
+              alt={post.title}
+              className="mb-6 w-full h-56 object-cover rounded"
+              loading="lazy"
+            />
+          )}
+
+          <div
+            className="prose prose-blue max-w-none text-justify"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+
+          <div className="mt-10">
+            <Link to="/blog" className="text-blue-700 underline">
+              ← Back to Blog
+            </Link>
           </div>
         </div>
       </section>
@@ -133,4 +122,4 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default BlogPost;
