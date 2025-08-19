@@ -15,43 +15,84 @@ const Blog = () => (
         content="Read the Domi Websites blog for tips on web design, SEO, and digital strategy tailored for small businesses in St. Louis and across the U.S."
       />
       <link rel="canonical" href="https://domiwebsites.com/blog" />
-      <script type="application/ld+json">
-  {JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "Domi Websites Blog",
-    "url": "https://domiwebsites.com/blog",
-    "image": "https://domiwebsites.com/DomiLogo.webp",
-    "description":
-      "Custom websites for small businesses in St. Louis and the U.S. Mobile-optimized, SEO-ready, and professionally designed to help you grow online.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Domi Websites",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://domiwebsites.com/DomiLogo.webp"
-      }
-    },
-    "hasPart": blogPosts.map((p, idx) => ({
-      "@type": "BlogPosting",
-      "headline": p.title,
-      "url": `https://domiwebsites.com/blog/${p.slug}`,
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `https://domiwebsites.com/blog/${p.slug}`
-      },
-      "image": `https://domiwebsites.com${p.image}`,
-      "datePublished": p.date,
-      "dateModified": p.date,
-      "author": {
-        "@type": "Person",
-        "name": "Juan Cabrera"
-      }
-    }))
-  })}
-</script>
 
+      {/* Guard para eliminar reviews en JSON-LD */}
+      <script>
+        {`
+          (function(){
+            try {
+              var allowedRoot = { Blog:1, BlogPosting:1, Article:1, CollectionPage:1 };
+
+              function clean(obj){
+                if(!obj || typeof obj!=='object') return obj;
+                if(Array.isArray(obj)) return obj.map(clean);
+
+                var t = obj['@type'];
+                // Solo si es Blog/BlogPosting/Article/CollectionPage -> eliminar ratings/reviews
+                if(
+                  t && (
+                    allowedRoot[t] ||
+                    (Array.isArray(t) && t.some(function(x){ return allowedRoot[x]; }))
+                  )
+                ){
+                  if('aggregateRating' in obj) delete obj.aggregateRating;
+                  if('review' in obj) delete obj.review;
+                }
+                for(var k in obj){ obj[k] = clean(obj[k]); }
+                return obj;
+              }
+
+              document.querySelectorAll('script[type="application/ld+json"]').forEach(function(s){
+                if(s.id==="blog-listing-ld") return; // deja intacto nuestro script
+                try{
+                  var data = JSON.parse(s.textContent);
+                  var cleaned = clean(data);
+                  s.textContent = JSON.stringify(cleaned);
+                }catch(e){}
+              });
+            } catch(e){}
+          })();
+        `}
+      </script>
+
+      {/* Nuestro JSON-LD del Blog */}
+      <script id="blog-listing-ld" type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          "name": "Domi Websites Blog",
+          "url": "https://domiwebsites.com/blog",
+          "image": "https://domiwebsites.com/DomiLogo.webp",
+          "description":
+            "Custom websites for small businesses in St. Louis and the U.S. Mobile-optimized, SEO-ready, and professionally designed to help you grow online.",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Domi Websites",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://domiwebsites.com/DomiLogo.webp"
+            }
+          },
+          "hasPart": blogPosts.map((p) => ({
+            "@type": "BlogPosting",
+            "headline": p.title,
+            "url": `https://domiwebsites.com/blog/${p.slug}`,
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `https://domiwebsites.com/blog/${p.slug}`
+            },
+            "image": `https://domiwebsites.com${p.image}`,
+            "datePublished": p.date,
+            "dateModified": p.date,
+            "author": {
+              "@type": "Person",
+              "name": "Juan Cabrera"
+            }
+          }))
+        })}
+      </script>
     </Helmet>
+
     <Header />
     <section
       className="py-24 bg-white min-h-screen"

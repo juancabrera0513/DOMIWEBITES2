@@ -40,7 +40,7 @@ const BlogPost = () => {
     ? `https://domiwebsites.com${post.image}`
     : "https://domiwebsites.com/DomiLogo.webp";
 
-  // JSON-LD para un post individual (sin reseñas)
+  // JSON-LD para un post individual
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -64,19 +64,60 @@ const BlogPost = () => {
         <title>{`${post.title} | Domi Websites Blog`}</title>
         <meta name="description" content={post.summary} />
         <link rel="canonical" href={blogUrl} />
+
         {/* Open Graph */}
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.summary} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:url" content={blogUrl} />
         <meta property="og:type" content="article" />
+
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.summary} />
         <meta name="twitter:image" content={imageUrl} />
-        {/* Structured data */}
-        <script type="application/ld+json">{JSON.stringify(blogSchema)}</script>
+
+        {/* Guard para limpiar reseñas inyectadas */}
+        <script>
+          {`
+          (function(){
+            try {
+              var allowedRoot = { Blog:1, BlogPosting:1, Article:1, CollectionPage:1 };
+              function clean(obj){
+                if(!obj || typeof obj!=='object') return obj;
+                if(Array.isArray(obj)) return obj.map(clean);
+                var t = obj['@type'];
+                if(
+                  t && (
+                    allowedRoot[t] ||
+                    (Array.isArray(t) && t.some(function(x){ return allowedRoot[x]; }))
+                  )
+                ){
+                  if('aggregateRating' in obj) delete obj.aggregateRating;
+                  if('review' in obj) delete obj.review;
+                }
+                for(var k in obj) obj[k] = clean(obj[k]);
+                return obj;
+              }
+              document.querySelectorAll('script[type="application/ld+json"]').forEach(function(s){
+                if(s.id !== 'blog-post-ld'){
+                  try {
+                    var data = JSON.parse(s.innerText);
+                    var cleaned = clean(data);
+                    s.innerText = JSON.stringify(cleaned);
+                  } catch(e){}
+                }
+              });
+            } catch(e){}
+          })();
+          `}
+        </script>
+
+        {/* Structured data limpio */}
+        <script type="application/ld+json" id="blog-post-ld">
+          {JSON.stringify(blogSchema)}
+        </script>
       </Helmet>
 
       <Header />
