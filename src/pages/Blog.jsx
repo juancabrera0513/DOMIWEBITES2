@@ -16,27 +16,41 @@ const Blog = () => (
       />
       <link rel="canonical" href="https://domiwebsites.com/blog" />
       <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "CollectionPage", // también puedes usar "Blog"
-          "name": "Domi Websites Blog",
-          "url": "https://domiwebsites.com/blog",
-          "image": "https://domiwebsites.com/DomiLogo.webp",
-          "description":
-            "Custom websites for small businesses in St. Louis and the U.S. Mobile-optimized, SEO-ready, and professionally designed to help you grow online.",
-          "mainEntity": blogPosts.map((p) => ({
-            "@type": "BlogPosting",
-            "headline": p.title,
-            "datePublished": p.date,
-            "dateModified": p.date,
-            "image": `https://domiwebsites.com${p.image}`,
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": `https://domiwebsites.com/blog/${p.slug}`
-            }
-          }))
-        })}
-      </script>
+  {JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Domi Websites Blog",
+    "url": "https://domiwebsites.com/blog",
+    "image": "https://domiwebsites.com/DomiLogo.webp",
+    "description":
+      "Custom websites for small businesses in St. Louis and the U.S. Mobile-optimized, SEO-ready, and professionally designed to help you grow online.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Domi Websites",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://domiwebsites.com/DomiLogo.webp"
+      }
+    },
+    "hasPart": blogPosts.map((p, idx) => ({
+      "@type": "BlogPosting",
+      "headline": p.title,
+      "url": `https://domiwebsites.com/blog/${p.slug}`,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://domiwebsites.com/blog/${p.slug}`
+      },
+      "image": `https://domiwebsites.com${p.image}`,
+      "datePublished": p.date,
+      "dateModified": p.date,
+      "author": {
+        "@type": "Person",
+        "name": "Juan Cabrera"
+      }
+    }))
+  })}
+</script>
+
     </Helmet>
     <Header />
     <section
