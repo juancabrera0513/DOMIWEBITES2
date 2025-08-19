@@ -1,3 +1,4 @@
+// src/pages/HomePage.jsx
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -8,38 +9,13 @@ import PricingSection from "../sections/PricingSection";
 import ContactSection from "../sections/ContactSection";
 import TestimonialsSection from "../sections/TestimonialsSection";
 
-// --- Google Reviews (no vacíos) ---
+// --- Dejamos los reviews solo para UI; NO los pondremos en JSON-LD ---
 const reviews = [
-  {
-    name: "Melii Soler",
-    rating: 5,
-    text: "I got the best service on the world. I got all what I expect, now my business has an online presence and my customers are satisfied and happy. Thanks so much!",
-    date: "2025-08-01",
-  },
-  {
-    name: "Katherine Areche",
-    rating: 5,
-    text: "I am delighted with your services. I have already completed three procedures with you and I highly recommend you.",
-    date: "2025-08-01",
-  },
-  {
-    name: "Ana Silvia Amador Aquino",
-    rating: 5,
-    text: "The best service in the world ❤️",
-    date: "2025-08-01",
-  },
-  {
-    name: "Darkis De Leon Soler",
-    rating: 5,
-    text: "Excellent service. Very customizable and patient with feedback. I’m very happy with the results!!!!",
-    date: "2025-07-30",
-  },
-  {
-    name: "Maria Cabrera",
-    rating: 5,
-    text: "Excellent service, thank you",
-    date: "2025-07-28",
-  }
+  { name: "Melii Soler", rating: 5, text: "I got the best service on the world. I got all what I expect, now my business has an online presence and my customers are satisfied and happy. Thanks so much!", date: "2025-08-01" },
+  { name: "Katherine Areche", rating: 5, text: "I am delighted with your services. I have already completed three procedures with you and I highly recommend you.", date: "2025-08-01" },
+  { name: "Ana Silvia Amador Aquino", rating: 5, text: "The best service in the world ❤️", date: "2025-08-01" },
+  { name: "Darkis De Leon Soler", rating: 5, text: "Excellent service. Very customizable and patient with feedback. I’m very happy with the results!!!!", date: "2025-07-30" },
+  { name: "Maria Cabrera", rating: 5, text: "Excellent service, thank you", date: "2025-07-28" }
 ];
 
 const reviewsWithText = reviews.filter((r) => r.text && r.text.length > 0);
@@ -60,10 +36,7 @@ const HomePage = () => (
       {/* TITLE */}
       <title>Web Design St. Louis | Small Business Websites | Domi Websites</title>
       {/* META DESCRIPTION */}
-      <meta
-        name="description"
-        content={description}
-      />
+      <meta name="description" content={description} />
       {/* KEYWORDS */}
       <meta
         name="keywords"
@@ -76,7 +49,8 @@ const HomePage = () => (
       <meta property="og:image" content="https://domiwebsites.com/DomiLogo.webp" />
       <meta property="og:url" content="https://domiwebsites.com/" />
       <meta property="og:site_name" content="Domi Websites" />
-      {/* SCHEMA LOCALBUSINESS + REVIEWS */}
+
+      {/* SCHEMA LocalBusiness — SIN aggregateRating NI review */}
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
@@ -94,37 +68,23 @@ const HomePage = () => (
             postalCode: "63101",
             addressCountry: "US",
           },
-          priceRange: "$$",
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: avgRating,
-            bestRating: "5",
-            reviewCount: reviewsWithText.length,
-          },
-          review: reviewsWithText.map((r) => ({
-            "@type": "Review",
-            reviewRating: {
-              "@type": "Rating",
-              ratingValue: r.rating,
-              bestRating: "5",
-            },
-            author: {
-              "@type": "Person",
-              name: r.name,
-            },
-            reviewBody: r.text,
-            datePublished: r.date,
-          })),
+          priceRange: "$$"
+          // 👆 Nada de aggregateRating ni review aquí
         })}
       </script>
+
       <link rel="canonical" href="https://domiwebsites.com/" />
     </Helmet>
+
     <Header />
     <HomeSection />
     <AboutSection />
     <ServicesSection />
     <PricingSection />
-    <TestimonialsSection />
+
+    {/* UI de testimonios sigue igual (solo presentación, sin JSON-LD de reviews) */}
+    <TestimonialsSection avgRating={avgRating} reviews={reviewsWithText} />
+
     <ContactSection />
     <Footer />
   </>
