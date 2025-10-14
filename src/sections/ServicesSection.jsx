@@ -1,107 +1,109 @@
 // src/sections/ServicesSection.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Globe,
-  Wrench,
-  Server,
-  CheckCircle,
-  MapPin,
-  BarChart2,
-  Briefcase,
-} from 'lucide-react';
+import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
-const FeatureList = ({ items, cardId }) => (
-  <ul className="space-y-2 mt-4" role="list" aria-describedby={cardId}>
-    {items.map((item, i) => (
-      <li key={i} className="flex items-start text-sm text-gray-700">
-        <CheckCircle
-          className="w-4 h-4 text-blue-700 mt-1 mr-2 flex-shrink-0"
-          aria-hidden="true"
-          focusable="false"
-        />
-        <span className="leading-relaxed">{item}</span>
-      </li>
-    ))}
-  </ul>
-);
+const CALENDLY = "https://calendly.com/domiwebsites/30min";
 
-const services = [
-  { icon: Globe, title: 'Website Design', description: 'Custom websites that look great and perform even better. Fast loading, mobile-ready, and built to impress.', features: ['Fully custom layout', 'SEO-ready structure', 'Mobile & tablet optimization'], cta: 'See Packages', link: '/pricing' },
-  { icon: MapPin, title: 'Local SEO Optimization', description: 'Improve your visibility in local search results and get found by nearby customers actively searching for your services.', features: ['Google Maps & Business listings', 'Localized keyword targeting', 'On-page SEO for service areas'], cta: 'Boost My Local SEO', link: '/contact' },
-  { icon: Wrench, title: 'Maintenance', description: 'We take care of security, updates, backups and ongoing changes so your site always runs smoothly.', features: ['Security & uptime monitoring', 'Monthly content updates', 'Hands-off support'], cta: 'Request a Plan', link: '/contact' },
-  { icon: Server, title: 'Hosting & Speed', description: 'High-performance hosting with 99.9% uptime, fast load speeds and daily backups for peace of mind.', features: ['Blazing fast performance', 'SSL & daily backups', '99.9% uptime guaranteed'], cta: 'Explore Hosting Plans', link: '/pricing' },
-  { icon: BarChart2, title: 'Google Analytics Setup', description: 'Track visitors, pageviews and conversions with a complete Google Analytics + Tag Manager configuration.', features: ['Google Analytics 4 (GA4)', 'Event tracking setup', 'Conversion optimization insights'], cta: 'Get Tracking Setup', link: '/contact' },
-  { icon: Briefcase, title: 'Google Business Profile', description: 'We optimize your Google Business Profile to improve credibility and increase calls and visits from local customers.', features: ['Profile creation & verification', 'Review strategy & response guide', 'Photo, hours & service optimization'], cta: 'Optimize My Profile', link: '/contact' },
-];
+export default function ServicesSection() {
+  const { t } = useTranslation(["services", "common"]);
+  const wrapRef = useRef(null);
 
-const ServicesSection = () => (
-  <section id="services" className="py-20 bg-white" aria-labelledby="services-heading">
-    <h2
-      id="services-heading"
-      className="text-4xl font-bold text-center mb-12"
-      data-aos="fade-up"
-      data-aos-duration="600"
-    >
-      What We <span className="text-red-700">Offer</span>
-    </h2>
+  // pequeña animación on-scroll
+  useEffect(() => {
+    const els = wrapRef.current?.querySelectorAll(".reveal");
+    if (!els?.length) return;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("in")),
+      { threshold: 0.15 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
-    {/* 👇 Efecto grupal: solo animamos la grilla una vez */}
-    <div
-      className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4"
-      data-aos="fade-up"
-      data-aos-delay="80"
-      data-aos-duration="600"
-    >
-      {services.map((svc, i) => {
-        const Icon = svc.icon;
-        const cardId = `svc-${i}`;
-        return (
-          <article
-            key={svc.title}
-            aria-labelledby={`${cardId}-title`}
-            aria-describedby={`${cardId}-desc`}
-            className="
-              bg-gray-50 p-6 sm:p-8 rounded-xl shadow
-              hover:shadow-md transition-[box-shadow] duration-200 ease-out
-              focus-within:ring-2 focus-within:ring-blue-700
-            "
-          >
-            <Icon
-              className="w-10 h-10 text-red-600 mb-4 mx-auto"
-              aria-hidden="true"
-              focusable="false"
-            />
-            <h3
-              id={`${cardId}-title`}
-              className="text-xl font-extrabold text-blue-900 mb-2 text-center"
-            >
-              {svc.title}
-            </h3>
-            <p id={`${cardId}-desc`} className="text-gray-800 text-sm leading-relaxed text-justify">
-              {svc.description}
+  // Tarjetas (10) usando i18n
+  const cards = [
+    { k: "s1",  icon: "🎨", title: t("s1t","Web Design"),               desc: t("s1d","Modern, mobile-first layouts tailored to your brand and goals.") },
+    { k: "s2",  icon: "📍", title: t("s2t","Local SEO"),                desc: t("s2d","On-page SEO and content structure to win in your service areas.") },
+    { k: "s3",  icon: "🛒", title: t("s3t","E-commerce"),               desc: t("s3d","Lightweight stores with clean UX and easy checkout.") },
+    { k: "s4",  icon: "🛡️", title: t("s4t","Care Plans"),              desc: t("s4d","We keep your site fast, secure, and updated month after month.") },
+    { k: "s5",  icon: "🚀", title: t("s5t","Landing Pages (Ads)"),      desc: t("s5d","Ultra-fast pages for Google/Meta campaigns.") },
+    { k: "s6",  icon: "⚡", title: t("s6t","Speed Optimization"),       desc: t("s6d","Core Web Vitals & instant load.") },
+    { k: "s7",  icon: "📊", title: t("s7t","Analytics & Tracking"),     desc: t("s7d","GA4, GTM, events & funnels.") },
+    { k: "s8",  icon: "✍️", title: t("s8t","Brand & Copy"),            desc: t("s8d","Clear messaging and tone of voice.") },
+    { k: "s9",  icon: "🔗", title: t("s9t","Integrations & Automations"),desc: t("s9d","Zapier/Make, CRM, forms & webhooks.") },
+    { k: "s10", icon: "🌐", title: t("s10t","Hosting Setup"),           desc: t("s10d","CDN, domains, SSL & deployment flow.") },
+  ];
+
+  const bulletA = t("bullets.rui", "Responsive UI");
+  const bulletB = t("bullets.analytics", "Analytics ready");
+
+  return (
+    <section id="services" className="section">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Header */}
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-extrabold">
+              {t("title", "Services")}
+            </h2>
+            <p className="text-slate-700 mt-2">
+              {t("sub", "Fast results, modern design and real performance.")}
             </p>
+          </div>
+          <a href={CALENDLY} className="btn btn-primary btn-sm btn-shine">
+            {t("common:cta.book")}
+          </a>
+        </div>
 
-            <FeatureList items={svc.features} cardId={cardId} />
-
-            <Link
-              to={svc.link}
-              aria-label={`Learn more about ${svc.title}`}
-              className="
-                block mx-auto mt-6 text-sm text-center
-                bg-gradient-to-r from-blue-700 to-red-600 text-white
-                px-5 py-2 rounded-full font-semibold
-                hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-700 transition-[box-shadow] duration-200
-              "
-              onClick={() => window.gtag && window.gtag('event', 'click_cta_service', { title: svc.title })}
+        {/* Grid de servicios */}
+        <div ref={wrapRef} className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {cards.map((c, i) => (
+            <article
+              key={c.k}
+              className="card p-5 reveal transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              style={{ animationDelay: `${i * 40}ms` }}
             >
-              {svc.cta}
-            </Link>
-          </article>
-        );
-      })}
-    </div>
-  </section>
-);
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{c.icon}</span>
+                  <h3 className="text-lg font-bold">{c.title}</h3>
+                </div>
+                {/* badge que aparece al hover */}
+                <span className="chip chip-amber opacity-0 group-hover:opacity-100 transition">
+                  +
+                </span>
+              </div>
 
-export default ServicesSection;
+              <p className="text-slate-700 mt-2">{c.desc}</p>
+
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                <span className="inline-flex items-center gap-2">
+                  <span className="dot" /> {bulletA}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="dot dot-amber" /> {bulletB}
+                </span>
+              </div>
+
+              <div className="mt-5 flex gap-2">
+                <a href={CALENDLY} className="btn btn-primary btn-sm btn-shine">
+                  {t("cta_primary", "Get started")}
+                </a>
+                <a href={CALENDLY} className="btn btn-ghost btn-sm">
+                  {t("cta_secondary", "Details")}
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Mini CTA de cierre */}
+        <div className="mt-10 flex flex-wrap items-center gap-3">
+          <span className="chip"><span className="dot" /> {t("bullets.kw", "Keyword mapping")}</span>
+          <span className="chip chip-amber"><span className="dot dot-amber" /> {t("bullets.schema", "Schema JSON-LD")}</span>
+          <span className="chip"><span className="dot" /> {t("bullets.reports", "Monthly reports")}</span>
+        </div>
+      </div>
+    </section>
+  );
+}

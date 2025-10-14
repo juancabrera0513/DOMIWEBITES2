@@ -1,117 +1,126 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageToggle from "./LanguageToggle";
+import ContactModal from "./ContactModal";
 
-const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
+const CALENDLY = "https://calendly.com/domiwebsites/30min";
+const WHATS = "https://wa.me/13143769667";
 
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [menuOpen]);
+export default function Header() {
+  const { t } = useTranslation(["common"]);
+  const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Services', path: '/services' },
-    { name: 'Pricing', path: '/pricing' },
-    { name: 'Blog', path: '/blog' },
-  ];
-
-  const closeMenu = () => setMenuOpen(false);
-
-  const scrollOrNavigateHome = (e) => {
-    if (location.pathname === '/') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      closeMenu();
+  const isActive = (to) => {
+    if (to.startsWith("/#")) {
+      // anchors cuentan como activos solo en la home
+      return pathname === "/" && typeof window !== "undefined" && window.location.hash === to.slice(1);
     }
+    return pathname === to;
+  };
+
+  const navBase =
+    "group relative px-2 py-1 text-[15px] font-medium text-slate-600 hover:text-slate-900 transition-colors";
+  const navUnderline =
+    "after:pointer-events-none after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-0.5 after:bg-slate-900 after:rounded-full after:transition-all";
+  const navHoverLine = "after:w-0 group-hover:after:w-6"; // subrayado en hover
+  const navActiveLine = "after:w-6 text-slate-900"; // subrayado si está activo
+
+  const NavItem = ({ to, label }) => {
+    const active = isActive(to);
+    return (
+      <NavLink
+        to={to}
+        onClick={() => setShowMenu(false)}
+        className={`${navBase} ${navUnderline} ${active ? navActiveLine : navHoverLine}`}
+      >
+        {label}
+      </NavLink>
+    );
   };
 
   return (
-    <header className="bg-white shadow fixed top-0 w-full z-50">
-      <a
-        href="#home"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:bg-white focus:text-blue-900 focus:px-3 focus:py-2 focus:rounded focus:shadow"
-      >
-        Skip to content
-      </a>
+    <>
+      <header className="sticky top-0 z-40 backdrop-blur bg-white/80 border-b border-slate-200/60">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="h-16 md:h-[72px] flex items-center justify-between gap-4">
+            {/* Logo */}
+            <Link to="/" className="flex items-center shrink-0" aria-label="Domi Websites — Home">
+              <img src="/DomiLogo.webp" alt="Domi Websites" className="h-10 md:h-12 w-auto" loading="eager" />
+            </Link>
 
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 h-20 relative">
-        <Link
-          to="/"
-          className="z-20 flex items-center"
-          onClick={scrollOrNavigateHome}
-          aria-label="Domi Websites Home"
-          rel="home"
-        >
-          <img
-            src="/DomiLogo.webp"
-            alt="Domi Websites"
-            width="747"
-            height="449"
-            decoding="async"
-            className="h-20 w-auto object-contain"
-          />
-        </Link>
+            {/* Desktop nav */}
+            <nav className="hidden md:flex items-center gap-5">
+              <NavItem to="/" label={t("nav.home", "Home")} />
+              <NavItem to="/#about" label={t("nav.about", "About")} />
+              <NavItem to="/#services" label={t("nav.services", "Services")} />
+              <NavItem to="/pricing" label={t("nav.pricing", "Pricing")} />
+              <NavItem to="/blog" label={t("nav.blog", "Blog")} />
+              <NavItem to="/contact" label={t("nav.contact", "Contact")} />
+            </nav>
 
-        <button
-          className="md:hidden text-3xl z-30"
-          onClick={() => setMenuOpen(v => !v)}
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={menuOpen}
-          aria-controls="main-navigation"
-        >
-          {menuOpen ? '×' : '☰'}
-        </button>
+            {/* Actions desktop */}
+            <div className="hidden md:flex items-center gap-2">
+              {/* Toggle de idioma con apariencia corregida */}
+              <LanguageToggle />
 
-        <nav
-          id="main-navigation"
-          className={`fixed top-16 left-0 w-full bg-white md:static md:flex md:flex-row md:items-center md:justify-end md:gap-6 p-6 md:p-0 shadow md:shadow-none rounded md:rounded-none transition-transform duration-300 ease-in-out z-20 ${
-            menuOpen
-              ? 'translate-y-0 opacity-100 pointer-events-auto'
-              : '-translate-y-full opacity-0 pointer-events-none'
-          } md:translate-y-0 md:opacity-100 md:pointer-events-auto`}
-          aria-label="Main navigation"
-        >
-          <ul className="flex flex-col md:flex-row md:items-center md:gap-6">
-            {navItems.map(({ name, path }) => {
-              const isActive = location.pathname === path;
-              return (
-                <li key={name}>
-                  <Link
-                    to={path}
-                    onClick={(e) => {
-                      if (name === 'Home') {
-                        scrollOrNavigateHome(e);
-                      } else {
-                        closeMenu();
-                      }
-                    }}
-                    aria-current={isActive ? 'page' : undefined}
-                    className={`block text-blue-900 hover:text-red-600 py-2 md:py-0 ${isActive ? 'font-semibold' : ''}`}
-                  >
-                    {name}
-                  </Link>
-                </li>
-              );
-            })}
+              <a href={WHATS} className="btn btn-wa btn-sm btn-ico btn-shine" aria-label="WhatsApp">
+                💬 {t("cta.whatsapp", "WhatsApp")}
+              </a>
+              <a href={CALENDLY} className="btn btn-primary btn-sm btn-shine">
+                {t("cta.book", "Free Consultation")}
+              </a>
+              <button type="button" onClick={() => setOpen(true)} className="btn btn-ghost btn-sm">
+                {t("cta.contactModal", "Contact form")}
+              </button>
+            </div>
 
-            {/* CTA: redirige a /contact y cierra el menú */}
-            <li className="mt-4 md:mt-0">
-              <Link
-                to="/contact"
-                onClick={closeMenu}
-                className="block w-full md:w-auto bg-gradient-to-r from-red-600 to-blue-800 text-white px-6 py-2 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out text-center"
-              >
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+            {/* Mobile hamburger */}
+            <button
+              type="button"
+              className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-slate-200 bg-white/90"
+              onClick={() => setShowMenu((v) => !v)}
+              aria-label="Open menu"
+            >
+              <span className="text-2xl leading-none">≡</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile menu */}
+        {showMenu && (
+          <div className="md:hidden border-t border-slate-200 bg-white/95 backdrop-blur">
+            <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3">
+              <NavItem to="/" label={t("nav.home", "Home")} />
+              <NavItem to="/#about" label={t("nav.about", "About")} />
+              <NavItem to="/#services" label={t("nav.services", "Services")} />
+              <NavItem to="/pricing" label={t("nav.pricing", "Pricing")} />
+              <NavItem to="/blog" label={t("nav.blog", "Blog")} />
+              <NavItem to="/contact" label={t("nav.contact", "Contact")} />
+
+              <div className="flex items-center gap-2 pt-2">
+                <LanguageToggle compact />
+                <a href={WHATS} className="btn btn-wa btn-sm btn-ico w-full">💬 {t("cta.whatsapp", "WhatsApp")}</a>
+                <a href={CALENDLY} className="btn btn-primary btn-sm w-full">{t("cta.book", "Free Consultation")}</a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(true);
+                    setShowMenu(false);
+                  }}
+                  className="btn btn-ghost btn-sm w-full"
+                >
+                  {t("cta.contactModal", "Contact form")}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+
+      <ContactModal open={open} setOpen={setOpen} />
+    </>
   );
-};
-
-export default Header;
+}

@@ -1,149 +1,209 @@
 // src/sections/PricingSection.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import FAQTabs from "../components/FAQTabs";
+import { faqsByCategory } from "../data/faqs";
 
-const packages = [
-  {
-    title: 'Starter Presence',
-    features: [
-      'Single-page website',
-      'Custom design and branding',
-      'Mobile responsive',
-      'Basic SEO setup',
-      'Contact form integration',
-    ],
-    highlight: false,
-  },
-  {
-    title: 'Smart Launch',
-    features: [
-      'Up to 3 custom pages',
-      'Mobile optimized and fast-loading',
-      'SEO optimization',
-      'Google Analytics setup',
-      'Contact form with map',
-    ],
-    highlight: true, // Most Popular
-  },
-  {
-    title: 'Business Pro',
-    features: [
-      'Up to 5 pages',
-      'Blog or gallery included',
-      'Advanced SEO and speed optimization',
-      'Animations and branding consistency',
-      '1 month post-launch support',
-    ],
-    highlight: false,
-  },
-  {
-    title: 'E-Commerce Pro',
-    features: [
-      'Online store setup (up to 20 products)',
-      'Payment gateway integration',
-      'Inventory management setup',
-      'Advanced SEO & speed optimization',
-      'Training for managing your store',
-    ],
-    highlight: false,
-  },
-];
+const CALENDLY = "https://calendly.com/domiwebsites/30min";
+const WHATS = "https://wa.me/13143769667";
 
-const PricingSection = () => {
+export default function PricingSection() {
+  const { t } = useTranslation(["pricing", "common"]);
+  const wrapRef = useRef(null);
+
+  useEffect(() => {
+    const els = wrapRef.current?.querySelectorAll(".reveal");
+    if (!els?.length) return;
+    const io = new IntersectionObserver(
+      entries => entries.forEach(e => e.isIntersecting && e.target.classList.add("in")),
+      { threshold: 0.15 }
+    );
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const BUILDS = [
+    {
+      id: "starter",
+      title: t("starter", "Starter Presence"),
+      pitch: t("starter_pitch", "A clean one-page site to get online fast."),
+      price: t("starter_price", "$499"),
+      period: t("starter_period", "one-time"),
+      features: [
+        t("features.s1", "1–3 sections"),
+        t("features.s2", "Mobile-first"),
+        t("features.s3", "Basic SEO"),
+        t("features.s4", "Contact form"),
+      ],
+      cta: t("starter_cta", "Start Starter"),
+    },
+    {
+      id: "smart",
+      featured: true,
+      title: t("smart", "Smart Launch"),
+      pitch: t("smart_pitch", "Multi-page site with services and a simple blog."),
+      price: t("smart_price", "$1,299"),
+      period: t("smart_period", "one-time"),
+      features: [
+        t("features.m1", "Up to 6 pages"),
+        t("features.m2", "Blog ready"),
+        t("features.m3", "On-page SEO"),
+        t("features.m4", "Analytics"),
+      ],
+      cta: t("smart_cta", "Choose Smart"),
+    },
+    {
+      id: "pro",
+      title: t("pro", "Business Pro"),
+      pitch: t("pro_pitch", "Premium UI, conversion blocks & Local SEO structure."),
+      price: t("pro_price", "Custom"),
+      period: t("pro_period", "quote"),
+      features: [
+        t("features.p1", "8–12 pages"),
+        t("features.p2", "Lead magnet / E-commerce"),
+        t("features.p3", "Schema JSON-LD"),
+        t("features.p4", "Speed pass"),
+      ],
+      cta: t("pro_cta", "Choose Pro"),
+    },
+  ];
+
+  const CARE = [
+    {
+      id: "care-lite",
+      title: "Care Lite",
+      price: "$49",
+      period: "/ mo",
+      features: ["Backups", "Security checks", "Uptime monitor", "Email support"],
+      cta: "Choose Lite",
+    },
+    {
+      id: "care-standard",
+      featured: true,
+      title: "Care Standard",
+      price: "$99",
+      period: "/ mo",
+      features: ["All Lite", "Monthly updates", "Speed checks", "1 small task/mo"],
+      cta: "Choose Standard",
+    },
+    {
+      id: "care-pro",
+      title: "Care Pro",
+      price: "$179",
+      period: "/ mo",
+      features: ["All Standard", "Priority support", "2 small tasks/mo", "Quarterly report"],
+      cta: "Choose Pro Care",
+    },
+  ];
+
   return (
-    <section
-      id="pricing"
-      className="py-20 bg-gray-100 text-gray-900"
-      aria-labelledby="pricing-heading"
-      role="region"
-    >
+    <section id="pricing" className="section">
       <div className="max-w-6xl mx-auto px-4">
-        <h2
-          id="pricing-heading"
-          className="text-4xl font-extrabold text-center mb-8"
-          data-aos="fade-up"
-        >
-          Website Packages for <span className="text-red-600">Your Business</span>
-        </h2>
+        {/* Header centrado con 1 solo WhatsApp global */}
+        <div className="text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold">{t("title", "Pricing")}</h2>
+          <p className="text-slate-700 mt-2">
+            {t("sub", "Pick a package and we’ll tailor it to your industry.")}
+          </p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <a href={WHATS} className="btn btn-wa btn-ico btn-sm btn-shine">💬 {t("common:cta.whatsapp")}</a>
+            <a href={CALENDLY} className="btn btn-primary btn-sm btn-shine">{t("common:cta.book")}</a>
+          </div>
+        </div>
 
-        <p className="text-center max-w-2xl mx-auto mb-10 text-lg">
-          We build professional, fast, and SEO-ready websites to help your business attract more clients online.
-          <br />
-          <span className="font-semibold text-blue-700">
-            Custom-tailored pricing based on your goals, scope, and timeline.
-          </span>
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {packages.map((pkg, idx) => (
+        {/* Build plans */}
+        <div ref={wrapRef} className="mt-8 grid md:grid-cols-3 gap-4 items-stretch">
+          {BUILDS.map((p) => (
             <article
-              key={idx}
-              className={`flex flex-col justify-between bg-white p-7 rounded-xl shadow-xl border-2 transition-transform duration-300 ease-in-out hover:scale-105 relative ${
-                pkg.highlight
-                  ? 'border-blue-700 ring-2 ring-blue-300 shadow-2xl z-10 animate-bounce-slow'
-                  : 'border-gray-200'
-              }`}
-              aria-describedby={`pkg-desc-${idx}`}
-              data-aos="zoom-in"
-              data-aos-delay={idx * 100}
+              key={p.id}
+              className={
+                "card p-6 reveal flex flex-col h-full " +
+                (p.featured ? "ring-1 ring-indigo-200 shadow-lg" : "")
+              }
             >
-              {/* Most Popular badge */}
-              {pkg.highlight && (
-                <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-red-600 text-white text-xs font-bold px-4 py-1 rounded-full shadow uppercase tracking-wider animate-pulse z-20">
-                  Most Popular
+              {p.featured && (
+                <div className="mb-3 flex justify-center">
+                  <span className="chip">Most popular</span>
                 </div>
               )}
 
-              <div>
-                <h3
-                  className="text-xl font-bold mb-3 text-center text-red-600"
-                  id={`pkg-title-${idx}`}
-                >
-                  {pkg.title}
-                </h3>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-center">{p.title}</h3>
+                <p className="text-slate-700 mt-1 text-center">{p.pitch}</p>
 
-                {/* Mensaje en lugar de precios */}
-                <p className="text-center text-base font-semibold text-blue-700 mb-3">
-                  Get a custom quote — no obligation
-                </p>
+                <div className="mt-4 select-none flex justify-center items-baseline gap-2">
+                  <span className="text-3xl font-extrabold">{p.price}</span>
+                  <span className="text-slate-600">/ {p.period}</span>
+                </div>
 
-                <ul
-                  className="mb-4 space-y-2 text-sm text-gray-800"
-                  id={`pkg-desc-${idx}`}
-                  aria-label={`Features of ${pkg.title} package`}
-                >
-                  {pkg.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-blue-600" aria-hidden="true">✔</span>
-                      <span>{feature}</span>
+                <ul className="mt-4 space-y-2 text-sm text-slate-700 max-w-xs mx-auto">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {f}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <Link
-                to="/contact"
-                className={`px-5 py-2.5 rounded-full shadow-md text-center font-semibold transition 
-                  ${
-                    pkg.highlight
-                      ? 'bg-gradient-to-r from-blue-700 to-red-600 text-white hover:from-blue-800 hover:to-red-700 scale-105'
-                      : 'bg-gradient-to-r from-red-600 to-blue-700 text-white hover:from-red-700 hover:to-blue-800'
-                  }
-                `}
-                aria-label={`Get custom quote for ${pkg.title}`}
-              >
-                Get My Free Quote
-              </Link>
+              {/* ÚNICO CTA en la card */}
+              <div className="mt-auto pt-4 flex justify-center">
+                <a
+                  href={CALENDLY}
+                  className={"btn btn-primary btn-lg btn-shine " + (p.featured ? "bounce" : "")}
+                >
+                  {p.cta}
+                </a>
+              </div>
             </article>
           ))}
         </div>
 
-        <p className="text-center text-sm text-gray-600 mt-6">
-          Tell us your goals and an estimated timeline to receive the fastest, most accurate quote.
-        </p>
+        {/* Care plans (botones alineados y 1 solo CTA por card) */}
+        <div className="mt-12">
+          <h3 className="text-xl font-extrabold text-center mb-4">Care Plans (monthly)</h3>
+          <div className="grid md:grid-cols-3 gap-4 items-stretch">
+            {CARE.map((p) => (
+              <article
+                key={p.id}
+                className={
+                  "card p-6 flex flex-col h-full " +
+                  (p.featured ? "ring-1 ring-emerald-200 shadow-lg" : "")
+                }
+              >
+                {p.featured && (
+                  <div className="mb-3 flex justify-center">
+                    <span className="chip chip-amber">Best value</span>
+                  </div>
+                )}
+
+                <div className="flex-1">
+                  <h4 className="text-lg font-bold text-center">{p.title}</h4>
+                  <div className="mt-3 select-none flex justify-center items-baseline gap-2">
+                    <span className="text-3xl font-extrabold">{p.price}</span>
+                    <span className="text-slate-600">{p.period}</span>
+                  </div>
+                  <ul className="mt-4 space-y-2 text-sm text-slate-700 max-w-xs mx-auto">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-auto pt-4 flex justify-center">
+                  <a href={CALENDLY} className="btn btn-primary btn-lg btn-shine">{p.cta}</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* FAQs */}
+        <div className="max-w-6xl mx-auto mt-12">
+          <FAQTabs data={faqsByCategory} initialLimit={4} title="FAQs" />
+        </div>
       </div>
     </section>
   );
-};
-
-export default PricingSection;
+}

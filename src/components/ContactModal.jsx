@@ -1,173 +1,190 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+import { useTranslation } from "react-i18next";
 
-const MIN_NAME = 2;
-const MIN_MSG = 10;
+const SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+const PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
 
-const ContactModal = ({ open, onClose }) => {
-  const [submitting, setSubmitting] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [errors, setErrors] = useState({});
+export default function ContactModal({ open, setOpen }) {
+  const { t } = useTranslation(["common", "contact"]);
   const formRef = useRef(null);
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const msgRef = useRef(null);
+  const dialogRef = useRef(null);
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
 
-  const PUBLIC_KEY  = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'QomFGcKltdQDXhSSp';
-  const SERVICE_ID  = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_ywkf6l7';
-  const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_okjps2i';
-
+  // Cerrar con ESC
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, setOpen]);
+
+  // Evitar scroll del body cuando está abierto
+  useEffect(() => {
+    if (open) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((s) => ({ ...s, [name]: value }));
-    if (errors[name]) setErrors((er) => ({ ...er, [name]: undefined }));
-  };
-
-  const validate = () => {
-    const trimmed = {
-      name: form.name.trim(),
-      email: form.email.trim(),
-      message: form.message.trim(),
-    };
-    const next = {};
-    if (trimmed.name.length < MIN_NAME) next.name = `Please enter at least ${MIN_NAME} characters.`;
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(trimmed.email);
-    if (!emailOk) next.email = 'Please enter a valid email.';
-    if (trimmed.message.length < MIN_MSG) next.message = `Message must be at least ${MIN_MSG} characters.`;
-    return { next, trimmed };
-  };
-
-  const focusFirstError = (errs) => {
-    if (errs.name) return nameRef.current?.focus();
-    if (errs.email) return emailRef.current?.focus();
-    if (errs.message) return msgRef.current?.focus();
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (formRef.current?.elements?.botcheck?.value) return;
-
-    const { next, trimmed } = validate();
-    if (Object.values(next).some(Boolean)) {
-      setErrors(next);
-      focusFirstError(next);
-      return;
+  const onOverlayClick = (e) => {
+    if (dialogRef.current && !dialogRef.current.contains(e.target)) {
+      setOpen(false);
     }
+  };
 
-    setSubmitting(true);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (status === "sending") return;
+    setStatus("sending");
+
     try {
-      const emailjs = (await import('@emailjs/browser')).default;
-
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          name: trimmed.name,
-          email: trimmed.email,
-          message: trimmed.message,
-          reply_to: trimmed.email,
-        },
-        PUBLIC_KEY
-      );
-
-      if (window.gtag) {
-        window.gtag('event', 'generate_lead', { form_location: 'hero_modal', method: 'emailjs' });
-      }
-
-      setForm({ name: '', email: '', message: '' });
-      setErrors({});
-      onClose?.();
-      window.location.href = '/thank-you';
-    } catch {
-      setSubmitting(false);
-      alert('There was an error sending your message. Please try again or contact us via WhatsApp/Call.');
+      await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY);
+      setStatus("success");
+      // Limpia y cierra
+      formRef.current?.reset();
+      setTimeout(() => setOpen(false), 700);
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setStatus("error");
     }
   };
 
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
-      <button className="absolute inset-0 bg-black/60" aria-label="Close overlay" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-lg bg-white text-gray-900 rounded-2xl shadow-2xl p-6 md:p-7" data-aos="zoom-in" data-aos-duration="300">
-        <button onClick={onClose} aria-label="Close" className="absolute right-3 top-3 rounded-full px-2 py-1 text-gray-500 hover:bg-gray-100">✕</button>
-
-        <h3 className="text-2xl font-bold text-center mb-1 text-blue-900">Get Your Free Quote</h3>
-        <p className="text-sm text-center text-gray-600 mb-4">
-          We typically reply within <span className="font-semibold">one business day</span>. No obligation.
-        </p>
-
-        <form ref={formRef} onSubmit={handleSubmit} className="grid gap-3">
-          <input type="text" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-
-          <label className="sr-only" htmlFor="name">Your name</label>
-          <input
-            id="name"
-            ref={nameRef}
-            name="name"
-            placeholder="Your name"
-            autoComplete="name"
-            maxLength={80}
-            className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 ${errors.name ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-600'}`}
-            value={form.name}
-            onChange={handleChange}
-            aria-invalid={!!errors.name}
-            aria-describedby={errors.name ? 'err-name' : undefined}
-          />
-          {errors.name && <p id="err-name" className="text-xs text-red-600 -mt-2">{errors.name}</p>}
-
-          <label className="sr-only" htmlFor="email">Your email</label>
-          <input
-            id="email"
-            ref={emailRef}
-            type="email"
-            name="email"
-            placeholder="Your email"
-            autoComplete="email"
-            maxLength={120}
-            className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 ${errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-600'}`}
-            value={form.email}
-            onChange={handleChange}
-            aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? 'err-email' : undefined}
-          />
-          {errors.email && <p id="err-email" className="text-xs text-red-600 -mt-2">{errors.email}</p>}
-
-          <label className="sr-only" htmlFor="message">Your message</label>
-          <textarea
-            id="message"
-            ref={msgRef}
-            name="message"
-            rows={4}
-            placeholder="Tell us about your project…"
-            autoComplete="off"
-            maxLength={2000}
-            className={`border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 ${errors.message ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-600'}`}
-            value={form.message}
-            onChange={handleChange}
-            aria-invalid={!!errors.message}
-            aria-describedby={errors.message ? 'err-message' : undefined}
-          />
-          {errors.message && <p id="err-message" className="text-xs text-red-600 -mt-2">{errors.message}</p>}
-
+    <div
+      className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm flex items-start md:items-center justify-center p-4"
+      onMouseDown={onOverlayClick}
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        ref={dialogRef}
+        className="w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-slate-200"
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+          <h2 className="text-xl font-extrabold">
+            {t("contact:open_form", "Contact form")}
+          </h2>
           <button
-            type="submit"
-            disabled={submitting}
-            className="mx-auto inline-flex items-center justify-center px-6 py-2 rounded-full font-semibold text-white bg-gradient-to-r from-red-600 to-blue-600 hover:scale-105 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600 transition min-w-[220px] disabled:opacity-60 disabled:hover:scale-100"
+            type="button"
+            onClick={() => setOpen(false)}
+            className="inline-flex items-center justify-center h-9 w-9 rounded-full border border-slate-200 hover:bg-slate-50"
+            aria-label="Close"
           >
-            {submitting ? 'Sending…' : 'Get My Free Quote'}
+            ×
           </button>
+        </div>
 
-          <p className="text-xs text-center text-gray-500 mt-2">
-            Prefer WhatsApp or Call? <a href="https://wa.me/13143769667" className="underline">WhatsApp</a> · <a href="tel:+13143769667" className="underline">Call</a>
-          </p>
+        {/* Form */}
+        <form ref={formRef} onSubmit={onSubmit} className="px-5 py-5">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                {t("contact:name", "Name")}
+              </label>
+              <input
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                type="text"
+                name="user_name"
+                placeholder={t("contact:name_ph", "Your name")}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                {t("contact:email", "Email")}
+              </label>
+              <input
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                type="email"
+                name="user_email"
+                placeholder="you@email.com"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                {t("contact:phone", "Phone")}
+              </label>
+              <input
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                type="tel"
+                name="user_phone"
+                placeholder="+1 314..."
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">
+                {t("contact:service", "Service")}
+              </label>
+              <select
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                name="user_service"
+                defaultValue=""
+                required
+              >
+                <option value="" disabled>
+                  {t("contact:service_ph", "Select")}
+                </option>
+                <option>Web Design</option>
+                <option>Local SEO</option>
+                <option>E-commerce</option>
+                <option>Care Plan</option>
+                <option>Speed Optimization</option>
+                <option>Analytics & Tracking</option>
+              </select>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-semibold mb-1">
+                {t("contact:message", "Message")}
+              </label>
+              <textarea
+                className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                rows="5"
+                name="message"
+                placeholder={t("contact:message_ph", "Tell us about your project...")}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-5 flex flex-col sm:flex-row gap-2 justify-end">
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => setOpen(false)}
+            >
+              {t("common:cta.cancel", "Cancel")}
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary btn-shine"
+              disabled={status === "sending"}
+            >
+              {status === "sending"
+                ? t("contact:sending", "Sending…")
+                : t("contact:send", "Send")}
+            </button>
+          </div>
+
+          {/* Estado */}
+          {status === "success" && (
+            <p className="mt-3 text-emerald-600 font-semibold">
+              {t("contact:sent_ok", "Thanks! We’ll get back to you shortly.")}
+            </p>
+          )}
+          {status === "error" && (
+            <p className="mt-3 text-rose-600 font-semibold">
+              {t("contact:sent_fail", "Oops, something went wrong. Please try again.")}
+            </p>
+          )}
         </form>
       </div>
     </div>
   );
-};
-
-export default ContactModal;
+}

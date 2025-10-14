@@ -1,65 +1,78 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import ContactModal from '../components/ContactModal';
+import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import ContactModal from "../components/ContactModal";
 
-const HomeSection = () => {
+const CALENDLY = "https://calendly.com/domiwebsites/30min";
+const WHATS = "https://wa.me/13143769667";
+
+export default function HomeSection() {
+  const { t } = useTranslation(["home", "common"]);
   const [open, setOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const heroRef = useRef(null);
 
   useEffect(() => {
-    const handler = () => setOpen(true);
-    window.addEventListener('open-contact-modal', handler);
-
-    const params = new URLSearchParams(location.search);
-    if (params.get('contact') === '1') {
-      setOpen(true);
-      params.delete('contact');
-      navigate(
-        { pathname: location.pathname, search: params.toString() ? `?${params}` : '' },
-        { replace: true }
-      );
-    }
-    return () => window.removeEventListener('open-contact-modal', handler);
-  }, [location, navigate]);
+    const el = heroRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && el.classList.add("in")),
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <section id="home" data-aos="fade-up" className="relative h-screen text-white" aria-labelledby="home-heading">
-      <video className="absolute inset-0 w-full h-full object-cover z-0" autoPlay loop muted playsInline preload="metadata" aria-hidden="true">
-        <source src="/hero-mini-480.webm" type="video/webm" />
-        <source src="/hero-mini-480.mp4" type="video/mp4" media="(min-width: 768px)" />
-      </video>
+    <>
+      <section className="section section-hero-gradient relative overflow-hidden">
+        <div className="absolute inset-0 -z-10 opacity-25 pointer-events-none">
+          <video className="w-full h-full object-cover" autoPlay muted loop playsInline poster="/hero-mini-480.mp4">
+            <source src="/domi-websites-hero-video.webm" type="video/webm" />
+            <source src="/hero-mini-480.webm" type="video/webm" />
+            <source src="/hero-mini-480.mp4" type="video/mp4" />
+          </video>
+        </div>
 
-      <div className="absolute inset-0 bg-black bg-opacity-60 z-0" />
+        <div className="max-w-6xl mx-auto px-4">
+          <div ref={heroRef} className="reveal grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7">
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
+                {t("h1", "Websites that turn {{highlight}} into clients.", {
+                  highlight: t("highlight", "clicks"),
+                })}
+              </h1>
+              <p className="mt-3 text-lg text-slate-700">
+                {t("sub", "We build fast, modern sites for small businesses—designed to rank and convert.")}
+              </p>
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-        <h1 id="home-heading" className="text-balance text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]">
-          Web Design for{' '}
-          <span className="bg-gradient-to-r from-red-500 to-blue-500 bg-clip-text text-transparent">
-            Small Businesses
-          </span>{' '}
-          in St. Louis
-        </h1>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="chip"><span className="dot" /> {t("common:badges.fast", "72h Delivery")}</span>
+                <span className="chip chip-amber"><span className="dot dot-amber" /> {t("common:badges.seo", "SEO & Speed Optimized")}</span>
+                <span className="chip"><span className="dot" /> {t("common:badges.reviews", "8+ Client Testimonials")}</span>
+              </div>
 
-        <h2 className="text-lg md:text-xl font-medium mb-4 text-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_80%)]">
-          Want a Professional Website for Your Business? <br className="hidden md:block" /> Let’s Make It Happen.
-        </h2>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href={CALENDLY} className="btn btn-primary btn-lg btn-shine bounce">
+                  {t("common:cta.book", "Free Consultation")}
+                </a>
+                <a href={WHATS} className="btn btn-wa btn-ico btn-lg btn-shine bounce">
+                  💬 {t("common:cta.whatsapp", "WhatsApp")}
+                </a>
+                <button type="button" onClick={() => setOpen(true)} className="btn btn-ghost btn-lg">
+                  {t("common:cta.contactModal", "Contact form")}
+                </button>
+              </div>
+            </div>
 
-        <p className="mb-6 text-white max-w-xl text-md md:text-lg [text-shadow:_0_1px_2px_rgb(0_0_0_/_70%)]">
-          At Domi Websites, we build fast, mobile-optimized websites for small business owners in St. Louis and throughout the U.S. Our custom websites are SEO-ready and designed to help your business grow online.
-        </p>
+            <div className="lg:col-span-5">
+              <div className="glass p-4 md:p-6 hover-lift">
+                <img src="/DomiLogoAnt.webp" alt="Domi Websites preview" className="w-full h-auto rounded-xl" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <button
-          onClick={() => setOpen(true)}
-          className="inline-block px-6 py-3 bg-gradient-to-r from-red-600 to-blue-600 rounded-full hover:scale-105 transition transform text-white font-semibold text-lg shadow-lg focus:outline focus:ring-2 focus:ring-white [text-shadow:_0_1px_2px_rgb(0_0_0_/_85%)]"
-        >
-          Book Your Free Consultation
-        </button>
-      </div>
-
-      <ContactModal open={open} onClose={() => setOpen(false)} />
-    </section>
+      <ContactModal open={open} setOpen={setOpen} />
+    </>
   );
-};
-
-export default HomeSection;
+}

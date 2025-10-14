@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async'; 
+import { HelmetProvider } from 'react-helmet-async';
+import './i18n'; // <-- inicializa i18n
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <HelmetProvider> 
+    <HelmetProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
