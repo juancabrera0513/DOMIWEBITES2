@@ -6,28 +6,30 @@ const PHONE_DISPLAY = "314-376-9667";
 const PHONE_TEL = "tel:+13143769667";
 const CITY = "St. Louis, MO";
 
-const Footer = () => {
+export default function Footer() {
   const { t } = useTranslation(["common"]);
 
   return (
-    <footer className="border-t border-slate-200 bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-sm text-slate-700">
+    <footer className="border-t border-white/10 bg-[#05060a]">
+      <div className="container py-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-white/60">
             © {new Date().getFullYear()} {t("brand")} • {CITY}
           </p>
-          <div className="flex items-center gap-4 text-sm">
-            <a href={PHONE_TEL} className="underline decoration-slate-300 hover:decoration-slate-500">
+
+          <div className="flex flex-wrap items-center gap-5 text-sm text-white/70">
+            <a href={PHONE_TEL} className="hover:text-white transition-colors">
               {t("common:footer.phone_label")}: {PHONE_DISPLAY}
             </a>
-            {/* Usa Link para SPA y que SÍ funcionen */}
-            <Link to="/privacy" className="hover:text-slate-900">Privacy</Link>
-            <Link to="/terms" className="hover:text-slate-900">Terms</Link>
+            <Link to="/privacy" className="hover:text-white transition-colors">
+              Privacy
+            </Link>
+            <Link to="/terms" className="hover:text-white transition-colors">
+              Terms
+            </Link>
           </div>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

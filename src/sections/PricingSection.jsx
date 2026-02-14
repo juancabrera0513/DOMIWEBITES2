@@ -1,209 +1,225 @@
-// src/sections/PricingSection.jsx
 import React, { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import FAQTabs from "../components/FAQTabs";
-import { faqsByCategory } from "../data/faqs";
-
-const CALENDLY = "https://calendly.com/domiwebsites/30min";
-const WHATS = "https://wa.me/13143769667";
+import { Link } from "react-router-dom";
 
 export default function PricingSection() {
-  const { t } = useTranslation(["pricing", "common"]);
-  const wrapRef = useRef(null);
+  const ref = useRef(null);
 
   useEffect(() => {
-    const els = wrapRef.current?.querySelectorAll(".reveal");
+    const els = ref.current?.querySelectorAll(".reveal");
     if (!els?.length) return;
     const io = new IntersectionObserver(
-      entries => entries.forEach(e => e.isIntersecting && e.target.classList.add("in")),
+      (entries) =>
+        entries.forEach((e) => e.isIntersecting && e.target.classList.add("in")),
       { threshold: 0.15 }
     );
-    els.forEach(el => io.observe(el));
+    els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
 
-  const BUILDS = [
+  const tiers = [
     {
-      id: "starter",
-      title: t("starter", "Starter Presence"),
-      pitch: t("starter_pitch", "A clean one-page site to get online fast."),
-      price: t("starter_price", "$499"),
-      period: t("starter_period", "one-time"),
-      features: [
-        t("features.s1", "1–3 sections"),
-        t("features.s2", "Mobile-first"),
-        t("features.s3", "Basic SEO"),
-        t("features.s4", "Contact form"),
+      name: "Performance Website",
+      price: "Starting at $1,500",
+      desc: "For businesses that need a modern site built to convert.",
+      featured: false,
+      bullets: [
+        "Conversion-focused UX",
+        "Speed + SEO-ready structure",
+        "Analytics + tracking setup",
+        "Mobile-first implementation",
       ],
-      cta: t("starter_cta", "Start Starter"),
     },
     {
-      id: "smart",
+      name: "Website + Systems",
+      price: "Custom Scope",
+      desc: "For businesses that need automation, CRM, and scalable workflows.",
       featured: true,
-      title: t("smart", "Smart Launch"),
-      pitch: t("smart_pitch", "Multi-page site with services and a simple blog."),
-      price: t("smart_price", "$1,299"),
-      period: t("smart_period", "one-time"),
-      features: [
-        t("features.m1", "Up to 6 pages"),
-        t("features.m2", "Blog ready"),
-        t("features.m3", "On-page SEO"),
-        t("features.m4", "Analytics"),
+      bullets: [
+        "CRM integration + lead routing",
+        "Automations (follow-ups, reminders)",
+        "Booking systems + notifications",
+        "Dashboards / internal tools",
       ],
-      cta: t("smart_cta", "Choose Smart"),
     },
     {
-      id: "pro",
-      title: t("pro", "Business Pro"),
-      pitch: t("pro_pitch", "Premium UI, conversion blocks & Local SEO structure."),
-      price: t("pro_price", "Custom"),
-      period: t("pro_period", "quote"),
-      features: [
-        t("features.p1", "8–12 pages"),
-        t("features.p2", "Lead magnet / E-commerce"),
-        t("features.p3", "Schema JSON-LD"),
-        t("features.p4", "Speed pass"),
+      name: "Ongoing Growth",
+      price: "Monthly Retainer",
+      desc: "Continuous improvements, new pages, and system optimization.",
+      featured: false,
+      bullets: [
+        "Performance monitoring",
+        "Landing pages + experiments",
+        "System optimization & iteration",
+        "Priority support + updates",
       ],
-      cta: t("pro_cta", "Choose Pro"),
-    },
-  ];
-
-  const CARE = [
-    {
-      id: "care-lite",
-      title: "Care Lite",
-      price: "$49",
-      period: "/ mo",
-      features: ["Backups", "Security checks", "Uptime monitor", "Email support"],
-      cta: "Choose Lite",
-    },
-    {
-      id: "care-standard",
-      featured: true,
-      title: "Care Standard",
-      price: "$99",
-      period: "/ mo",
-      features: ["All Lite", "Monthly updates", "Speed checks", "1 small task/mo"],
-      cta: "Choose Standard",
-    },
-    {
-      id: "care-pro",
-      title: "Care Pro",
-      price: "$179",
-      period: "/ mo",
-      features: ["All Standard", "Priority support", "2 small tasks/mo", "Quarterly report"],
-      cta: "Choose Pro Care",
     },
   ];
 
   return (
-    <section id="pricing" className="section">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Header centrado con 1 solo WhatsApp global */}
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold">{t("title", "Pricing")}</h2>
-          <p className="text-slate-700 mt-2">
-            {t("sub", "Pick a package and we’ll tailor it to your industry.")}
+    <section id="pricing" className="section relative overflow-hidden nexus-bg hero-grid">
+      <div className="hero-vignette" />
+
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="blob blob-a" />
+        <div className="blob blob-b" />
+        <div className="blob blob-c" />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 relative" ref={ref}>
+        <div className="text-center max-w-3xl mx-auto">
+          <p className="text-[11px] tracking-[0.3em] uppercase text-cyan-400 mb-3">
+            INVESTMENT
           </p>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            <a href={WHATS} className="btn btn-wa btn-ico btn-sm btn-shine">💬 {t("common:cta.whatsapp")}</a>
-            <a href={CALENDLY} className="btn btn-primary btn-sm btn-shine">{t("common:cta.book")}</a>
-          </div>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-white leading-tight">
+            Pricing that matches{" "}
+            <span className="bg-gradient-to-r from-sky-400 via-indigo-500 to-violet-500 bg-clip-text text-transparent">
+              real outcomes
+            </span>
+          </h2>
+          <p className="text-slate-300 mt-4 text-sm md:text-base">
+            Sites are important. Systems are what scale. Every project is scoped based on complexity and goals.
+          </p>
         </div>
 
-        {/* Build plans */}
-        <div ref={wrapRef} className="mt-8 grid md:grid-cols-3 gap-4 items-stretch">
-          {BUILDS.map((p) => (
+        <div className="mt-12 grid md:grid-cols-3 gap-6">
+          {tiers.map((t, i) => (
             <article
-              key={p.id}
-              className={
-                "card p-6 reveal flex flex-col h-full " +
-                (p.featured ? "ring-1 ring-indigo-200 shadow-lg" : "")
-              }
+              key={t.name}
+              className={[
+                "reveal relative rounded-3xl p-[1px] overflow-hidden",
+                t.featured ? "ring-1 ring-cyan-400/30" : "ring-1 ring-white/10",
+              ].join(" ")}
+              style={{ animationDelay: `${i * 70}ms` }}
             >
-              {p.featured && (
-                <div className="mb-3 flex justify-center">
-                  <span className="chip">Most popular</span>
+              <div className={["price-border", t.featured ? "is-featured" : ""].join(" ")} />
+
+              <div
+                className={[
+                  "relative glass rounded-3xl p-8 border",
+                  t.featured ? "border-cyan-400/25" : "border-white/10",
+                  "transition-all duration-300 hover:-translate-y-1",
+                  "hover:shadow-[0_0_55px_rgba(34,211,238,.12)]",
+                ].join(" ")}
+              >
+                {t.featured ? (
+                  <div className="absolute top-4 right-4">
+                    <span className="px-3 py-1 rounded-full text-[11px] font-bold tracking-wide bg-cyan-400/15 text-cyan-200 border border-cyan-400/25">
+                      MOST POPULAR
+                    </span>
+                  </div>
+                ) : null}
+
+                <h3 className="text-white text-lg font-semibold">{t.name}</h3>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <div className="text-2xl md:text-3xl font-extrabold text-white">
+                    {t.price}
+                  </div>
                 </div>
-              )}
+                <p className="text-slate-400 text-sm mt-3">{t.desc}</p>
 
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-center">{p.title}</h3>
-                <p className="text-slate-700 mt-1 text-center">{p.pitch}</p>
-
-                <div className="mt-4 select-none flex justify-center items-baseline gap-2">
-                  <span className="text-3xl font-extrabold">{p.price}</span>
-                  <span className="text-slate-600">/ {p.period}</span>
-                </div>
-
-                <ul className="mt-4 space-y-2 text-sm text-slate-700 max-w-xs mx-auto">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {f}
-                    </li>
+                <div className="mt-6 space-y-2">
+                  {t.bullets.map((b) => (
+                    <div key={b} className="flex items-start gap-2 text-sm text-slate-300">
+                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0" />
+                      <span>{b}</span>
+                    </div>
                   ))}
-                </ul>
-              </div>
+                </div>
 
-              {/* ÚNICO CTA en la card */}
-              <div className="mt-auto pt-4 flex justify-center">
-                <a
-                  href={CALENDLY}
-                  className={"btn btn-primary btn-lg btn-shine " + (p.featured ? "bounce" : "")}
-                >
-                  {p.cta}
-                </a>
+                <div className="mt-8">
+                  <Link
+                    to="/contact"
+                    className={[
+                      "btn w-full justify-center relative overflow-hidden",
+                      t.featured ? "btn-primary" : "btn-outline",
+                      "transition-all duration-300 hover:-translate-y-0.5",
+                      t.featured
+                        ? "hover:shadow-[0_18px_55px_rgba(34,211,238,.22)]"
+                        : "hover:shadow-[0_18px_55px_rgba(34,211,238,.12)]",
+                    ].join(" ")}
+                  >
+                    <span className="btn-shimmer" />
+                    Start a project
+                  </Link>
+
+                  <div className="mt-3 text-center text-[12px] text-slate-400">
+                    Prefer details?{" "}
+                    <Link to="/services" className="text-cyan-300 hover:underline">
+                      See services →
+                    </Link>
+                  </div>
+                </div>
               </div>
             </article>
           ))}
         </div>
 
-        {/* Care plans (botones alineados y 1 solo CTA por card) */}
-        <div className="mt-12">
-          <h3 className="text-xl font-extrabold text-center mb-4">Care Plans (monthly)</h3>
-          <div className="grid md:grid-cols-3 gap-4 items-stretch">
-            {CARE.map((p) => (
-              <article
-                key={p.id}
-                className={
-                  "card p-6 flex flex-col h-full " +
-                  (p.featured ? "ring-1 ring-emerald-200 shadow-lg" : "")
-                }
-              >
-                {p.featured && (
-                  <div className="mb-3 flex justify-center">
-                    <span className="chip chip-amber">Best value</span>
-                  </div>
-                )}
-
-                <div className="flex-1">
-                  <h4 className="text-lg font-bold text-center">{p.title}</h4>
-                  <div className="mt-3 select-none flex justify-center items-baseline gap-2">
-                    <span className="text-3xl font-extrabold">{p.price}</span>
-                    <span className="text-slate-600">{p.period}</span>
-                  </div>
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700 max-w-xs mx-auto">
-                    {p.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2">
-                        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mt-auto pt-4 flex justify-center">
-                  <a href={CALENDLY} className="btn btn-primary btn-lg btn-shine">{p.cta}</a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        {/* FAQs */}
-        <div className="max-w-6xl mx-auto mt-12">
-          <FAQTabs data={faqsByCategory} initialLimit={4} title="FAQs" />
+        <div className="mt-10 text-center">
+          <p className="text-slate-400 text-sm">
+            If you’re not sure what tier fits, I’ll recommend the right path in a quick call.
+          </p>
         </div>
       </div>
+
+      <style>{`
+        .blob{
+          position:absolute;
+          width:520px;
+          height:520px;
+          border-radius:999px;
+          filter: blur(70px);
+          opacity: .18;
+          transform: translate3d(0,0,0);
+          animation: floaty 10s ease-in-out infinite;
+        }
+        .blob-a{ left:-180px; top:-140px; background: rgba(34,211,238,.85); }
+        .blob-b{ right:-220px; top:120px; background: rgba(99,102,241,.85); animation-duration: 12s; }
+        .blob-c{ left:20%; bottom:-260px; background: rgba(168,85,247,.85); animation-duration: 14s; }
+
+        @keyframes floaty{
+          0%{ transform: translate3d(0,0,0) scale(1); }
+          50%{ transform: translate3d(0,-18px,0) scale(1.03); }
+          100%{ transform: translate3d(0,0,0) scale(1); }
+        }
+
+        .price-border{
+          position:absolute;
+          inset:-2px;
+          background: radial-gradient(900px circle at 20% 10%, rgba(34,211,238,.35), transparent 55%),
+                      radial-gradient(900px circle at 80% 70%, rgba(99,102,241,.35), transparent 60%),
+                      linear-gradient(90deg, rgba(34,211,238,.25), rgba(99,102,241,.25), rgba(168,85,247,.25));
+          opacity:.55;
+          filter: blur(0px);
+          animation: borderShift 8s linear infinite;
+        }
+        .price-border.is-featured{
+          opacity:.8;
+        }
+
+        @keyframes borderShift{
+          0%{ transform: translateX(-10%); }
+          50%{ transform: translateX(10%); }
+          100%{ transform: translateX(-10%); }
+        }
+
+        .btn-shimmer{
+          position:absolute;
+          inset:-2px;
+          background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,.18) 40%, transparent 60%);
+          transform: translateX(-120%);
+          animation: shimmer 2.8s ease-in-out infinite;
+          pointer-events:none;
+        }
+        @keyframes shimmer{
+          0%{ transform: translateX(-120%); }
+          45%{ transform: translateX(120%); }
+          100%{ transform: translateX(120%); }
+        }
+
+        @media (prefers-reduced-motion: reduce){
+          .blob, .price-border, .btn-shimmer{ animation: none !important; }
+        }
+      `}</style>
     </section>
   );
 }

@@ -1,179 +1,168 @@
-// src/sections/TestimonialsSection.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Star } from "lucide-react";
 
-// Fallback (por si no cargas tus reviews previos)
-const FALLBACK = [
-  { name: "Kae’s Kitchen", role: "Bakery Owner", quote: "They delivered a clean storefront site with online ordering that my customers actually use. Sales up and zero headaches." },
-  { name: "Glo Event Co", role: "Founder",       quote: "Loads fast, looks premium, and the booking inquiries doubled within weeks. Worth every penny." },
-  { name: "Mama Pacha",   role: "Retail",        quote: "The redesign improved navigation and product pages. Our bounce rate dropped noticeably." }
+const REVIEWS = [
+  {
+    name: "Melii Soler",
+    text: "I got the best service in the world. I got all what I expect, now my business has an online presence and my customers are satisfied and happy. Thanks so much!",
+  },
+  {
+    name: "Katherine Areche",
+    text: "I am delighted with your services. I have already completed three procedures with you and I highly recommend you.",
+  },
+  { name: "Ana Silvia Amador Aquino", text: "The best service in the world ❤️" },
+  {
+    name: "Darkis De Leon Soler",
+    text: "Excellent service. Very customizable and patient with feedback. I’m very happy with the results!!!!",
+  },
+  { name: "Maria Cabrera", text: "Excellent service, thank you" },
 ];
 
-function loadExtraTestimonials() {
-  try {
-    // eslint-disable-next-line global-require
-    const mod = require("../data/testimonials");
-    const raw = (mod && (mod.testimonials || mod.default)) || [];
-    return Array.isArray(raw) ? raw : [];
-  } catch (_) {
-    // Si no existe el archivo o falla el require, intentamos con window
-    if (typeof window !== "undefined" && Array.isArray(window.__EXTRA_TESTIMONIALS__)) {
-      return window.__EXTRA_TESTIMONIALS__;
-    }
-    return [];
-  }
-}
-
-function keyOf(t) {
-  return `${(t.name || "").trim()}|${(t.quote || "").trim()}`.toLowerCase();
-}
-
-function Avatar({ name = "" }) {
-  const initials = name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((s) => s[0]?.toUpperCase())
-    .join("");
+function StarsRow() {
   return (
-    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-sky-500 to-indigo-500 text-white grid place-items-center font-semibold shadow">
-      {initials || "★"}
-    </div>
-  );
-}
-
-function Stars({ n = 5 }) {
-  return (
-    <div className="flex gap-0.5 text-amber-500" aria-label={`${n} out of 5 stars`}>
-      {Array.from({ length: n }).map((_, i) => (
-        <span key={i} aria-hidden>★</span>
+    <div className="flex items-center gap-1 text-amber-400" aria-label="5 out of 5 stars">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star key={i} className="h-4 w-4 fill-current opacity-90" />
       ))}
     </div>
   );
 }
 
-const TestimonialsSection = () => {
-  const scrollerRef = useRef(null);
-  const [isHovering, setHovering] = useState(false);
-
-  const testimonials = useMemo(() => {
-    const extra = loadExtraTestimonials();
-    const map = new Map();
-    [...extra, ...FALLBACK].forEach((t) => {
-      const k = keyOf(t);
-      if (!map.has(k)) map.set(k, t);
-    });
-    return Array.from(map.values());
-  }, []);
-
-  useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    let raf;
-    let last = 0;
-
-    const step = (ts) => {
-      if (isHovering) {
-        raf = requestAnimationFrame(step);
-        last = ts;
-        return;
-      }
-      if (!last) last = ts;
-      const dt = ts - last;
-      last = ts;
-
-      const overflow = el.scrollWidth > el.clientWidth + 8;
-      if (overflow) {
-        el.scrollLeft += dt * 0.06; // desplazamiento suave
-        if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) {
-          el.scrollLeft = 0; // loop
-        }
-      }
-      raf = requestAnimationFrame(step);
-    };
-
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [isHovering]);
-
-  const scrollByAmount = (dir = 1) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const amount = Math.round(el.clientWidth * 0.9);
-    el.scrollBy({ left: dir * amount, behavior: "smooth" });
-  };
+function Avatar({ name = "" }) {
+  const initials = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join("");
 
   return (
-    <section id="testimonials" className="section">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Header */}
-        <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold">What clients say</h2>
-          <p className="text-slate-700 mt-2">Real results from small businesses we work with.</p>
+    <div className="h-9 w-9 rounded-full grid place-items-center text-xs font-semibold text-white bg-white/10 border border-white/10">
+      {initials || "★"}
+    </div>
+  );
+}
+
+export default function TestimonialsSection() {
+  const reviews = useMemo(() => REVIEWS.filter((r) => (r.text || "").trim() !== ""), []);
+  const swiperRef = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  useEffect(() => setReady(true), []);
+
+  return (
+    <section
+      id="testimonials"
+      className="section relative overflow-hidden nexus-bg hero-grid"
+      aria-labelledby="testimonials-heading"
+    >
+      <div className="hero-vignette" />
+
+      <div className="container relative z-10">
+        <div className="text-center max-w-3xl mx-auto">
+          <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
+            Social proof
+          </p>
+
+          <h2 id="testimonials-heading" className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
+            What clients <span className="grad-text">say</span>
+          </h2>
+
+          <p className="mt-3 text-sm md:text-base text-white/60">
+            Based on verified Google reviews.
+          </p>
         </div>
 
-        {/* Carrusel / Grid */}
-        <div
-          className="relative mt-8"
-          onMouseEnter={() => setHovering(true)}
-          onMouseLeave={() => setHovering(false)}
-          onTouchStart={() => setHovering(true)}
-          onTouchEnd={() => setHovering(false)}
-        >
-          {/* Botones laterales (desktop) */}
+        <div className="relative mt-10">
           <button
             type="button"
-            className="hidden md:grid place-items-center absolute -left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/90 border border-slate-200 shadow hover:bg-white"
-            onClick={() => scrollByAmount(-1)}
-            aria-label="Previous testimonials"
+            className="hidden md:grid place-items-center absolute -left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full glass border border-white/10 hover:bg-white/10 transition z-20"
+            aria-label="Previous"
+            onClick={() => swiperRef.current?.slidePrev()}
           >
             ‹
           </button>
 
           <button
             type="button"
-            className="hidden md:grid place-items-center absolute -right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/90 border border-slate-200 shadow hover:bg-white"
-            onClick={() => scrollByAmount(1)}
-            aria-label="Next testimonials"
+            className="hidden md:grid place-items-center absolute -right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full glass border border-white/10 hover:bg-white/10 transition z-20"
+            aria-label="Next"
+            onClick={() => swiperRef.current?.slideNext()}
           >
             ›
           </button>
 
-          <div ref={scrollerRef} className="overflow-x-auto no-scrollbar snap-x snap-mandatory md:snap-none">
-            <div className="grid grid-flow-col auto-cols-[88%] sm:auto-cols-[70%] md:auto-cols-auto md:grid-flow-row md:grid-cols-3 gap-4">
-              {testimonials.map((t, i) => (
-                <figure
-                  key={`${t.name}-${i}`}
-                  className="snap-center md:snap-none card p-6 bg-gradient-to-b from-white to-slate-50/80 border border-slate-100 hover:-translate-y-1 hover:shadow-xl transition-all"
-                  style={{ animationDelay: `${i * 40}ms` }}
+          <div className="overflow-hidden rounded-3xl">
+            <Swiper
+              onSwiper={(s) => (swiperRef.current = s)}
+              modules={[Autoplay, Pagination, Navigation]}
+              slidesPerView="auto"
+              spaceBetween={16}
+              loop={reviews.length > 3}
+              grabCursor
+              pagination={{ clickable: true }}
+              autoplay={
+                prefersReducedMotion
+                  ? false
+                  : {
+                      delay: 3200,
+                      disableOnInteraction: false,
+                      pauseOnMouseEnter: true,
+                    }
+              }
+              className="testimonials-swiper"
+            >
+              {reviews.map((review, idx) => (
+                <SwiperSlide
+                  key={`${review.name}-${idx}`}
+                  className="!w-[300px] sm:!w-[340px] lg:!w-[360px]"
                 >
-                  <div className="flex items-start gap-3">
-                    <Avatar name={t.name} />
-                    <div className="flex-1">
-                      <Stars n={5} />
-                      <blockquote className="mt-2 text-slate-800 leading-relaxed">“{t.quote}”</blockquote>
-                      <figcaption className="mt-4 text-sm text-slate-600">
-                        <span className="font-semibold">{t.name}</span>
-                        {t.role ? <> • {t.role}</> : null}
+                  <figure className="h-full">
+                    <div className="glass h-[210px] rounded-2xl border border-white/10 p-5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(0,0,0,.55)]">
+                      <div>
+                        <StarsRow />
+                        <blockquote className="mt-3 text-sm text-white/85 leading-relaxed line-clamp-4">
+                          “{review.text}”
+                        </blockquote>
+                      </div>
+
+                      <figcaption className="mt-4 flex items-center gap-3">
+                        <Avatar name={review.name} />
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold text-white truncate">
+                            {review.name}
+                          </div>
+                          <div className="text-xs text-white/45">Google review</div>
+                        </div>
                       </figcaption>
                     </div>
-                  </div>
-                </figure>
+                  </figure>
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
           </div>
+
+          <style>{`
+            .testimonials-swiper .swiper-wrapper { align-items: stretch; }
+            .testimonials-swiper .swiper-pagination { position: relative; margin-top: 14px; }
+            .testimonials-swiper .swiper-pagination-bullet { background: rgba(255,255,255,.35); opacity: 1; }
+            .testimonials-swiper .swiper-pagination-bullet-active { background: rgba(34,211,238,.95); }
+          `}</style>
         </div>
 
-        {/* Micro-CTA */}
-        <div className="mt-6 text-center text-sm text-slate-600">
-          Want a quick teardown of your current site?{" "}
-          <a href="https://calendly.com/domiwebsites/30min" className="text-sky-700 underline">
-            Book a free consultation
-          </a>
-          .
-        </div>
+        {ready ? null : null}
       </div>
     </section>
   );
-};
-
-export default TestimonialsSection;
+}

@@ -1,126 +1,109 @@
-import React, { useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import LanguageToggle from "./LanguageToggle";
-import ContactModal from "./ContactModal";
-
-const CALENDLY = "https://calendly.com/domiwebsites/30min";
-const WHATS = "https://wa.me/13143769667";
+// src/components/Header.jsx
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
-  const { t } = useTranslation(["common"]);
-  const { pathname } = useLocation();
-  const [open, setOpen] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
-  const isActive = (to) => {
-    if (to.startsWith("/#")) {
-      // anchors cuentan como activos solo en la home
-      return pathname === "/" && typeof window !== "undefined" && window.location.hash === to.slice(1);
-    }
-    return pathname === to;
-  };
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => (document.body.style.overflow = "");
+  }, [menuOpen]);
 
-  const navBase =
-    "group relative px-2 py-1 text-[15px] font-medium text-slate-600 hover:text-slate-900 transition-colors";
-  const navUnderline =
-    "after:pointer-events-none after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-0.5 after:bg-slate-900 after:rounded-full after:transition-all";
-  const navHoverLine = "after:w-0 group-hover:after:w-6"; // subrayado en hover
-  const navActiveLine = "after:w-6 text-slate-900"; // subrayado si está activo
-
-  const NavItem = ({ to, label }) => {
-    const active = isActive(to);
-    return (
-      <NavLink
-        to={to}
-        onClick={() => setShowMenu(false)}
-        className={`${navBase} ${navUnderline} ${active ? navActiveLine : navHoverLine}`}
-      >
-        {label}
-      </NavLink>
-    );
-  };
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services" },
+    { name: "Pricing", path: "/pricing" },
+    { name: "Blog", path: "/blog" },
+    { name: "About", path: "/about" },
+  ];
 
   return (
     <>
-      <header className="sticky top-0 z-40 backdrop-blur bg-white/80 border-b border-slate-200/60">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="h-16 md:h-[72px] flex items-center justify-between gap-4">
-            {/* Logo */}
-            <Link to="/" className="flex items-center shrink-0" aria-label="Domi Websites — Home">
-              <img src="/DomiLogo.webp" alt="Domi Websites" className="h-10 md:h-12 w-auto" loading="eager" />
-            </Link>
+      {/* Spacer */}
+      <div className="h-[96px]" />
 
-            {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-5">
-              <NavItem to="/" label={t("nav.home", "Home")} />
-              <NavItem to="/#about" label={t("nav.about", "About")} />
-              <NavItem to="/#services" label={t("nav.services", "Services")} />
-              <NavItem to="/pricing" label={t("nav.pricing", "Pricing")} />
-              <NavItem to="/blog" label={t("nav.blog", "Blog")} />
-              <NavItem to="/contact" label={t("nav.contact", "Contact")} />
-            </nav>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+        <div className="max-w-7xl mx-auto px-4 pt-4">
+          <div className="relative rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,.45)]">
 
-            {/* Actions desktop */}
-            <div className="hidden md:flex items-center gap-2">
-              {/* Toggle de idioma con apariencia corregida */}
-              <LanguageToggle />
+            <div className="flex items-center justify-between h-[78px] px-6">
 
-              <a href={WHATS} className="btn btn-wa btn-sm btn-ico btn-shine" aria-label="WhatsApp">
-                💬 {t("cta.whatsapp", "WhatsApp")}
-              </a>
-              <a href={CALENDLY} className="btn btn-primary btn-sm btn-shine">
-                {t("cta.book", "Free Consultation")}
-              </a>
-              <button type="button" onClick={() => setOpen(true)} className="btn btn-ghost btn-sm">
-                {t("cta.contactModal", "Contact form")}
+              {/* Logo */}
+              <Link to="/" className="flex items-center">
+                <img
+                  src="/DomiLogo.webp"
+                  alt="Domi Websites"
+                  className="h-16 w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,.6)]"
+                />
+              </Link>
+
+              {/* Desktop nav */}
+              <nav className="hidden md:flex items-center gap-2">
+                {navItems.map(({ name, path }) => {
+                  const isActive = location.pathname === path;
+                  return (
+                    <Link
+                      key={name}
+                      to={path}
+                      className={`px-4 py-2 rounded-xl text-sm font-medium transition
+                        ${isActive
+                          ? "bg-white/10 text-white"
+                          : "text-white/70 hover:text-white hover:bg-white/5"
+                        }`}
+                    >
+                      {name}
+                    </Link>
+                  );
+                })}
+
+                <Link
+                  to="/contact"
+                  className="ml-3 px-6 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-semibold shadow-lg hover:scale-105 transition"
+                >
+                  Contact
+                </Link>
+              </nav>
+
+              {/* Mobile toggle */}
+              <button
+                className="md:hidden text-white text-2xl"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                {menuOpen ? "×" : "☰"}
               </button>
             </div>
 
-            {/* Mobile hamburger */}
-            <button
-              type="button"
-              className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-slate-200 bg-white/90"
-              onClick={() => setShowMenu((v) => !v)}
-              aria-label="Open menu"
-            >
-              <span className="text-2xl leading-none">≡</span>
-            </button>
+            {/* Mobile menu */}
+            {menuOpen && (
+              <div className="md:hidden px-6 pb-6">
+                <div className="border-t border-white/10 pt-4 flex flex-col gap-3">
+                  {navItems.map(({ name, path }) => (
+                    <Link
+                      key={name}
+                      to={path}
+                      onClick={() => setMenuOpen(false)}
+                      className="text-white/80 hover:text-white transition"
+                    >
+                      {name}
+                    </Link>
+                  ))}
+
+                  <Link
+                    to="/contact"
+                    onClick={() => setMenuOpen(false)}
+                    className="mt-2 px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white text-center font-semibold"
+                  >
+                    Contact
+                  </Link>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
-
-        {/* Mobile menu */}
-        {showMenu && (
-          <div className="md:hidden border-t border-slate-200 bg-white/95 backdrop-blur">
-            <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3">
-              <NavItem to="/" label={t("nav.home", "Home")} />
-              <NavItem to="/#about" label={t("nav.about", "About")} />
-              <NavItem to="/#services" label={t("nav.services", "Services")} />
-              <NavItem to="/pricing" label={t("nav.pricing", "Pricing")} />
-              <NavItem to="/blog" label={t("nav.blog", "Blog")} />
-              <NavItem to="/contact" label={t("nav.contact", "Contact")} />
-
-              <div className="flex items-center gap-2 pt-2">
-                <LanguageToggle compact />
-                <a href={WHATS} className="btn btn-wa btn-sm btn-ico w-full">💬 {t("cta.whatsapp", "WhatsApp")}</a>
-                <a href={CALENDLY} className="btn btn-primary btn-sm w-full">{t("cta.book", "Free Consultation")}</a>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpen(true);
-                    setShowMenu(false);
-                  }}
-                  className="btn btn-ghost btn-sm w-full"
-                >
-                  {t("cta.contactModal", "Contact form")}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </header>
-
-      <ContactModal open={open} setOpen={setOpen} />
     </>
   );
 }

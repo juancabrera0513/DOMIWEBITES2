@@ -1,18 +1,21 @@
 // src/pages/HomePage.jsx
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import HomeSection from "../sections/HomeSection";
-import AboutSection from "../sections/AboutSection";
-import ServicesSection from "../sections/ServicesSection";
-import PortfolioSection from "../sections/PortfolioSection";
-import PricingSection from "../sections/PricingSection";
-import ContactSection from "../sections/ContactSection";
-import TestimonialsSection from "../sections/TestimonialsSection";
 import StickyCTA from "../components/StickyCTA";
 import SeoJsonLd from "../components/SeoJsonLd";
-import { useTranslation } from "react-i18next";
+
+import HomeSection from "../sections/HomeSection";
+import LatestProjectHighlight from "../sections/LatestProjectHighlight";
+import FounderSection from "../sections/FounderSection";
+import ServicesSection from "../sections/ServicesSection";
+import ProcessSection from "../sections/ProcessSection";
+import PricingSection from "../sections/PricingSection";
+import TestimonialsSection from "../sections/TestimonialsSection";
+import ContactSection from "../sections/ContactSection";
 
 const HomePage = () => {
   const { t } = useTranslation(["meta"]);
@@ -32,9 +35,10 @@ const HomePage = () => {
 
       <main id="main-content">
         <HomeSection />
-        <AboutSection />
+        <LatestProjectHighlight />
+        <FounderSection />
         <ServicesSection />
-        <PortfolioSection />
+        <ProcessSection />
         <PricingSection />
         <TestimonialsSection />
         <ContactSection />
