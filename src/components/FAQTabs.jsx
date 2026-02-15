@@ -1,14 +1,7 @@
-// src/components/FAQTabs.jsx
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-/**
- * props:
- *  - data: Record<string, Array<{q:string, a:string}>>
- *  - initialOpen?: number
- *  - initialLimit?: number
- *  - title?: string
- */
+
 export default function FAQTabs({ data = {}, initialOpen = null, initialLimit = 4, title = "FAQs" }) {
   const { i18n } = useTranslation();
   const L = i18n.language?.startsWith("es") ? "es" : "en";

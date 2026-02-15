@@ -1,4 +1,3 @@
-// src/pages/HomePage.jsx
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
@@ -16,6 +15,8 @@ import ProcessSection from "../sections/ProcessSection";
 import PricingSection from "../sections/PricingSection";
 import TestimonialsSection from "../sections/TestimonialsSection";
 import ContactSection from "../sections/ContactSection";
+
+
 
 const HomePage = () => {
   const { t } = useTranslation(["meta"]);

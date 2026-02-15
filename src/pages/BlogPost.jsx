@@ -1,166 +1,189 @@
-// src/pages/BlogPost.jsx
-import React from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useMemo } from "react";
+import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { blogPosts } from "../data/blogPosts";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import StickyCTA from "../components/StickyCTA";
+import { blogPosts } from "../data/blogPosts";
 
-const BlogPost = () => {
-  const { slug } = useParams();
-  const post = blogPosts.find((p) => p.slug === slug);
+const SITE_URL = "https://domiwebsites.com";
+const DEFAULT_OG = `${SITE_URL}/og.webp`;
 
-  if (!post) {
-    return (
-      <>
-        <Helmet>
-          <title>Post Not Found | Domi Websites Blog</title>
-          <meta
-            name="description"
-            content="The requested blog post could not be found on Domi Websites."
-          />
-          <link rel="canonical" href="https://domiwebsites.com/blog" />
-        </Helmet>
-        <Header />
-        <section className="min-h-screen flex items-center justify-center bg-white">
-          <div className="text-center p-6">
-            <h1 className="text-3xl font-bold text-red-600 mb-4">Post not found</h1>
-            <Link to="/blog" className="text-blue-700 underline">
-              ← Back to Blog
-            </Link>
-          </div>
-        </section>
-        <Footer />
-      </>
-    );
+function toISO(dateStr) {
+  try {
+    const d = new Date(dateStr);
+    if (Number.isNaN(d.getTime())) return null;
+    return d.toISOString();
+  } catch (_) {
+    return null;
   }
+}
 
-  const blogUrl = `https://domiwebsites.com/blog/${post.slug}`;
-  const imageUrl = post.image
-    ? `https://domiwebsites.com${post.image}`
-    : "https://domiwebsites.com/DomiLogo.webp";
+export default function BlogPost() {
+  const { slug } = useParams();
 
-  // JSON-LD para un post individual
-  const blogSchema = {
+  const post = useMemo(() => blogPosts.find((p) => p.slug === slug), [slug]);
+  const index = useMemo(() => blogPosts.findIndex((p) => p.slug === slug), [slug]);
+  const prev = index > 0 ? blogPosts[index - 1] : null;
+  const next = index >= 0 && index < blogPosts.length - 1 ? blogPosts[index + 1] : null;
+
+  if (!post) return <Navigate to="/blog" replace />;
+
+  const url = `${SITE_URL}/blog/${post.slug}`;
+  const title = `${post.title} | Domi Websites Blog`;
+  const description = post.summary || "Read the latest insights from Domi Websites.";
+  const image = post.image ? `${SITE_URL}${post.image}` : DEFAULT_OG;
+  const publishedISO = toISO(post.date);
+  const modifiedISO = toISO(post.updated || post.date);
+
+  const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
-    image: imageUrl,
+    description,
+    image: [image],
+    datePublished: publishedISO || undefined,
+    dateModified: modifiedISO || undefined,
     author: { "@type": "Person", name: "Juan Cabrera" },
     publisher: {
       "@type": "Organization",
       name: "Domi Websites",
-      logo: { "@type": "ImageObject", url: "https://domiwebsites.com/DomiLogo.webp" },
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/DomiLogo.webp` },
     },
-    datePublished: post.date,
-    dateModified: post.date,
-    description: post.summary,
-    mainEntityOfPage: { "@type": "WebPage", "@id": blogUrl },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
 
   return (
     <>
       <Helmet>
-        <title>{`${post.title} | Domi Websites Blog`}</title>
-        <meta name="description" content={post.summary} />
-        <link rel="canonical" href={blogUrl} />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={url} />
 
-        {/* Open Graph */}
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.summary} />
-        <meta property="og:image" content={imageUrl} />
-        <meta property="og:url" content={blogUrl} />
+        <meta property="og:site_name" content="Domi Websites" />
         <meta property="og:type" content="article" />
+        <meta property="og:url" content={url} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
 
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.summary} />
-        <meta name="twitter:image" content={imageUrl} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={image} />
 
-        {/* Guard para limpiar reseñas inyectadas */}
-        <script>
-          {`
-          (function(){
-            try {
-              var allowedRoot = { Blog:1, BlogPosting:1, Article:1, CollectionPage:1 };
-              function clean(obj){
-                if(!obj || typeof obj!=='object') return obj;
-                if(Array.isArray(obj)) return obj.map(clean);
-                var t = obj['@type'];
-                if(
-                  t && (
-                    allowedRoot[t] ||
-                    (Array.isArray(t) && t.some(function(x){ return allowedRoot[x]; }))
-                  )
-                ){
-                  if('aggregateRating' in obj) delete obj.aggregateRating;
-                  if('review' in obj) delete obj.review;
-                }
-                for(var k in obj) obj[k] = clean(obj[k]);
-                return obj;
-              }
-              document.querySelectorAll('script[type="application/ld+json"]').forEach(function(s){
-                if(s.id !== 'blog-post-ld'){
-                  try {
-                    var data = JSON.parse(s.innerText);
-                    var cleaned = clean(data);
-                    s.innerText = JSON.stringify(cleaned);
-                  } catch(e){}
-                }
-              });
-            } catch(e){}
-          })();
-          `}
-        </script>
-
-        {/* Structured data limpio */}
-        <script type="application/ld+json" id="blog-post-ld">
-          {JSON.stringify(blogSchema)}
-        </script>
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
       <Header />
-      <section className="py-24 bg-white min-h-screen">
-        <div className="max-w-3xl mx-auto px-4">
-          {/* Breadcrumbs */}
-          <nav className="mb-4 text-sm text-gray-600">
-            <Link to="/" className="hover:underline text-blue-600">Home</Link>
+
+      <main id="main-content" className="section">
+        <div className="container max-w-4xl">
+          <nav className="text-sm text-white/55">
+            <Link to="/" className="hover:underline text-cyan-200/90">
+              Home
+            </Link>
             <span className="mx-2">/</span>
-            <Link to="/blog" className="hover:underline text-blue-600">Blog</Link>
-            <span className="mx-2">/</span>
-            <span className="text-gray-700">{post.title}</span>
+            <Link to="/blog" className="hover:underline text-cyan-200/90">
+              Blog
+            </Link>
           </nav>
 
-          <h1 className="text-3xl font-extrabold mb-2 text-blue-900">{post.title}</h1>
-          <p className="text-gray-600 mb-6">
-            {new Date(post.date).toLocaleDateString()}
-          </p>
+          <header className="mt-6">
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
+              {post.title}
+            </h1>
+            <p className="mt-3 text-white/55 text-sm">
+              {new Date(post.date).toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          </header>
 
-          {post.image && (
-            <img
-              src={imageUrl}
-              alt={post.title}
-              className="mb-6 w-full h-56 object-cover rounded"
-              loading="lazy"
+          {post.image ? (
+            <div className="mt-7 rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-[240px] md:h-[360px] object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          ) : null}
+
+          <article className="mt-10 glass rounded-2xl border border-white/10 p-7 md:p-9">
+            <div
+              className="prose prose-invert max-w-none prose-a:text-cyan-200/90 prose-a:underline prose-a:underline-offset-4 prose-strong:text-white"
+              dangerouslySetInnerHTML={{ __html: post.content }}
             />
-          )}
+          </article>
 
-          <div
-            className="prose prose-blue max-w-none text-justify"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <section className="mt-8 glass rounded-2xl border border-white/10 p-6 md:p-7">
+            <h2 className="text-xl font-extrabold text-white">Need help implementing this?</h2>
+            <p className="mt-2 text-white/60">
+              We build conversion-focused websites and custom software (CRMs, automation tools, AI chatbots,
+              and internal platforms).
+            </p>
+            <div className="mt-5 flex flex-col sm:flex-row gap-3">
+              <Link to="/contact" className="btn btn-primary">
+                Start a Project
+              </Link>
+              <Link to="/work" className="btn btn-outline">
+                See Our Work
+              </Link>
+              <Link to="/services" className="btn btn-outline">
+                Explore Services
+              </Link>
+            </div>
+          </section>
+
+          {(prev || next) ? (
+            <section className="mt-8 grid sm:grid-cols-2 gap-4">
+              {prev ? (
+                <Link
+                  to={`/blog/${prev.slug}`}
+                  className="block glass rounded-2xl border border-white/10 p-5 hover:bg-white/5 transition"
+                >
+                  <div className="text-[11px] tracking-[0.25em] uppercase text-white/55">
+                    Previous
+                  </div>
+                  <div className="mt-2 font-semibold text-white/90 leading-snug">
+                    {prev.title}
+                  </div>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              {next ? (
+                <Link
+                  to={`/blog/${next.slug}`}
+                  className="block glass rounded-2xl border border-white/10 p-5 hover:bg-white/5 transition"
+                >
+                  <div className="text-[11px] tracking-[0.25em] uppercase text-white/55">
+                    Next
+                  </div>
+                  <div className="mt-2 font-semibold text-white/90 leading-snug">
+                    {next.title}
+                  </div>
+                </Link>
+              ) : null}
+            </section>
+          ) : null}
 
           <div className="mt-10">
-            <Link to="/blog" className="text-blue-700 underline">
+            <Link to="/blog" className="text-cyan-200/90 hover:underline underline-offset-4">
               ← Back to Blog
             </Link>
           </div>
         </div>
-      </section>
+      </main>
+
       <Footer />
+      <StickyCTA />
     </>
   );
-};
-
-export default BlogPost;
+}

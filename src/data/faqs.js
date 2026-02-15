@@ -1,6 +1,4 @@
-// src/data/faqs.js
 
-// === Listas “planas” que ya usabas ===
 export const faqsCommon = [
     { q: "How fast can we launch?", a: "Most sites are ready within 72 hours once we have your content (logo, text and images). Larger scopes take 7–14 days." },
     { q: "Do you provide hosting & domain?", a: "We can set up modern hosting/CDN and connect your domain. If you already have hosting, we can deploy there too." },
@@ -32,7 +30,6 @@ export const faqsCommon = [
   
   export const allFaqs = [...faqsCommon, ...faqsPricing, ...faqsEcom, ...faqsBilingualSeo];
   
-  // === NUEVO: agrupado por categorías para el componente con tabs ===
   export const faqsByCategory = {
     "General": [
       ...faqsCommon

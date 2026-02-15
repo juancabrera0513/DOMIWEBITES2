@@ -1,13 +1,20 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import StickyCTA from "../components/StickyCTA";
 
 export default function TermsPage() {
+  const title = "Terms & Conditions | Domi Websites";
+  const description =
+    "Read the terms and conditions governing the use of Domi Websites services.";
+
   const Section = ({ id, title, children }) => (
     <section id={id} className="scroll-mt-24">
-      <h2 className="text-xl md:text-2xl font-bold">{title}</h2>
-      <div className="prose prose-slate max-w-none text-slate-700 mt-3">
+      <h2 className="text-xl md:text-2xl font-semibold text-white mt-10">
+        {title}
+      </h2>
+      <div className="mt-3 text-white/70 leading-relaxed space-y-3">
         {children}
       </div>
     </section>
@@ -15,97 +22,115 @@ export default function TermsPage() {
 
   return (
     <>
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href="https://domiwebsites.com/terms" />
+
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="website" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Terms & Conditions",
+            description,
+            url: "https://domiwebsites.com/terms",
+          })}
+        </script>
+      </Helmet>
+
       <Header />
-      <main id="main-content" className="py-10 md:py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          {/* HERO */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-10 shadow-[0_10px_35px_rgba(2,6,23,0.08)]">
-            <p className="text-sm text-slate-500">Last updated: Oct 2025</p>
-            <h1 className="text-3xl md:text-4xl font-extrabold mt-1">Terms & Conditions</h1>
-            <p className="text-slate-700 mt-3">
-              These terms govern your use of our website and services. Please read them carefully.
-              If you do not agree, you should not use this site.
+
+      <main className="section relative overflow-hidden nexus-bg hero-grid">
+        <div className="hero-vignette" />
+
+        <div className="container relative z-10 max-w-4xl">
+          <div className="glass rounded-2xl p-8 md:p-12 border border-white/10">
+            <p className="text-sm text-white/50 mb-2">Last updated: October 2025</p>
+
+            <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-6">
+              Terms & Conditions
+            </h1>
+
+            <p className="text-white/70">
+              These terms govern your use of our website and services. By
+              accessing this site, you agree to these terms.
             </p>
 
-            {/* ÍNDICE */}
-            <nav aria-label="Table of contents" className="mt-6">
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <ul className="grid md:grid-cols-2 gap-2 text-sm">
-                  <li><a href="#scope" className="underline hover:text-slate-900">1. Scope & Acceptance</a></li>
-                  <li><a href="#services" className="underline hover:text-slate-900">2. Services</a></li>
-                  <li><a href="#payments" className="underline hover:text-slate-900">3. Payments & Refunds</a></li>
-                  <li><a href="#content" className="underline hover:text-slate-900">4. Client Content & Licenses</a></li>
-                  <li><a href="#warranty" className="underline hover:text-slate-900">5. Warranties & Disclaimers</a></li>
-                  <li><a href="#liability" className="underline hover:text-slate-900">6. Limitation of Liability</a></li>
-                  <li><a href="#privacy" className="underline hover:text-slate-900">7. Privacy</a></li>
-                  <li><a href="#general" className="underline hover:text-slate-900">8. General</a></li>
-                </ul>
-              </div>
-            </nav>
+            <Section id="scope" title="1. Scope & Acceptance">
+              <p>
+                By using our services, you agree to comply with these terms. If
+                you act on behalf of a company, you confirm you have authority.
+              </p>
+            </Section>
 
-            {/* CONTENIDO */}
-            <div className="mt-8 space-y-8">
-              <Section id="scope" title="1. Scope & Acceptance">
-                <p>
-                  By accessing or using this site, you agree to these Terms & Conditions. If you’re using the
-                  services on behalf of a company, you represent that you have authority to bind that company.
-                </p>
-              </Section>
+            <Section id="services" title="2. Services">
+              <p>
+                We provide web design, development, and custom software
+                solutions. Timelines depend on project scope and client feedback.
+              </p>
+            </Section>
 
-              <Section id="services" title="2. Services">
-                <p>
-                  We provide web design, development, and related services as described on our site or in a
-                  written proposal. Any timelines are estimates and depend on client feedback and deliverables.
-                </p>
-              </Section>
+            <Section id="payments" title="3. Payments & Refunds">
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Deposits may be required before work begins.</li>
+                <li>Invoices are due upon receipt unless otherwise agreed.</li>
+                <li>Completed milestones are non-refundable.</li>
+              </ul>
+            </Section>
 
-              <Section id="payments" title="3. Payments & Refunds">
-                <ul>
-                  <li><strong>Deposits:</strong> A deposit may be required before work begins.</li>
-                  <li><strong>Invoices:</strong> Payment is due upon receipt unless otherwise agreed.</li>
-                  <li><strong>Refunds:</strong> Due to the nature of design work, completed milestones are non-refundable.</li>
-                </ul>
-              </Section>
+            <Section id="content" title="4. Client Content">
+              <p>
+                You grant us permission to use provided assets for project
+                completion and confirm ownership rights.
+              </p>
+            </Section>
 
-              <Section id="content" title="4. Client Content & Licenses">
-                <p>
-                  You grant us a non-exclusive license to use your content, logos, and brand assets to deliver
-                  the project. You confirm you own (or have rights to) the materials you provide.
-                </p>
-              </Section>
+            <Section id="warranty" title="5. Warranties & Disclaimers">
+              <p>
+                Services are provided “as is” without guarantees of uninterrupted
+                operation.
+              </p>
+            </Section>
 
-              <Section id="warranty" title="5. Warranties & Disclaimers">
-                <p>
-                  We deliver work using best practices; however, we do not warrant uninterrupted or error-free
-                  operation. To the maximum extent permitted by law, services are provided “as is”.
-                </p>
-              </Section>
+            <Section id="liability" title="6. Limitation of Liability">
+              <p>
+                Liability shall not exceed fees paid in the previous three
+                months prior to any claim.
+              </p>
+            </Section>
 
-              <Section id="liability" title="6. Limitation of Liability">
-                <p>
-                  In no event will we be liable for indirect, incidental, or consequential damages. Our total
-                  liability shall not exceed the fees paid by you for the applicable services in the 3 months prior
-                  to the claim.
-                </p>
-              </Section>
+            <Section id="privacy" title="7. Privacy">
+              <p>
+                Our data practices are described in our{" "}
+                <a href="/privacy" className="underline text-cyan-300">
+                  Privacy Policy
+                </a>.
+              </p>
+            </Section>
 
-              <Section id="privacy" title="7. Privacy">
-                <p>
-                  Our use of personal data is described in our <a className="underline" href="/privacy">Privacy Policy</a>.
-                </p>
-              </Section>
-
-              <Section id="general" title="8. General">
-                <ul>
-                  <li><strong>Governing law:</strong> Missouri, USA (or according to your jurisdiction if specified in the proposal).</li>
-                  <li><strong>Changes:</strong> We may update these terms; material changes will be announced on this page.</li>
-                  <li><strong>Contact:</strong> For questions, email <a className="underline" href="mailto:hello@domiwebsites.com">hello@domiwebsites.com</a>.</li>
-                </ul>
-              </Section>
-            </div>
+            <Section id="general" title="8. General">
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Governing Law: Missouri, USA.</li>
+                <li>We may update these terms periodically.</li>
+                <li>
+                  Contact:{" "}
+                  <a
+                    href="mailto:hello@domiwebsites.com"
+                    className="underline text-cyan-300"
+                  >
+                    hello@domiwebsites.com
+                  </a>
+                </li>
+              </ul>
+            </Section>
           </div>
         </div>
       </main>
+
       <Footer />
       <StickyCTA />
     </>

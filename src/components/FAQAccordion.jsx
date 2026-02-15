@@ -1,20 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { allFaqs as defaultFaqs } from "../data/faqs";
 
-/**
- * FAQAccordion
- * props:
- *  - items?: Array<{q:string,a:string}> | {faqs:Array} | Record<number|id,{q,a}> | string(JSON)
- *
- * Normaliza "items" para evitar el crash "items.map is not a function".
- * Si no llega un array válido, usa el dataset por defecto (defaultFaqs).
- */
+
 export default function FAQAccordion({ items }) {
   const list = useMemo(() => {
-    // 1) Ya es array
     if (Array.isArray(items)) return items;
 
-    // 2) JSON string -> intenta parsear
     if (typeof items === "string") {
       try {
         const parsed = JSON.parse(items);
@@ -22,11 +13,9 @@ export default function FAQAccordion({ items }) {
         if (parsed && Array.isArray(parsed.faqs)) return parsed.faqs;
         if (parsed && typeof parsed === "object") return Object.values(parsed);
       } catch {
-        /* ignore */
       }
     }
 
-    // 3) Objeto con "faqs" o diccionario numerado
     if (items && typeof items === "object") {
       if (Array.isArray(items.faqs)) return items.faqs;
       const vals = Object.values(items);
@@ -35,7 +24,6 @@ export default function FAQAccordion({ items }) {
       }
     }
 
-    // 4) Fallback seguro
     return defaultFaqs;
   }, [items]);
 

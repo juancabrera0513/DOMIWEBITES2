@@ -1,4 +1,3 @@
-// src/sections/LatestProjectHighlight.jsx
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -15,7 +14,6 @@ export default function LatestProjectHighlight() {
     "A real client build — modern redesign, fast performance, and conversion-focused UX."
   );
 
-  // ✅ CTAs (no redundantes)
   const ctaPrimary = t("latest_project_cta_primary", "Start a Project");
   const ctaSecondary = t("latest_project_cta_secondary", "See more work");
 
@@ -34,7 +32,6 @@ export default function LatestProjectHighlight() {
 
   const Frame = ({ children, tallMobile = false }) => (
     <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/5 shadow-[0_30px_90px_rgba(0,0,0,.55)]">
-      {/* Browser bar */}
       <div className="h-10 bg-white/5 flex items-center px-4 gap-2 border-b border-white/10">
         <span className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
         <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
@@ -64,7 +61,6 @@ export default function LatestProjectHighlight() {
       <div className="hero-vignette" />
 
       <div className="container relative z-10">
-        {/* ✅ Header layout */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-6 md:mb-8">
           <div className="max-w-2xl">
             <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
@@ -80,7 +76,6 @@ export default function LatestProjectHighlight() {
             </p>
           </div>
 
-          {/* ✅ Only 2 CTAs */}
           <div className="flex flex-col sm:flex-row gap-3 lg:justify-end">
             <Link to="/work" className="btn btn-outline w-full sm:w-auto">
               {ctaSecondary}
@@ -92,9 +87,7 @@ export default function LatestProjectHighlight() {
           </div>
         </div>
 
-        {/* Preview */}
         <div className="space-y-4">
-          {/* Desktop/tablet */}
           <div className="hidden md:block">
             <Frame>
               <iframe
@@ -107,7 +100,6 @@ export default function LatestProjectHighlight() {
             </Frame>
           </div>
 
-          {/* Mobile */}
           <div className="block md:hidden">
             <Frame tallMobile>
               <iframe
@@ -120,7 +112,6 @@ export default function LatestProjectHighlight() {
             </Frame>
           </div>
 
-          {/* ✅ Discreet link (not “error”) */}
           <div className="text-center">
             <p className="text-[11px] text-white/45">{note}</p>
             <a

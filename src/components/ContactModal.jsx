@@ -10,9 +10,8 @@ export default function ContactModal({ open, setOpen }) {
   const { t } = useTranslation(["common", "contact"]);
   const formRef = useRef(null);
   const dialogRef = useRef(null);
-  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [status, setStatus] = useState("idle"); 
 
-  // Cerrar con ESC
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && setOpen(false);
@@ -20,7 +19,6 @@ export default function ContactModal({ open, setOpen }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open, setOpen]);
 
-  // Evitar scroll del body cuando está abierto
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
@@ -41,7 +39,6 @@ export default function ContactModal({ open, setOpen }) {
     try {
       await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY);
       setStatus("success");
-      // Limpia y cierra
       formRef.current?.reset();
       setTimeout(() => setOpen(false), 700);
     } catch (err) {
@@ -64,7 +61,6 @@ export default function ContactModal({ open, setOpen }) {
         className="w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-slate-200"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
           <h2 className="text-xl font-extrabold">
             {t("contact:open_form", "Contact form")}
@@ -79,7 +75,6 @@ export default function ContactModal({ open, setOpen }) {
           </button>
         </div>
 
-        {/* Form */}
         <form ref={formRef} onSubmit={onSubmit} className="px-5 py-5">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -152,7 +147,6 @@ export default function ContactModal({ open, setOpen }) {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="mt-5 flex flex-col sm:flex-row gap-2 justify-end">
             <button
               type="button"
@@ -172,7 +166,6 @@ export default function ContactModal({ open, setOpen }) {
             </button>
           </div>
 
-          {/* Estado */}
           {status === "success" && (
             <p className="mt-3 text-emerald-600 font-semibold">
               {t("contact:sent_ok", "Thanks! We’ll get back to you shortly.")}

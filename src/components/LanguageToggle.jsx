@@ -10,7 +10,6 @@ export default function LanguageToggle({ compact = false }) {
     i18n.changeLanguage(l);
   };
 
-  // tamaños
   const pad = compact ? "px-2.5 py-1 text-xs" : "px-3.5 py-1.5 text-[13px]";
 
   const base =

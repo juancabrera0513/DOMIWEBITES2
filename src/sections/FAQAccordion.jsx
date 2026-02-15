@@ -1,19 +1,14 @@
 import React, { useState, useMemo } from "react";
 
-/**
- * items: Array<{ q: string, a: string }>
- * El componente ahora es robusto: si items viene undefined/objeto, normaliza a array.
- * También soporta pasar strings largos con \n -> se muestran en <p>.
- */
+
 export default function FAQAccordion({ items }) {
   const list = useMemo(() => {
     if (Array.isArray(items)) return items;
     if (items && typeof items === "object") {
-      // objetos tipo {0:{q,a},1:{q,a}} o {faqs:[...]}
       if (Array.isArray(items.faqs)) return items.faqs;
       return Object.values(items);
     }
-    return []; // evitar crash
+    return []; 
   }, [items]);
 
   const [open, setOpen] = useState(null);

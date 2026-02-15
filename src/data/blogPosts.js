@@ -1,4 +1,3 @@
-// src/data/blogPosts.js
 export const blogPosts = [
   {
     slug: "why-your-small-business-needs-a-website",
@@ -282,7 +281,6 @@ export const blogPosts = [
     `,
   },
 
-  /* ======== NUEVOS POSTS ======== */
 
   {
     slug: "small-business-website-pricing-explained",

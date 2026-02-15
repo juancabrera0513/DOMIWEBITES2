@@ -1,4 +1,3 @@
-// src/pages/ServicesPage.jsx
 import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
@@ -205,7 +204,6 @@ export default function ServicesPage() {
       <Header />
 
       <main id="main-content">
-        {/* ===== HERO ===== */}
         <section className="section relative overflow-hidden nexus-bg hero-grid">
           <div className="hero-vignette" />
           <div className="container relative z-10" ref={revealRef}>
@@ -252,7 +250,6 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* ===== SERVICES GRID ===== */}
         <section className="section relative overflow-hidden nexus-bg hero-grid">
           <div className="hero-vignette" />
           <div className="container relative z-10" ref={revealRef}>
@@ -281,7 +278,6 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* ===== WHY RESPONSIVE (visual proof / your component) ===== */}
         <section className="section relative overflow-hidden nexus-bg hero-grid">
           <div className="hero-vignette" />
           <div className="container relative z-10" ref={revealRef}>
@@ -301,18 +297,13 @@ export default function ServicesPage() {
             </div>
 
             <div className="reveal">
-              {/* Reusa tu componente actual */}
-              {/* Si quieres que muestre un URL específico, lo adaptamos */}
               <div className="glass rounded-3xl border border-white/10 p-3 sm:p-4 md:p-5 shadow-[0_30px_90px_rgba(0,0,0,.55)]">
-                {/* El ResponsiveDevicesSection ya existe en tu repo */}
-                {/* eslint-disable-next-line */}
                 {React.createElement(require("../components/ResponsiveDevicesSection").default)}
               </div>
             </div>
           </div>
         </section>
 
-        {/* ===== FAQ ===== */}
         <section className="section relative overflow-hidden nexus-bg hero-grid">
           <div className="hero-vignette" />
           <div className="container relative z-10" ref={revealRef}>
@@ -338,7 +329,6 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* ===== CTA ===== */}
         <section className="section relative overflow-hidden nexus-bg hero-grid">
           <div className="hero-vignette" />
           <div className="container relative z-10" ref={revealRef}>

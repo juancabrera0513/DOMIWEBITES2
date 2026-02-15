@@ -1,4 +1,3 @@
-// src/i18n/index.js
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -45,7 +44,6 @@ const resources = {
       sub: "We build fast, modern sites for small businesses—designed to rank and convert."
     },
 
-    // ABOUT (simplified, no heavy tech terms)
     about: {
       label: "Why Domi Websites",
       title: "About Domi Websites",
@@ -85,7 +83,6 @@ const resources = {
       cta_secondary: "WhatsApp"
     },
 
-    // SERVICES (simplified, no GA4/Tag Manager/etc.)
     services: {
       label: "What we can help you with",
       title: "Services",
@@ -122,7 +119,6 @@ const resources = {
         "Not sure which option fits you? We can recommend one in a quick call."
     },
 
-    // PORTFOLIO
     portfolio: {
       title: "Portfolio",
       sub: "Recent work across different industries.",
@@ -364,7 +360,6 @@ const resources = {
       sub: "Creamos sitios modernos y rápidos para pequeñas empresas—pensados para posicionar y convertir."
     },
 
-    // ABOUT (simplificado, sin tecnicismos)
     about: {
       label: "Por qué Domi Websites",
       title: "Sobre Domi Websites",
@@ -414,7 +409,6 @@ const resources = {
       cta_secondary: "WhatsApp"
     },
 
-    // SERVICES (simplificado, sin Analítica/Integraciones/Hosting técnico)
     services: {
       label: "En qué te podemos ayudar",
       title: "Servicios",

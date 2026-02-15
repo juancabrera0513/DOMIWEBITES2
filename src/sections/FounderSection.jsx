@@ -34,15 +34,12 @@ export default function FounderSection() {
 
       <div className="container relative z-10">
         <div className="grid items-center gap-12 lg:gap-20 lg:grid-cols-[0.95fr_1.05fr]">
-          {/* IMAGE */}
           <div className="flex justify-center lg:justify-start">
             <div className="relative w-full max-w-[340px] lg:max-w-[380px] founder-enter">
               <div className="absolute -inset-6 rounded-[36px] bg-gradient-to-br from-cyan-500/30 via-blue-500/18 to-transparent blur-3xl opacity-90" />
 
               <div className="group relative rounded-[30px] overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_35px_90px_rgba(0,0,0,.62)] transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_45px_120px_rgba(0,0,0,.75)]">
-                {/* top shine */}
                 <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,.14),transparent_55%)]" />
-                {/* edge ring */}
                 <div className="absolute inset-0 pointer-events-none rounded-[30px] ring-1 ring-white/10 group-hover:ring-white/20 transition-all duration-300" />
 
                 <img
@@ -53,7 +50,6 @@ export default function FounderSection() {
                   decoding="async"
                 />
 
-                {/* stronger bottom gradient + readable text */}
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-transparent" />
                   <div className="relative z-10">
@@ -66,13 +62,11 @@ export default function FounderSection() {
                   </div>
                 </div>
 
-                {/* subtle highlight edge */}
                 <div className="pointer-events-none absolute inset-0 rounded-[30px] ring-1 ring-white/5" />
               </div>
             </div>
           </div>
 
-          {/* TEXT */}
           <div className="space-y-8 founder-enter founder-delay">
             <div className="space-y-4">
               <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 font-semibold">
@@ -94,7 +88,7 @@ export default function FounderSection() {
               </p>
 
               <p className="text-white/55 leading-relaxed max-w-2xl">
-                I build high-performance websites and custom business systems (CRM,
+                We build high-performance websites and custom business systems (CRM,
                 automations, internal tools) that reduce manual work, increase
                 conversions, and help local businesses scale with clarity.
               </p>

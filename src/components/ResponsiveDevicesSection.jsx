@@ -7,7 +7,6 @@ export default function ResponsiveDevicesSection() {
 
       <div className="container relative z-10">
 
-        {/* TEXT HEADER */}
         <div className="text-center mb-20">
           <span className="text-sm uppercase tracking-[0.3em] text-cyan-400 font-medium">
             Built for modern businesses
@@ -24,13 +23,10 @@ export default function ResponsiveDevicesSection() {
           </p>
         </div>
 
-        {/* MOCKUP AREA */}
         <div className="relative flex justify-center items-center">
 
-          {/* Desktop Main */}
           <div className="relative w-full max-w-5xl rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-gradient-to-b from-gray-800 to-gray-900 p-3">
             
-            {/* Fake browser bar */}
             <div className="flex items-center gap-2 mb-3">
               <div className="flex gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -44,7 +40,6 @@ export default function ResponsiveDevicesSection() {
               </div>
             </div>
 
-            {/* Desktop Image */}
             <div className="bg-black rounded-xl overflow-hidden aspect-[16/10]">
               <img
                 src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=80"
@@ -54,7 +49,6 @@ export default function ResponsiveDevicesSection() {
             </div>
           </div>
 
-          {/* LEFT MOBILE */}
           <motion.div
             initial={{ x: -120, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
@@ -71,7 +65,6 @@ export default function ResponsiveDevicesSection() {
             </div>
           </motion.div>
 
-          {/* RIGHT MOBILE */}
           <motion.div
             initial={{ x: 120, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}

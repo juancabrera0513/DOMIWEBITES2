@@ -1,4 +1,3 @@
-// src/sections/ContactSection.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const MIN_NAME = 2;
@@ -209,7 +208,7 @@ export default function ContactSection() {
           </h2>
 
           <p className="mt-3 text-sm md:text-base text-white/60">
-            Short message is fine. I typically reply within{" "}
+            Short message is fine. We typically reply within{" "}
             <span className="text-white/80 font-medium">one business day</span>.
           </p>
         </div>

@@ -1,7 +1,5 @@
-// src/data/projects.js
 
 export const PROJECTS = [
-    // REAL PROJECTS
     {
       id: "mamapacha",
       title: "Mama Pacha Sabor",
@@ -150,7 +148,6 @@ export const PROJECTS = [
       type: "real"
     },
   
-    // DEMOS
     {
       id: "archcity-roofing",
       title: "ArchCity Roofing & Exteriors",
@@ -201,7 +198,6 @@ export const PROJECTS = [
     }
   ];
   
-  // Opcional: lista de categorías para el filtro
   export const PORTFOLIO_CATEGORIES = [
     "All",
     "Food & Retail",

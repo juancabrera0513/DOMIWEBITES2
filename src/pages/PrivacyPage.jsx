@@ -1,86 +1,104 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import StickyCTA from "../components/StickyCTA";
 
 export default function PrivacyPage() {
-  const Section = ({ id, title, children }) => (
-    <section id={id} className="scroll-mt-24">
-      <h2 className="text-xl md:text-2xl font-bold">{title}</h2>
-      <div className="prose prose-slate max-w-none text-slate-700 mt-3">
-        {children}
-      </div>
-    </section>
-  );
+  const title = "Privacy Policy | Domi Websites";
+  const description =
+    "Read Domi Websites' privacy policy to understand how we collect, use, and protect your information.";
 
   return (
     <>
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href="https://domiwebsites.com/privacy" />
+
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="website" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "Privacy Policy",
+            description,
+            url: "https://domiwebsites.com/privacy",
+          })}
+        </script>
+      </Helmet>
+
       <Header />
-      <main id="main-content" className="py-10 md:py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 md:p-10 shadow-[0_10px_35px_rgba(2,6,23,0.08)]">
-            <p className="text-sm text-slate-500">Last updated: Oct 2025</p>
-            <h1 className="text-3xl md:text-4xl font-extrabold mt-1">Privacy Policy</h1>
-            <p className="text-slate-700 mt-3">
-              This policy explains what information we collect, how we use it, and your choices.
-            </p>
 
-            <nav aria-label="Table of contents" className="mt-6">
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <ul className="grid md:grid-cols-2 gap-2 text-sm">
-                  <li><a href="#info" className="underline hover:text-slate-900">1. Information We Collect</a></li>
-                  <li><a href="#use" className="underline hover:text-slate-900">2. How We Use Information</a></li>
-                  <li><a href="#share" className="underline hover:text-slate-900">3. Sharing</a></li>
-                  <li><a href="#security" className="underline hover:text-slate-900">4. Security</a></li>
-                  <li><a href="#choices" className="underline hover:text-slate-900">5. Your Choices</a></li>
-                  <li><a href="#contact" className="underline hover:text-slate-900">6. Contact</a></li>
-                </ul>
-              </div>
-            </nav>
+      <main className="section relative overflow-hidden nexus-bg hero-grid">
+        <div className="hero-vignette" />
 
-            <div className="mt-8 space-y-8">
-              <Section id="info" title="1. Information We Collect">
-                <ul>
-                  <li>Contact details you provide (e.g., name, email, phone).</li>
-                  <li>Project details you submit via forms or WhatsApp.</li>
-                  <li>Analytics and usage data (cookies, device info).</li>
-                </ul>
-              </Section>
+        <div className="container relative z-10 max-w-4xl">
+          <div className="glass rounded-2xl p-8 md:p-12 border border-white/10">
+            <p className="text-sm text-white/50 mb-2">Last updated: October 2025</p>
 
-              <Section id="use" title="2. How We Use Information">
-                <ul>
-                  <li>To respond to inquiries and deliver services.</li>
-                  <li>To improve performance, UX, and security of the site.</li>
-                  <li>To communicate important updates.</li>
-                </ul>
-              </Section>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-6">
+              Privacy Policy
+            </h1>
 
-              <Section id="share" title="3. Sharing">
-                <p>
-                  We do not sell personal data. We may share with service providers (e.g., hosting, analytics) under strict confidentiality.
-                </p>
-              </Section>
+            <div className="space-y-6 text-white/70 leading-relaxed">
+              <p>
+                At Domi Websites, we value your privacy. This Privacy Policy outlines how
+                we collect, use, and safeguard your personal information when you visit
+                our website or interact with our services.
+              </p>
 
-              <Section id="security" title="4. Security">
-                <p>
-                  We use reasonable technical and organizational measures to protect your data. No method is 100% secure.
-                </p>
-              </Section>
+              <h2 className="text-xl font-semibold text-white">Information We Collect</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Contact details provided through forms (name, email, phone).</li>
+                <li>Usage data via Google Analytics and advertising platforms.</li>
+                <li>Payment information processed securely through Stripe.</li>
+              </ul>
 
-              <Section id="choices" title="5. Your Choices">
-                <ul>
-                  <li>Opt-out of non-essential cookies via your browser settings.</li>
-                  <li>Request access or deletion by emailing <a className="underline" href="mailto:hello@domiwebsites.com">hello@domiwebsites.com</a>.</li>
-                </ul>
-              </Section>
+              <h2 className="text-xl font-semibold text-white">How We Use Your Information</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>To respond to inquiries and deliver services.</li>
+                <li>To improve website performance and user experience.</li>
+                <li>For advertising and retargeting purposes.</li>
+                <li>To securely process payments.</li>
+              </ul>
 
-              <Section id="contact" title="6. Contact">
-                <p>For questions about this policy, email <a className="underline" href="mailto:hello@domiwebsites.com">hello@domiwebsites.com</a>.</p>
-              </Section>
+              <h2 className="text-xl font-semibold text-white">Third-Party Services</h2>
+              <p>
+                We use tools such as Google Analytics, Google Ads, Stripe, and EmailJS.
+                These services may collect technical data under their own privacy policies.
+              </p>
+
+              <h2 className="text-xl font-semibold text-white">Cookies</h2>
+              <p>
+                We use cookies to enhance functionality and analyze traffic. You can
+                manage cookies in your browser settings.
+              </p>
+
+              <h2 className="text-xl font-semibold text-white">Data Protection</h2>
+              <p>
+                We implement SSL encryption and industry-standard security practices.
+                We never sell your personal data.
+              </p>
+
+              <h2 className="text-xl font-semibold text-white">Contact</h2>
+              <p>
+                Questions? Email us at{" "}
+                <a
+                  href="mailto:hello@domiwebsites.com"
+                  className="underline text-cyan-300"
+                >
+                  hello@domiwebsites.com
+                </a>
+              </p>
             </div>
           </div>
         </div>
       </main>
+
       <Footer />
       <StickyCTA />
     </>
