@@ -31,7 +31,7 @@ export default function LatestProjectHighlight() {
   }, []);
 
   const Frame = ({ children, tallMobile = false }) => (
-    <div className="rounded-3xl overflow-hidden border border-white/10 bg-white/5 shadow-[0_30px_90px_rgba(0,0,0,.55)]">
+    <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 shadow-[0_30px_90px_rgba(0,0,0,.55)]">
       <div className="h-10 bg-white/5 flex items-center px-4 gap-2 border-b border-white/10">
         <span className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
         <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
@@ -88,18 +88,26 @@ export default function LatestProjectHighlight() {
         </div>
 
         <div className="space-y-4">
-          <div className="hidden md:block">
-            <Frame>
-              <iframe
-                src={LATEST_PROJECT_URL}
-                title="Latest project live preview"
-                className="w-full h-full border-0"
-                loading="eager"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </Frame>
+          {/* Desktop */}
+          <div className="hidden md:flex justify-center">
+            <div className="relative origin-top scale-[0.90] lg:scale-[0.90]">
+              
+              {/* Premium Glow Border */}
+              <div className="absolute -inset-4 rounded-[32px] bg-gradient-to-r from-cyan-400/20 via-indigo-500/20 to-violet-500/20 blur-2xl opacity-70 pointer-events-none" />
+
+              <Frame>
+                <iframe
+                  src={LATEST_PROJECT_URL}
+                  title="Latest project live preview"
+                  className="w-[1200px] h-[675px] border-0 relative z-10"
+                  loading="eager"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </Frame>
+            </div>
           </div>
 
+          {/* Mobile */}
           <div className="block md:hidden">
             <Frame tallMobile>
               <iframe
