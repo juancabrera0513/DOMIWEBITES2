@@ -88,11 +88,9 @@ export default function LatestProjectHighlight() {
         </div>
 
         <div className="space-y-4">
-          {/* Desktop */}
           <div className="hidden md:flex justify-center">
             <div className="relative origin-top scale-[0.90] lg:scale-[0.90]">
               
-              {/* Premium Glow Border */}
               <div className="absolute -inset-4 rounded-[32px] bg-gradient-to-r from-cyan-400/20 via-indigo-500/20 to-violet-500/20 blur-2xl opacity-70 pointer-events-none" />
 
               <Frame>
@@ -107,7 +105,6 @@ export default function LatestProjectHighlight() {
             </div>
           </div>
 
-          {/* Mobile */}
           <div className="block md:hidden">
             <Frame tallMobile>
               <iframe

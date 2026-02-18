@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -19,7 +19,21 @@ import TermsPage from "./pages/TermsPage";
 
 import ScrollToTop from "./components/ScrollToTop";
 
+import AuthCallback from "./pages/AuthCallback";
+import SetPassword from "./pages/SetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
+
+import RequireAdmin from "./pages/admin/RequireAdmin";
+import AdminInbox from "./pages/admin/AdminInbox";
+import AdminLogin from "./pages/admin/AdminLogin";
+
+import DomiChatWidget from "./components/chat/DomiChatWidget";
+
 export default function App() {
+  const { pathname } = useLocation();
+
+  const hideChat = pathname.startsWith("/admin");
+
   return (
     <div className="min-h-screen relative overflow-hidden nexus-bg hero-grid">
       <div className="hero-vignette pointer-events-none absolute inset-0 z-0" />
@@ -43,12 +57,28 @@ export default function App() {
 
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
-
           <Route path="/thank-you" element={<ThankYouPage />} />
+
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/set-password" element={<SetPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+
+          <Route
+            path="/admin/inbox"
+            element={
+              <RequireAdmin>
+                <AdminInbox />
+              </RequireAdmin>
+            }
+          />
 
           <Route path="*" element={<HomePage />} />
         </Routes>
       </div>
+
+      {!hideChat && <DomiChatWidget pathname={pathname} />}
     </div>
   );
 }

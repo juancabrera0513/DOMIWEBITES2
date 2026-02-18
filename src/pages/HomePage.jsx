@@ -18,6 +18,9 @@ import ContactSection from "../sections/ContactSection";
 
 
 
+
+
+
 const HomePage = () => {
   const { t } = useTranslation(["meta"]);
 
@@ -42,6 +45,7 @@ const HomePage = () => {
         <ProcessSection />
         <PricingSection />
         <TestimonialsSection />
+
         <ContactSection />
       </main>
 

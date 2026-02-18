@@ -10,16 +10,10 @@ export const faqsCommon = [
     { q: "Who owns the website?", a: "You. We deliver source code and connect everything to your accounts (domain, hosting, analytics)." }
   ];
   
-  export const faqsPricing = [
-    { q: "What is included in the Starter package?", a: "A clean one-page site with contact form, basic SEO and analytics setup." },
-    { q: "Can I upgrade later?", a: "Yes. Start small and upgrade to Smart or Pro as you grow." },
-    { q: "Are there any hidden fees?", a: "No. Optional costs are transparent (premium fonts, stock images, third-party apps)." },
-    { q: "How do payments work?", a: "50% to start, 50% at delivery. Care Plans are billed monthly and can be cancelled anytime." }
-  ];
+  
   
   export const faqsEcom = [
     { q: "Can you build e-commerce?", a: "Yes. We set up product pages, cart/checkout and payments. We optimize speed and UX to increase conversion." },
-    { q: "Which platform do you recommend?", a: "Shopify for reliability/simplicity; WooCommerce if you need deep customization or content-heavy SEO." },
     { q: "Do you configure taxes & shipping?", a: "We set up payment gateways, basic taxes and shipping rules as part of the initial scope." }
   ];
   
