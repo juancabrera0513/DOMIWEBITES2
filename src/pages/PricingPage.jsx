@@ -4,7 +4,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PricingSection from "../sections/PricingSection";
 import TestimonialsSection from "../sections/TestimonialsSection";
-import StickyCTA from "../components/StickyCTA";
 import SeoJsonLd from "../components/SeoJsonLd";
 
 export default function PricingPage() {
@@ -45,7 +44,6 @@ export default function PricingPage() {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 }

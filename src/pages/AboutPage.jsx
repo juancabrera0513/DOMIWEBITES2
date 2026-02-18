@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 
 export default function AboutPage() {
   return (
@@ -152,7 +151,6 @@ export default function AboutPage() {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 }

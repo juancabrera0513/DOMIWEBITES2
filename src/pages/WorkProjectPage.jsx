@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 import SeoJsonLd from "../components/SeoJsonLd";
 
 import { PROJECTS } from "../data/projects";
@@ -57,7 +56,6 @@ export default function WorkProjectPage() {
           </div>
         </main>
         <Footer />
-        <StickyCTA />
       </>
     );
   }
@@ -249,7 +247,6 @@ export default function WorkProjectPage() {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 }

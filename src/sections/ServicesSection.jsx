@@ -2,6 +2,23 @@ import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
+function Pill({ children }) {
+  return (
+    <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75">
+      {children}
+    </span>
+  );
+}
+
+function MiniPoint({ title, desc }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-black/20 backdrop-blur-md p-4">
+      <div className="text-white font-semibold text-sm">{title}</div>
+      <div className="mt-1 text-sm text-white/60 leading-relaxed">{desc}</div>
+    </div>
+  );
+}
+
 export default function ServicesSection() {
   const { t } = useTranslation(["services", "common"]);
   const rootRef = useRef(null);
@@ -82,9 +99,6 @@ export default function ServicesSection() {
     },
   ];
 
-  const DESKTOP_IMG = "/images/mockups/desktop.webp";
-  const MOBILE_IMG = "/images/mockups/mobile.webp";
-
   return (
     <section
       id="services"
@@ -163,22 +177,22 @@ export default function ServicesSection() {
         <div className="mt-14 grid lg:grid-cols-2 gap-8 items-center">
           <div className="reveal">
             <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
-              {t("responsive_label", "Our work in action")}
+              {t("responsive_label", "Built to scale")}
             </p>
 
             <h3 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
-              {t("responsive_title_1", "Responsive")}{" "}
+              {t("responsive_title_1", "Mobile-first")}{" "}
               <span className="grad-text">
-                {t("responsive_title_2", "across all devices")}
+                {t("responsive_title_2", "— fast, clean, and conversion-ready")}
               </span>
             </h3>
 
-            <p className="mt-3 text-sm md:text-base text-white/60 leading-relaxed">
-              {t(
-                "responsive_desc",
-                "We design mobile-first, then scale up to desktop — so your site feels premium everywhere and your users never struggle to navigate."
-              )}
-            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Pill>{t("pill_1", "Fast loads")}</Pill>
+              <Pill>{t("pill_2", "SEO-ready")}</Pill>
+              <Pill>{t("pill_3", "Clear CTAs")}</Pill>
+              <Pill>{t("pill_4", "SaaS-capable")}</Pill>
+            </div>
 
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <Link
@@ -198,52 +212,36 @@ export default function ServicesSection() {
           </div>
 
           <div className="relative reveal">
-            <div className="glass rounded-3xl border border-white/10 p-4 md:p-5 shadow-[0_30px_90px_rgba(0,0,0,.55)]">
-              <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/40">
-                <div className="h-10 bg-white/5 flex items-center px-4 gap-2 border-b border-white/10">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400/80" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/80" />
-                  <span className="ml-3 text-[12px] text-white/55 truncate">
-                    {t("responsive_bar", "Live preview")}
-                  </span>
-                </div>
+            <div className="glass rounded-3xl border border-white/10 p-6 md:p-7 shadow-[0_40px_120px_rgba(0,0,0,.65)]">
+              <div className="text-white font-semibold text-lg">
+                {t("concept_title", "A premium foundation")}
+              </div>
+              <div className="mt-1 text-sm text-white/60">
+                {t("concept_sub", "Launch lean → scale into real software.")}
+              </div>
 
-                <div className="relative aspect-[16/10] bg-black">
-                  <img
-                    src={DESKTOP_IMG}
-                    alt={t("responsive_desktop_alt", "Desktop website preview")}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                </div>
+              <div className="mt-5 grid sm:grid-cols-2 gap-3">
+                <MiniPoint
+                  title={t("mini_1_t", "Designed to convert")}
+                  desc={t("mini_1_d", "Messaging + layout built for leads.")}
+                />
+                <MiniPoint
+                  title={t("mini_2_t", "Trust built-in")}
+                  desc={t("mini_2_d", "Proof, structure, and clarity.")}
+                />
+                <MiniPoint
+                  title={t("mini_3_t", "Automation-ready")}
+                  desc={t("mini_3_d", "Forms, workflows, notifications.")}
+                />
+                <MiniPoint
+                  title={t("mini_4_t", "Scales with you")}
+                  desc={t("mini_4_d", "Portals, dashboards, CRM tools.")}
+                />
               </div>
             </div>
 
-            <div className="absolute -bottom-10 left-6 sm:left-10 md:left-14">
-              <div className="glass rounded-[2.5rem] border border-white/10 p-3 shadow-[0_30px_90px_rgba(0,0,0,.55)]">
-                <div className="relative w-[190px] sm:w-[210px] md:w-[230px] aspect-[9/19] rounded-[2.2rem] bg-black overflow-hidden border border-white/10">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-black rounded-b-2xl z-10 border border-white/10" />
-                  <img
-                    src={MOBILE_IMG}
-                    alt={t("responsive_mobile_alt", "Mobile website preview")}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="pointer-events-none absolute -top-10 -right-10 h-44 w-44 rounded-full orb bg-[rgba(34,211,238,.18)]" />
-            <div className="pointer-events-none absolute -bottom-16 -left-12 h-52 w-52 rounded-full orb bg-[rgba(167,139,250,.16)]" />
+            <div className="pointer-events-none absolute -top-10 -right-10 h-44 w-44 rounded-full orb bg-[rgba(34,211,238,.14)]" />
+            <div className="pointer-events-none absolute -bottom-16 -left-12 h-52 w-52 rounded-full orb bg-[rgba(167,139,250,.12)]" />
           </div>
         </div>
       </div>

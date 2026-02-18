@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 import SeoJsonLd from "../components/SeoJsonLd";
 
 export default function ThankYouPage() {
@@ -61,7 +60,6 @@ export default function ThankYouPage() {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 }

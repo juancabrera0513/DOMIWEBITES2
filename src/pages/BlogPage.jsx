@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 import SeoJsonLd from "../components/SeoJsonLd";
 import { blogPosts } from "../data/blogPosts";
 
@@ -160,7 +159,6 @@ export default function BlogPage() {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 }

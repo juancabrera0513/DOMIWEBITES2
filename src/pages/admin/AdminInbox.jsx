@@ -179,11 +179,7 @@ export default function AdminInbox() {
     loadMessages(activeId);
   }, [activeId, loadMessages]);
 
-  /**
-   * REALTIME
-   * - channel A: conversations list (waiting/live changes)
-   * - channel B: messages for active conversation only (super fast)
-   */
+ 
   useEffect(() => {
     if (!user?.id) return;
 

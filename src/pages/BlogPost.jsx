@@ -3,7 +3,6 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 import { blogPosts } from "../data/blogPosts";
 
 const SITE_URL = "https://domiwebsites.com";
@@ -183,7 +182,6 @@ export default function BlogPost() {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 }

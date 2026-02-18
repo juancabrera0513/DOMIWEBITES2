@@ -205,3 +205,11 @@
   }
 }
 
+.btn-outline {
+  @apply border border-white/30 text-white bg-white/5 backdrop-blur-md;
+}
+
+.btn-outline:hover {
+  @apply bg-white/10 border-white/50;
+  box-shadow: 0 0 25px rgba(255,255,255,0.15);
+}

@@ -101,21 +101,6 @@ export default function FounderSection() {
               <Feature text="Scalable systems built to grow" />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-3">
-              <Link
-                to="/contact"
-                className="btn btn-primary w-full sm:w-auto transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(34,211,238,.22)]"
-              >
-                Start a project
-              </Link>
-
-              <Link
-                to="/services"
-                className="btn btn-outline w-full sm:w-auto transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(34,211,238,.12)]"
-              >
-                See services
-              </Link>
-            </div>
 
             <p className="text-[11px] text-white/40">
               Built for local businesses — fast load times, clean UX, and systems

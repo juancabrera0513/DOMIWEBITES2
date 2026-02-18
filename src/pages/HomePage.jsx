@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 import SeoJsonLd from "../components/SeoJsonLd";
 
 import HomeSection from "../sections/HomeSection";
@@ -39,8 +38,8 @@ const HomePage = () => {
 
       <main id="main-content">
         <HomeSection />
-        <LatestProjectHighlight />
         <FounderSection />
+        <LatestProjectHighlight />
         <ServicesSection />
         <ProcessSection />
         <PricingSection />
@@ -50,7 +49,6 @@ const HomePage = () => {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 };

@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 import SeoJsonLd from "../components/SeoJsonLd";
 
 function useReveal() {
@@ -373,7 +372,6 @@ export default function ServicesPage() {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 }

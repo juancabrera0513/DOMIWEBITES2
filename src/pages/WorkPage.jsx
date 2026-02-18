@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 import SeoJsonLd from "../components/SeoJsonLd";
 import ProjectModal from "../components/ProjectModal";
 
@@ -202,7 +201,6 @@ export default function WorkPage() {
       </main>
 
       <Footer />
-      <StickyCTA />
 
       {modal && <ProjectModal project={modal} onClose={() => setModal(null)} />}
     </>

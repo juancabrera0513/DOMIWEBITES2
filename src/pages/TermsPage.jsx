@@ -2,7 +2,6 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import StickyCTA from "../components/StickyCTA";
 
 export default function TermsPage() {
   const title = "Terms & Conditions | Domi Websites";
@@ -132,7 +131,6 @@ export default function TermsPage() {
       </main>
 
       <Footer />
-      <StickyCTA />
     </>
   );
 }

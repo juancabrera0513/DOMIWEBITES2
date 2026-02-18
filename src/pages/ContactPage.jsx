@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactSection from "../sections/ContactSection";
-import StickyCTA from "../components/StickyCTA";
 import { useTranslation } from "react-i18next";
 
 export default function ContactPage() {
@@ -19,7 +18,6 @@ export default function ContactPage() {
         <ContactSection />
       </main>
       <Footer />
-      <StickyCTA />
     </>
   );
 }
