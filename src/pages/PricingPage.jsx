@@ -40,7 +40,7 @@ export default function PricingPage() {
 
       <main id="main-content">
         <PricingSection />
-        <TestimonialsSection />
+        {/* <TestimonialsSection /> */}
       </main>
 
       <Footer />

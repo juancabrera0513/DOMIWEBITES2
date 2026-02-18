@@ -71,9 +71,6 @@ export default function TestimonialsSection() {
 
       <div className="container relative z-10">
         <div className="text-center max-w-3xl mx-auto">
-          <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
-            Social proof
-          </p>
 
           <h2 id="testimonials-heading" className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
             What clients <span className="grad-text">say</span>

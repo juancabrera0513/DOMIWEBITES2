@@ -22,7 +22,6 @@ export default function Header() {
 
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-  // ✅ If same route: scroll to top. Else: navigate.
   const handleNav = (path) => (e) => {
     e.preventDefault();
     setMenuOpen(false);
@@ -33,7 +32,6 @@ export default function Header() {
     }
 
     navigate(path);
-    // ScrollToTop component will handle scrolling after route change.
   };
 
   const handleLogo = (e) => {
