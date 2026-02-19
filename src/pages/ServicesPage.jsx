@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SeoJsonLd from "../components/SeoJsonLd";
+import { blogPosts } from "../data/blogPosts";
 
 function useReveal() {
   const ref = useRef(null);
@@ -86,6 +87,50 @@ function FAQItem({ q, a }) {
       </summary>
       <p className="mt-3 text-sm sm:text-base text-white/60 leading-relaxed">{a}</p>
     </details>
+  );
+}
+
+function ResourceCard({ post }) {
+  return (
+    <Link
+      to={`/blog/${post.slug}`}
+      className="group block glass rounded-2xl border border-white/10 overflow-hidden hover:bg-white/5 transition"
+    >
+      <div className="relative h-36 bg-black/40">
+        {post.image ? (
+          <img
+            src={post.image}
+            alt={post.title}
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        ) : null}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/0" />
+      </div>
+      <div className="p-5">
+        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">Resource</div>
+        <h3 className="mt-2 text-base sm:text-lg font-semibold text-white/90 leading-snug">
+          {post.title}
+        </h3>
+        {post.summary ? (
+          <p className="mt-2 text-sm text-white/60 leading-relaxed line-clamp-2">{post.summary}</p>
+        ) : null}
+        <div className="mt-4 inline-flex items-center gap-2 text-sm text-cyan-200/90 group-hover:underline underline-offset-4">
+          Read
+          <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path
+              fillRule="evenodd"
+              d="M10.293 3.293a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L13.586 10H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+    </Link>
   );
 }
 
@@ -189,6 +234,28 @@ export default function ServicesPage() {
     },
   ];
 
+  const resourcePosts = useMemo(() => {
+    const priority = [
+      "how-to-choose-web-design-agency-st-louis",
+      "local-seo-basics-small-business",
+      "how-to-get-more-reviews-google",
+      "build-service-area-pages-local-seo",
+      "common-web-design-mistakes-to-avoid",
+      "write-homepage-that-converts",
+    ];
+
+    const bySlug = new Map(blogPosts.map((p) => [p.slug, p]));
+    const chosen = priority.map((s) => bySlug.get(s)).filter(Boolean);
+
+    if (chosen.length >= 4) return chosen.slice(0, 4);
+
+    const remaining = blogPosts
+      .filter((p) => !chosen.some((c) => c.slug === p.slug))
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    return [...chosen, ...remaining].slice(0, 4);
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -273,6 +340,40 @@ export default function ServicesPage() {
                   <ServiceCard {...s} />
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section relative overflow-hidden nexus-bg hero-grid">
+          <div className="hero-vignette" />
+          <div className="container relative z-10" ref={revealRef}>
+            <div className="max-w-4xl mx-auto text-center mb-8">
+              <p className="reveal text-[11px] tracking-[0.25em] uppercase text-cyan-300/90">
+                {t("resources_label", "Resources")}
+              </p>
+              <h2 className="reveal mt-3 text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                {t("resources_title", "Guides to help you get more leads")}
+              </h2>
+              <p className="reveal mt-3 text-sm sm:text-base text-white/60 leading-relaxed">
+                {t(
+                  "resources_sub",
+                  "Practical reads on web design, local SEO, reviews, and service-area strategy — built for small businesses."
+                )}
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {resourcePosts.map((p, i) => (
+                <div key={p.slug} className="reveal" style={{ animationDelay: `${i * 70}ms` }}>
+                  <ResourceCard post={p} />
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <Link to="/blog" className="btn btn-outline w-full sm:w-auto">
+                {t("resources_cta", "Explore the Blog")}
+              </Link>
             </div>
           </div>
         </section>

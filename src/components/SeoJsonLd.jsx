@@ -8,8 +8,9 @@ const EMAIL = "admin@domiwebsites.com";
 const CITY = "St. Louis";
 const REGION = "MO";
 const COUNTRY = "US";
+
 const LOGO = `${SITE_URL}/DomiLogo.webp`;
-const OG_IMAGE = LOGO;
+const OG_IMAGE = `${SITE_URL}/domi-websites-custom-business-software-og.jpg`;
 
 const SAME_AS = [
   "https://www.facebook.com/domiwebsites",
@@ -27,27 +28,35 @@ export default function SeoJsonLd() {
     logo: LOGO,
     telephone: PHONE,
     email: EMAIL,
+
     address: {
       "@type": "PostalAddress",
       addressLocality: CITY,
       addressRegion: REGION,
       addressCountry: COUNTRY,
     },
-    areaServed: [
-      { "@type": "City", name: CITY },
-      { "@type": "Country", name: COUNTRY },
-    ],
-    sameAs: SAME_AS.length ? SAME_AS : undefined,
-    serviceType: [
-      "Web Design",
-      "Website Redesign",
-      "Technical SEO",
-      "Website Maintenance",
-      "Custom Software Development",
-      "CRM Systems",
-      "Automation Tools",
-      "AI Chatbots",
-    ],
+
+    areaServed: {
+      "@type": "City",
+      name: CITY,
+    },
+
+    sameAs: SAME_AS,
+
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Digital & Software Services",
+      itemListElement: [
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Web Design" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Website Redesign" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Technical SEO" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom Software Development" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "CRM Systems" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Business Automation" } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Chatbots" } }
+      ]
+    },
+
     contactPoint: {
       "@type": "ContactPoint",
       telephone: PHONE,
@@ -67,10 +76,21 @@ export default function SeoJsonLd() {
     publisher: { "@id": `${SITE_URL}#business` },
   };
 
+  const organization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}#organization`,
+    name: BUSINESS_NAME,
+    url: SITE_URL,
+    logo: LOGO,
+    sameAs: SAME_AS,
+  };
+
   return (
     <>
       <JsonLd data={business} />
       <JsonLd data={website} />
+      <JsonLd data={organization} />
     </>
   );
 }

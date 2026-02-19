@@ -6,16 +6,74 @@ import Footer from "../components/Footer";
 import { blogPosts } from "../data/blogPosts";
 
 const SITE_URL = "https://domiwebsites.com";
-const DEFAULT_OG = `${SITE_URL}/og.webp`;
+const DEFAULT_OG = `${SITE_URL}/domi-websites-custom-business-software-og.jpg`;
 
 function toISO(dateStr) {
   try {
     const d = new Date(dateStr);
     if (Number.isNaN(d.getTime())) return null;
     return d.toISOString();
-  } catch (_) {
+  } catch {
     return null;
   }
+}
+
+function formatDate(dateStr) {
+  try {
+    return new Date(dateStr).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+function getRelatedPosts(allPosts, currentSlug) {
+  const priority = [
+    "how-to-choose-web-design-agency-st-louis",
+    "local-seo-basics-small-business",
+    "how-to-get-more-reviews-google",
+    "build-service-area-pages-local-seo",
+    "write-homepage-that-converts",
+    "common-web-design-mistakes-to-avoid",
+    "best-hosting-for-small-business-website",
+    "why-mobile-friendly-website-matters",
+    "website-launch-checklist-small-business",
+    "small-business-website-pricing-explained",
+  ];
+
+  const current = allPosts.find((p) => p.slug === currentSlug);
+  const currentTitle = (current?.title || "").toLowerCase();
+
+  const scored = allPosts
+    .filter((p) => p.slug !== currentSlug)
+    .map((p) => {
+      const t = (p.title || "").toLowerCase();
+      let score = 0;
+
+      const idx = priority.indexOf(p.slug);
+      if (idx !== -1) score += 50 - idx;
+
+      const keywords = ["st. louis", "local", "seo", "reviews", "homepage", "pricing", "launch", "mobile", "hosting", "agency"];
+      for (const k of keywords) {
+        const inCurrent = currentTitle.includes(k);
+        const inPost = t.includes(k);
+        if (inCurrent && inPost) score += 15;
+      }
+
+      if (t.includes("st. louis") && currentTitle.includes("st. louis")) score += 20;
+
+      const recency = new Date(p.date).getTime();
+      score += Math.max(0, Math.min(10, Math.floor((recency / 1e12) * 10)));
+
+      return { p, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .map((x) => x.p);
+
+  return scored.slice(0, 4);
 }
 
 export default function BlogPost() {
@@ -34,6 +92,8 @@ export default function BlogPost() {
   const image = post.image ? `${SITE_URL}${post.image}` : DEFAULT_OG;
   const publishedISO = toISO(post.date);
   const modifiedISO = toISO(post.updated || post.date);
+
+  const related = useMemo(() => getRelatedPosts(blogPosts, post.slug), [post.slug]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -92,13 +152,7 @@ export default function BlogPost() {
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
               {post.title}
             </h1>
-            <p className="mt-3 text-white/55 text-sm">
-              {new Date(post.date).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
+            <p className="mt-3 text-white/55 text-sm">{formatDate(post.date)}</p>
           </header>
 
           {post.image ? (
@@ -139,6 +193,32 @@ export default function BlogPost() {
             </div>
           </section>
 
+          {related?.length ? (
+            <section className="mt-8 glass rounded-2xl border border-white/10 p-6 md:p-7">
+              <h2 className="text-xl font-extrabold text-white">Related reads</h2>
+              <div className="mt-4 grid sm:grid-cols-2 gap-3">
+                {related.map((r) => (
+                  <Link
+                    key={r.slug}
+                    to={`/blog/${r.slug}`}
+                    className="block rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
+                  >
+                    <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                      {formatDate(r.date)}
+                    </div>
+                    <div className="mt-2 font-semibold text-white/90 leading-snug">{r.title}</div>
+                    {r.summary ? (
+                      <div className="mt-2 text-sm text-white/60 line-clamp-2">{r.summary}</div>
+                    ) : null}
+                    <div className="mt-3 text-sm text-cyan-200/90 underline underline-offset-4">
+                      Read
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
           {(prev || next) ? (
             <section className="mt-8 grid sm:grid-cols-2 gap-4">
               {prev ? (
@@ -146,12 +226,8 @@ export default function BlogPost() {
                   to={`/blog/${prev.slug}`}
                   className="block glass rounded-2xl border border-white/10 p-5 hover:bg-white/5 transition"
                 >
-                  <div className="text-[11px] tracking-[0.25em] uppercase text-white/55">
-                    Previous
-                  </div>
-                  <div className="mt-2 font-semibold text-white/90 leading-snug">
-                    {prev.title}
-                  </div>
+                  <div className="text-[11px] tracking-[0.25em] uppercase text-white/55">Previous</div>
+                  <div className="mt-2 font-semibold text-white/90 leading-snug">{prev.title}</div>
                 </Link>
               ) : (
                 <div />
@@ -162,12 +238,8 @@ export default function BlogPost() {
                   to={`/blog/${next.slug}`}
                   className="block glass rounded-2xl border border-white/10 p-5 hover:bg-white/5 transition"
                 >
-                  <div className="text-[11px] tracking-[0.25em] uppercase text-white/55">
-                    Next
-                  </div>
-                  <div className="mt-2 font-semibold text-white/90 leading-snug">
-                    {next.title}
-                  </div>
+                  <div className="text-[11px] tracking-[0.25em] uppercase text-white/55">Next</div>
+                  <div className="mt-2 font-semibold text-white/90 leading-snug">{next.title}</div>
                 </Link>
               ) : null}
             </section>

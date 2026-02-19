@@ -24,7 +24,7 @@ export default function BlogPage() {
   const description =
     "Read the Domi Websites blog for tips on web design, SEO, and digital strategy tailored for small businesses in St. Louis and across the U.S.";
   const canonical = "https://domiwebsites.com/blog";
-  const ogImage = "https://domiwebsites.com/DomiLogo.webp";
+  const ogImage = "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg";
 
   const blogLd = {
     "@context": "https://schema.org",
@@ -77,9 +77,7 @@ export default function BlogPage() {
         <section className="section relative">
           <div className="container">
             <div className="text-center max-w-4xl mx-auto">
-              <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-200/70 mb-3">
-                BLOG
-              </p>
+              <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-200/70 mb-3">BLOG</p>
 
               <h1 className="font-extrabold tracking-tight leading-[1.06]">
                 <span className="block text-[40px] sm:text-[56px] md:text-[72px] text-white">
