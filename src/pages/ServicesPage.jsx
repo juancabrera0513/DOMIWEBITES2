@@ -160,7 +160,7 @@ export default function ServicesPage() {
       ],
     },
     {
-      icon: "🎨🖌️",
+      icon: "🎨",
       title: t("svc2_title", "Redesign & Conversion Upgrades"),
       tag: t("svc2_tag", "Best for existing sites"),
       desc: t(

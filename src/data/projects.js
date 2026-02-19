@@ -148,54 +148,54 @@ export const PROJECTS = [
       type: "real"
     },
   
-    {
-      id: "archcity-roofing",
-      title: "ArchCity Roofing & Exteriors",
-      category: "Home Services",
-      description:
-        "Trusted St. Louis roofing and exteriors company for residential roof replacements, repairs, and gutters.",
-      longDescription:
-        "ArchCity Roofing & Exteriors is a local St. Louis roofing company focused on protecting homes with quality materials, clean workmanship, and honest communication. The website highlights their core residential services, showcases before-and-after work, and makes it easy for visitors to request a free roof inspection or estimate. The content is structured for local search visibility while the design feels modern, strong, and professional.",
-      image: "/portfolio/demo-roofing.jpg",
-      url: "",
-      kpis: [
-        "More quote requests from local homeowners",
-        "Higher conversion from 'Free Inspection' CTA"
-      ],
-      tags: ["Roofing", "Construction", "Residential", "Local SEO"],
-      location: "St. Louis, MO",
-      type: "demo"
-    },
-    {
-      id: "luxe-district-salon",
-      title: "Luxe District Salon",
-      category: "Beauty",
-      description:
-        "Modern full-service beauty salon with hair, color, styling, makeup and treatments.",
-      longDescription:
-        "Luxe District Salon is a full-service beauty salon that blends a boutique feel with a high-end experience. The website presents Luxe District as a stylish, welcoming space with strong visuals, clear service menus, and easy booking. The layout is mobile-first, making it simple for clients to browse services, view stylist work, and schedule an appointment online.",
-      image: "/portfolio/demo-salon.jpg",
-      url: "",
-      kpis: ["Increase in online bookings", "Higher mobile engagement"],
-      tags: ["Beauty Salon", "Hair", "Makeup", "Local Business"],
-      location: "St. Louis, MO",
-      type: "demo"
-    },
-    {
-      id: "gateway-home-plumbing",
-      title: "Gateway Home Plumbing",
-      category: "Home Services",
-      description:
-        "Residential plumbing company focused on fast, reliable service for leaks, clogs, and water heater issues.",
-      longDescription:
-        "Gateway Home Plumbing is dedicated to helping St. Louis homeowners fix plumbing problems quickly and professionally. The website guides visitors to request service in just a few clicks, with clear service pages, strong call-to-actions, and local-focused content that makes it easy for homeowners to trust and contact the company.",
-      image: "/portfolio/demo-plumbing.jpg",
-      url: "",
-      kpis: ["Increase in service calls", "More emergency inquiries"],
-      tags: ["Plumbing", "Residential", "Emergency", "Home Services"],
-      location: "St. Louis, MO",
-      type: "demo"
-    }
+    // {
+    //   id: "archcity-roofing",
+    //   title: "ArchCity Roofing & Exteriors",
+    //   category: "Home Services",
+    //   description:
+    //     "Trusted St. Louis roofing and exteriors company for residential roof replacements, repairs, and gutters.",
+    //   longDescription:
+    //     "ArchCity Roofing & Exteriors is a local St. Louis roofing company focused on protecting homes with quality materials, clean workmanship, and honest communication. The website highlights their core residential services, showcases before-and-after work, and makes it easy for visitors to request a free roof inspection or estimate. The content is structured for local search visibility while the design feels modern, strong, and professional.",
+    //   image: "/portfolio/demo-roofing.jpg",
+    //   url: "",
+    //   kpis: [
+    //     "More quote requests from local homeowners",
+    //     "Higher conversion from 'Free Inspection' CTA"
+    //   ],
+    //   tags: ["Roofing", "Construction", "Residential", "Local SEO"],
+    //   location: "St. Louis, MO",
+    //   type: "demo"
+    // },
+    // {
+    //   id: "luxe-district-salon",
+    //   title: "Luxe District Salon",
+    //   category: "Beauty",
+    //   description:
+    //     "Modern full-service beauty salon with hair, color, styling, makeup and treatments.",
+    //   longDescription:
+    //     "Luxe District Salon is a full-service beauty salon that blends a boutique feel with a high-end experience. The website presents Luxe District as a stylish, welcoming space with strong visuals, clear service menus, and easy booking. The layout is mobile-first, making it simple for clients to browse services, view stylist work, and schedule an appointment online.",
+    //   image: "/portfolio/demo-salon.jpg",
+    //   url: "",
+    //   kpis: ["Increase in online bookings", "Higher mobile engagement"],
+    //   tags: ["Beauty Salon", "Hair", "Makeup", "Local Business"],
+    //   location: "St. Louis, MO",
+    //   type: "demo"
+    // },
+    // {
+    //   id: "gateway-home-plumbing",
+    //   title: "Gateway Home Plumbing",
+    //   category: "Home Services",
+    //   description:
+    //     "Residential plumbing company focused on fast, reliable service for leaks, clogs, and water heater issues.",
+    //   longDescription:
+    //     "Gateway Home Plumbing is dedicated to helping St. Louis homeowners fix plumbing problems quickly and professionally. The website guides visitors to request service in just a few clicks, with clear service pages, strong call-to-actions, and local-focused content that makes it easy for homeowners to trust and contact the company.",
+    //   image: "/portfolio/demo-plumbing.jpg",
+    //   url: "",
+    //   kpis: ["Increase in service calls", "More emergency inquiries"],
+    //   tags: ["Plumbing", "Residential", "Emergency", "Home Services"],
+    //   location: "St. Louis, MO",
+    //   type: "demo"
+    // }
   ];
   
   export const PORTFOLIO_CATEGORIES = [
