@@ -290,7 +290,7 @@ export const blogPosts = [
     image: "/blog-images/pricing-explained.webp",
     content: `
       <h2>Why Pricing Varies So Much</h2>
-      <p>Quotes can range from $300 to $10,000+. The difference isn’t just design — it’s strategy, scope, and quality.</p>
+      <p>Quotes can range from $500 to $10,000+. The difference isn’t just design — it’s strategy, scope, and quality.</p>
 
       <h2>What You’re Paying For</h2>
       <ul>

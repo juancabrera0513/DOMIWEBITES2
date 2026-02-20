@@ -1,25 +1,25 @@
 
 export const PROJECTS = [
-    {
-      id: "mamapacha",
-      title: "Mama Pacha Sabor",
-      category: "Food & Retail",
-      description:
-        "A vibrant and modern brand website showcasing handcrafted seasonings and Latin-inspired flavors.",
-      longDescription:
-        "Mama Pacha Sabor is a bold, culture-driven seasoning brand. The website was designed to highlight their unique products, reinforce brand identity, and prepare the foundation for future online sales. The final result is a colorful, visually rich experience with clear storytelling, mobile-first design, and intuitive product presentation.",
-      image: "/portfolio/mamapacha.jpg",
-      url: "https://mamapachasabor.netlify.app/",
-      kpis: [
-        "Higher time on page",
-        "Bounce rate reduction",
-        "Stronger brand consistency",
-        "Ready for future e-commerce"
-      ],
-      tags: ["Food", "Retail", "Branding", "Modern UI", "Mobile-first"],
-      location: "St. Louis, MO",
-      type: "real"
-    },
+    // {
+    //   id: "mamapacha",
+    //   title: "Mama Pacha Sabor",
+    //   category: "Food & Retail",
+    //   description:
+    //     "A vibrant and modern brand website showcasing handcrafted seasonings and Latin-inspired flavors.",
+    //   longDescription:
+    //     "Mama Pacha Sabor is a bold, culture-driven seasoning brand. The website was designed to highlight their unique products, reinforce brand identity, and prepare the foundation for future online sales. The final result is a colorful, visually rich experience with clear storytelling, mobile-first design, and intuitive product presentation.",
+    //   image: "/portfolio/mamapacha.jpg",
+    //   url: "https://mamapachasabor.netlify.app/",
+    //   kpis: [
+    //     "Higher time on page",
+    //     "Bounce rate reduction",
+    //     "Stronger brand consistency",
+    //     "Ready for future e-commerce"
+    //   ],
+    //   tags: ["Food", "Retail", "Branding", "Modern UI", "Mobile-first"],
+    //   location: "St. Louis, MO",
+    //   type: "real"
+    // },
     {
       id: "kaes-kitchen",
       title: "Kae’s Kitchen",
@@ -87,21 +87,21 @@ export const PROJECTS = [
       location: "St. Louis, MO",
       type: "real"
     },
-    {
-      id: "primavera-flowers",
-      title: "Primavera Flowers",
-      category: "Retail & E-commerce",
-      description:
-        "Bilingual flower shop website with catalog, delivery features, and a modern brand experience.",
-      longDescription:
-        "Primavera Flowers needed a bilingual platform to showcase floral products, offer same-day delivery, and improve customer experience. We delivered a modern, soft, and elegant website with product categories, delivery radius checks, and seamless navigation in both English and Spanish.",
-      image: "/portfolio/primavera.jpg",
-      url: "https://primaveraflowers.netlify.app/",
-      kpis: ["Increase in online orders", "Higher mobile conversions"],
-      tags: ["Flowers", "E-commerce", "Bilingual", "Delivery"],
-      location: "St. Louis, MO",
-      type: "real"
-    },
+    // {
+    //   id: "primavera-flowers",
+    //   title: "Primavera Flowers",
+    //   category: "Retail & E-commerce",
+    //   description:
+    //     "Bilingual flower shop website with catalog, delivery features, and a modern brand experience.",
+    //   longDescription:
+    //     "Primavera Flowers needed a bilingual platform to showcase floral products, offer same-day delivery, and improve customer experience. We delivered a modern, soft, and elegant website with product categories, delivery radius checks, and seamless navigation in both English and Spanish.",
+    //   image: "/portfolio/primavera.jpg",
+    //   url: "https://primaveraflowers.netlify.app/",
+    //   kpis: ["Increase in online orders", "Higher mobile conversions"],
+    //   tags: ["Flowers", "E-commerce", "Bilingual", "Delivery"],
+    //   location: "St. Louis, MO",
+    //   type: "real"
+    // },
     {
       id: "glo-event-co",
       title: "Glo Event Co",
