@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const CHAT_ICON_SRC = "/chat-icon.png";
+const CHAT_SOUND_SRC = "/sounds/domi-pop.mp3";
 
 function uid() {
   return `v_${Math.random().toString(16).slice(2)}_${Date.now()}`;
@@ -46,7 +47,7 @@ const DOMI = {
 };
 
 function isWithinBusinessHours(now = new Date()) {
-  const day = now.getDay(); 
+  const day = now.getDay();
   const hour = now.getHours();
   const map = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
   const key = map[day];
@@ -56,10 +57,8 @@ function isWithinBusinessHours(now = new Date()) {
   return hour >= start && hour < end;
 }
 
-
 function renderMessageContent(raw = "") {
   const text = String(raw || "");
-
   const re =
     /((https?:\/\/[^\s]+)|(\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b)|(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}))/gi;
 
@@ -89,8 +88,7 @@ function renderMessageContent(raw = "") {
           {full}
         </a>
       );
-    }
-    else if (full.includes("@")) {
+    } else if (full.includes("@")) {
       nodes.push(
         <a
           key={`mail_${index}`}
@@ -100,10 +98,9 @@ function renderMessageContent(raw = "") {
           {full}
         </a>
       );
-    }
-    else {
+    } else {
       const digits = full.replace(/[^\d]/g, "");
-      const domiDigits = DOMI.phone.replace(/[^\d]/g, ""); 
+      const domiDigits = DOMI.phone.replace(/[^\d]/g, "");
 
       if (digits.endsWith(domiDigits)) {
         const wa = buildWhatsAppLink(DOMI.phone, "Hi Domi Websites — I have a quick question.");
@@ -138,7 +135,6 @@ function renderMessageContent(raw = "") {
   }
 
   if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
-
   return nodes.length ? nodes : text;
 }
 
@@ -174,10 +170,30 @@ export default function DomiChatWidget({ pathname = "/" }) {
   const cursorRef = useRef(null);
   const seenIdsRef = useRef(new Set(["seed"]));
 
+  // hint
   const [showHint, setShowHint] = useState(false);
   const hintTimer1Ref = useRef(null);
   const hintTimer2Ref = useRef(null);
   const HINT_FLAG = "domi_ai_hint_shown_v2";
+
+  // sound
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    try {
+      const v = localStorage.getItem("domi_chat_sound_v1");
+      return v === null ? true : v === "1";
+    } catch {
+      return true;
+    }
+  });
+  const audioRef = useRef(null);
+  const audioUnlockedRef = useRef(false);
+  const hintSoundPlayedRef = useRef(false);
+
+  // typing & presence
+  const presenceTimerRef = useRef(null);
+  const typingTimerRef = useRef(null);
+  const lastTypingSentAtRef = useRef(0);
+  const typingIdleTimeoutRef = useRef(null);
 
   const MAX_LEN = 1500;
 
@@ -196,6 +212,8 @@ export default function DomiChatWidget({ pathname = "/" }) {
   const CHAT_START_URL = `${FUNCTIONS_BASE}/chat-start`;
   const CHAT_SEND_URL = `${FUNCTIONS_BASE}/chat-send`;
   const CHAT_MESSAGES_URL = `${FUNCTIONS_BASE}/chat-messages`;
+  const PRESENCE_URL = `${FUNCTIONS_BASE}/chat-presence`;
+  const TRACK_URL = `${FUNCTIONS_BASE}/track`;
 
   const headers = useMemo(
     () => ({
@@ -220,14 +238,66 @@ export default function DomiChatWidget({ pathname = "/" }) {
     });
   }
 
+  function playSoundSafely() {
+    if (!open) return;
+    if (!soundEnabled) return;
+    if (!audioUnlockedRef.current) return;
+
+    try {
+      const a = audioRef.current;
+      if (!a) return;
+      a.currentTime = 0;
+      const p = a.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    } catch {}
+  }
+
+  async function trackEvent(event_type, extra = {}) {
+    try {
+      assertEnv();
+      await fetch(TRACK_URL, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          visitor_external_id: visitorId,
+          conversation_id: conversationId || null,
+          event_type,
+          pathname: pathname || window.location.pathname,
+          referrer: document.referrer || null,
+          meta: extra,
+          user_agent: navigator.userAgent,
+        }),
+      });
+    } catch {}
+  }
+
+  async function presencePing(event_type) {
+    try {
+      if (!conversationId) return;
+      assertEnv();
+      await fetch(PRESENCE_URL, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          conversation_id: conversationId,
+          event_type,
+          pathname: pathname || window.location.pathname,
+        }),
+      });
+    } catch {}
+  }
+
   function addIncoming(incoming = []) {
     if (!Array.isArray(incoming) || incoming.length === 0) return;
+
+    let shouldPingSound = false;
 
     setMessages((prev) => {
       const merged = [...prev];
       for (const m of incoming) {
         if (!m?.id) continue;
         if (seenIdsRef.current.has(m.id)) continue;
+
         seenIdsRef.current.add(m.id);
 
         merged.push({
@@ -236,9 +306,16 @@ export default function DomiChatWidget({ pathname = "/" }) {
           content: m.content || "",
           created_at: m.created_at || null,
         });
+
+        // sound only for bot/agent messages when chat open
+        if (open && (m.role === "bot" || m.role === "agent")) {
+          shouldPingSound = true;
+        }
       }
       return merged;
     });
+
+    if (shouldPingSound) playSoundSafely();
   }
 
   function replaceTmpIfNeeded(tmpId, realMsg) {
@@ -247,6 +324,22 @@ export default function DomiChatWidget({ pathname = "/" }) {
       prev.map((m) => (m.id === tmpId ? { ...m, id: realMsg.id, created_at: realMsg.created_at } : m))
     );
     seenIdsRef.current.add(realMsg.id);
+  }
+
+  async function unlockAudioOnce() {
+    if (audioUnlockedRef.current) return;
+    try {
+      const a = audioRef.current;
+      if (!a) return;
+
+      // attempt to unlock by playing silently once
+      a.volume = 0.0001;
+      await a.play().catch(() => {});
+      a.pause();
+      a.currentTime = 0;
+      a.volume = 1;
+      audioUnlockedRef.current = true;
+    } catch {}
   }
 
   async function startChat() {
@@ -273,6 +366,9 @@ export default function DomiChatWidget({ pathname = "/" }) {
 
     cursorRef.current = null;
     setConversationId(j.conversation_id);
+
+    // first presence ping
+    setTimeout(() => presencePing("heartbeat"), 0);
   }
 
   async function fetchNewMessages({ bootstrap = false } = {}) {
@@ -296,6 +392,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
     if (j?.cursor) cursorRef.current = j.cursor;
   }
 
+  // when open → start chat once
   useEffect(() => {
     if (!open) return;
 
@@ -310,26 +407,22 @@ export default function DomiChatWidget({ pathname = "/" }) {
       .then(() => scrollToBottom())
       .catch((e) => {
         startedRef.current = false;
-        setMessages((m) => [
-          ...m,
-          { id: `sys_${Date.now()}`, role: "system", content: String(e?.message || e) },
-        ]);
+        setMessages((m) => [...m, { id: `sys_${Date.now()}`, role: "system", content: String(e?.message || e) }]);
       });
   }, [open, conversationId, pathname]);
 
+  // scroll on new messages
   useEffect(() => {
     if (!open) return;
     scrollToBottom();
   }, [open, messages.length]);
 
+  // poll messages when open
   useEffect(() => {
     if (!open || !conversationId) return;
 
     fetchNewMessages({ bootstrap: true }).catch((e) => {
-      setMessages((m) => [
-        ...m,
-        { id: `sys_${Date.now()}`, role: "system", content: String(e?.message || e) },
-      ]);
+      setMessages((m) => [...m, { id: `sys_${Date.now()}`, role: "system", content: String(e?.message || e) }]);
     });
 
     pollRef.current = setInterval(() => {
@@ -343,6 +436,22 @@ export default function DomiChatWidget({ pathname = "/" }) {
     };
   }, [open, conversationId, busy]);
 
+  // presence heartbeat while open (every 25s)
+  useEffect(() => {
+    if (!open || !conversationId) return;
+
+    presencePing("heartbeat");
+    presenceTimerRef.current = setInterval(() => {
+      presencePing("heartbeat");
+    }, 25000);
+
+    return () => {
+      if (presenceTimerRef.current) clearInterval(presenceTimerRef.current);
+      presenceTimerRef.current = null;
+    };
+  }, [open, conversationId]);
+
+  // hint behavior (with pulse + optional sound once per session IF audio unlocked)
   useEffect(() => {
     if (open) return;
 
@@ -360,6 +469,12 @@ export default function DomiChatWidget({ pathname = "/" }) {
         sessionStorage.setItem(HINT_FLAG, "1");
       } catch {}
 
+      // Hint sound: only if user already unlocked audio in this session
+      if (!hintSoundPlayedRef.current && audioUnlockedRef.current && soundEnabled) {
+        hintSoundPlayedRef.current = true;
+        playSoundSafely();
+      }
+
       hintTimer2Ref.current = setTimeout(() => setShowHint(false), 8000);
     }, 4000);
 
@@ -369,17 +484,14 @@ export default function DomiChatWidget({ pathname = "/" }) {
       hintTimer1Ref.current = null;
       hintTimer2Ref.current = null;
     };
-  }, [open]);
+  }, [open, soundEnabled]);
 
   async function sendText(text, { source = "typed" } = {}) {
     const content = String(text || "").trim();
     if (!content || !conversationId || busy || closed) return;
 
     if (content.length > MAX_LEN) {
-      setMessages((m) => [
-        ...m,
-        { id: `sys_${Date.now()}`, role: "system", content: `Message too long (max ${MAX_LEN} chars).` },
-      ]);
+      setMessages((m) => [...m, { id: `sys_${Date.now()}`, role: "system", content: `Message too long (max ${MAX_LEN} chars).` }]);
       return;
     }
 
@@ -390,6 +502,9 @@ export default function DomiChatWidget({ pathname = "/" }) {
     setMessages((m) => [...m, { id: tmpId, role: "visitor", content }]);
     setBusy(true);
     setDraft("");
+
+    // typing stop (optional)
+    presencePing("heartbeat");
 
     const r = await fetch(CHAT_SEND_URL, {
       method: "POST",
@@ -405,10 +520,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
     setBusy(false);
 
     if (!r.ok) {
-      setMessages((m) => [
-        ...m,
-        { id: `sys_${Date.now()}`, role: "system", content: j?.error || "Send failed" },
-      ]);
+      setMessages((m) => [...m, { id: `sys_${Date.now()}`, role: "system", content: j?.error || "Send failed" }]);
       return;
     }
 
@@ -420,10 +532,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
       const botId = j.bot_message?.id || `bot_${Date.now()}`;
       if (!seenIdsRef.current.has(botId)) {
         seenIdsRef.current.add(botId);
-        setMessages((m) => [
-          ...m,
-          { id: botId, role: "bot", content: botText, created_at: j.bot_message?.created_at || null },
-        ]);
+        setMessages((m) => [...m, { id: botId, role: "bot", content: botText, created_at: j.bot_message?.created_at || null }]);
       }
       if (j.cursor) cursorRef.current = j.cursor;
       return;
@@ -443,6 +552,9 @@ export default function DomiChatWidget({ pathname = "/" }) {
             created_at: j.bot_message.created_at || null,
           },
         ]);
+
+        // sound for bot response
+        playSoundSafely();
       }
       if (j.cursor) cursorRef.current = j.cursor;
       return;
@@ -452,6 +564,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
       const botId = `bot_${Date.now()}`;
       seenIdsRef.current.add(botId);
       setMessages((m) => [...m, { id: botId, role: "bot", content: j.reply }]);
+      playSoundSafely();
     }
 
     if (j.cursor) cursorRef.current = j.cursor;
@@ -490,8 +603,43 @@ export default function DomiChatWidget({ pathname = "/" }) {
     window.location.href = buildMailto(DOMI.email, subject, body);
   }
 
+  function setSound(on) {
+    setSoundEnabled(on);
+    try {
+      localStorage.setItem("domi_chat_sound_v1", on ? "1" : "0");
+    } catch {}
+  }
+
+  // typing event (throttled)
+  function handleDraftChange(val) {
+    setDraft(val);
+
+    if (!open || !conversationId) return;
+
+    const now = Date.now();
+    const THROTTLE_MS = 1200;
+
+    // schedule typing stop when idle
+    if (typingIdleTimeoutRef.current) clearTimeout(typingIdleTimeoutRef.current);
+    typingIdleTimeoutRef.current = setTimeout(() => {
+      // no explicit stop needed; typing TTL naturally expires
+    }, 1400);
+
+    if (now - lastTypingSentAtRef.current < THROTTLE_MS) return;
+    lastTypingSentAtRef.current = now;
+
+    presencePing("typing");
+  }
+
+  const pulseClass = showHint ? "animate-[domiPulse_1.4s_ease-in-out_infinite]" : "";
+  // Add keyframes in your global CSS:
+  // @keyframes domiPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+
   return (
     <div className="fixed right-5 bottom-5 z-[9999]">
+      {/* audio element */}
+      <audio ref={audioRef} src={CHAT_SOUND_SRC} preload="auto" />
+
       {!open ? (
         <div className="relative">
           <div
@@ -509,11 +657,18 @@ export default function DomiChatWidget({ pathname = "/" }) {
           </div>
 
           <button
-            onClick={() => {
+            onClick={async () => {
               setShowHint(false);
               setOpen(true);
+
+              // unlock audio and notify chat_opened
+              await unlockAudioOnce();
+              await trackEvent("chat_opened", { source: "widget_button" });
             }}
-            className="relative h-[92px] w-[92px] md:h-[112px] md:w-[112px] transition-transform hover:scale-105"
+            className={cx(
+              "relative h-[92px] w-[92px] md:h-[112px] md:w-[112px] transition-transform hover:scale-105",
+              pulseClass
+            )}
             aria-label="Open chat"
             title="Chat"
           >
@@ -551,14 +706,24 @@ export default function DomiChatWidget({ pathname = "/" }) {
                 </div>
               </div>
 
-              <button
-                onClick={() => setOpen(false)}
-                className="h-10 w-10 rounded-2xl border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 transition grid place-items-center"
-                aria-label="Close chat"
-                title="Close"
-              >
-                ✕
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setSound(!soundEnabled)}
+                  className="h-10 px-3 rounded-2xl border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 transition text-xs"
+                  title={soundEnabled ? "Sound: On" : "Sound: Off"}
+                >
+                  {soundEnabled ? "🔊" : "🔇"}
+                </button>
+
+                <button
+                  onClick={() => setOpen(false)}
+                  className="h-10 w-10 rounded-2xl border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 transition grid place-items-center"
+                  aria-label="Close chat"
+                  title="Close"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
           </div>
 
@@ -637,7 +802,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
               <div className="flex gap-2">
                 <input
                   value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
+                  onChange={(e) => handleDraftChange(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") send();
                   }}
@@ -660,6 +825,10 @@ export default function DomiChatWidget({ pathname = "/" }) {
             <div className="mt-3 flex items-center justify-between text-[11px] text-white/45">
               <span>Powered by Domi AI</span>
               <span />
+            </div>
+
+            <div className="mt-2 text-[10px] text-white/35">
+              <span className="ml-1 font-mono">@keyframes domiPulse &#123; 0%,100%&#123;transform:scale(1)&#125; 50%&#123;transform:scale(1.04)&#125; &#125;</span>
             </div>
           </div>
         </div>

@@ -5,6 +5,9 @@ import { supabase } from "../../lib/supabaseClient";
 const CHAT_CLOSE_URL =
   "https://anyngvsepgjsvilmafhl.functions.supabase.co/chat-close";
 
+const AGENT_TAKEOVER_URL =
+  "https://anyngvsepgjsvilmafhl.functions.supabase.co/agent-takeover";
+
 function timeAgo(iso) {
   if (!iso) return "";
   const t = new Date(iso).getTime();
@@ -40,6 +43,60 @@ async function closeChat(conversationId) {
   return j;
 }
 
+async function takeoverChat(conversationId) {
+  const { data } = await supabase.auth.getSession();
+  const token = data?.session?.access_token;
+  if (!token) throw new Error("No session token. Please login again.");
+
+  const r = await fetch(AGENT_TAKEOVER_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ conversation_id: conversationId }),
+  });
+
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j?.error || "Takeover failed");
+  return j;
+}
+
+function modeBadgeClasses(mode) {
+  if (mode === "bot") return "border-sky-300/30 text-sky-200 bg-sky-400/10";
+  if (mode === "waiting_agent") return "border-amber-300/30 text-amber-200 bg-amber-400/10";
+  return "border-emerald-300/30 text-emerald-200 bg-emerald-400/10";
+}
+function modeLabel(mode) {
+  if (mode === "bot") return "BOT";
+  if (mode === "waiting_agent") return "WAITING";
+  return "LIVE";
+}
+
+function presenceState(convo) {
+  const last = convo?.visitor_last_seen_at ? new Date(convo.visitor_last_seen_at).getTime() : 0;
+  if (!last) return { label: "UNKNOWN", tone: "border-white/10 text-white/60 bg-white/5" };
+
+  const diff = (Date.now() - last) / 1000; // seconds
+
+  const typingUntil = convo?.visitor_typing_until ? new Date(convo.visitor_typing_until).getTime() : 0;
+  const isTyping = typingUntil && typingUntil > Date.now();
+
+  if (isTyping) {
+    return { label: "TYPING", tone: "border-purple-300/30 text-purple-200 bg-purple-400/10" };
+  }
+
+  if (diff <= 100) {
+    return { label: "ONLINE", tone: "border-emerald-300/30 text-emerald-200 bg-emerald-400/10" };
+  }
+
+  if (diff <= 300) {
+    return { label: "IDLE", tone: "border-amber-300/30 text-amber-200 bg-amber-400/10" };
+  }
+
+  return { label: "ABANDONED", tone: "border-red-300/30 text-red-200 bg-red-400/10" };
+}
+
 export default function AdminInbox() {
   const nav = useNavigate();
 
@@ -62,6 +119,7 @@ export default function AdminInbox() {
 
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
+  const [takingOver, setTakingOver] = useState(false);
 
   const bottomRef = useRef(null);
   const scrollToBottom = useCallback(() => {
@@ -111,10 +169,25 @@ export default function AdminInbox() {
       const { data, error } = await supabase
         .from("conversations")
         .select(
-          "id, created_at, last_message_at, status, mode, assigned_to, subject, visitor_id, account_id, site_id"
+          [
+            "id",
+            "created_at",
+            "last_message_at",
+            "status",
+            "mode",
+            "assigned_to",
+            "subject",
+            "visitor_id",
+            "account_id",
+            "site_id",
+            "visitor_last_seen_at",
+            "visitor_is_online",
+            "visitor_typing_until",
+            "abandoned_at",
+          ].join(",")
         )
         .eq("status", "open")
-        .in("mode", ["waiting_agent", "live"])
+        .in("mode", ["bot", "waiting_agent", "live"])
         .order("last_message_at", { ascending: false, nullsFirst: false })
         .limit(50);
 
@@ -122,14 +195,26 @@ export default function AdminInbox() {
 
       const uid = user.id;
       const filtered = (data || []).filter((c) => {
+        if (c.mode === "bot") return true;
         if (c.mode === "waiting_agent") return true;
         if (c.mode === "live") return !c.assigned_to || c.assigned_to === uid;
         return false;
       });
 
-      setConvos(filtered);
+      // Prioritize typing/online at top (nice UX)
+      const ranked = [...filtered].sort((a, b) => {
+        const pa = presenceState(a).label;
+        const pb = presenceState(b).label;
+        const score = (p) => (p === "TYPING" ? 4 : p === "ONLINE" ? 3 : p === "IDLE" ? 2 : p === "ABANDONED" ? 1 : 0);
+        const sa = score(pa);
+        const sb = score(pb);
+        if (sb !== sa) return sb - sa;
+        return new Date(b.last_message_at || b.created_at).getTime() - new Date(a.last_message_at || a.created_at).getTime();
+      });
 
-      if (activeId && !filtered.some((c) => c.id === activeId)) {
+      setConvos(ranked);
+
+      if (activeId && !ranked.some((c) => c.id === activeId)) {
         setActiveId("");
         setMsgs([]);
       }
@@ -179,19 +264,15 @@ export default function AdminInbox() {
     loadMessages(activeId);
   }, [activeId, loadMessages]);
 
- 
+  // realtime updates
   useEffect(() => {
     if (!user?.id) return;
 
     const listCh = supabase.channel("admin-inbox:conversations");
 
-    listCh.on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "conversations" },
-      () => {
-        loadConvos();
-      }
-    );
+    listCh.on("postgres_changes", { event: "*", schema: "public", table: "conversations" }, () => {
+      loadConvos();
+    });
 
     listCh.subscribe();
 
@@ -202,7 +283,6 @@ export default function AdminInbox() {
 
   useEffect(() => {
     if (!user?.id) return;
-
     if (!activeId) return;
 
     const msgCh = supabase.channel(`admin-inbox:messages:${activeId}`);
@@ -236,35 +316,29 @@ export default function AdminInbox() {
     };
   }, [user?.id, activeId, loadConvos, scrollToBottom]);
 
-  const acceptChat = useCallback(
+  const goLive = useCallback(
     async (c) => {
       if (!user?.id || !c?.id) return;
 
-      const ok = window.confirm("Accept this chat and go LIVE?");
+      const ok = window.confirm(`Go LIVE and take over this chat?\n\n(conversation: ${c.id})`);
       if (!ok) return;
 
       setListError("");
+      setTakingOver(true);
+
       try {
-        const { data, error } = await supabase
-          .from("conversations")
-          .update({ mode: "live", assigned_to: user.id })
-          .eq("id", c.id)
-          .eq("mode", "waiting_agent")
-          .is("assigned_to", null)
-          .select("id")
-          .maybeSingle();
-
-        if (error) throw error;
-        if (!data) throw new Error("Chat already accepted (or state changed).");
-
+        await takeoverChat(c.id);
         setActiveId(c.id);
         await loadConvos();
+        await loadMessages(c.id);
       } catch (e) {
         setListError(e?.message || String(e));
         await loadConvos();
+      } finally {
+        setTakingOver(false);
       }
     },
-    [user?.id, loadConvos]
+    [user?.id, loadConvos, loadMessages]
   );
 
   const sendAgentMessage = useCallback(async () => {
@@ -287,7 +361,6 @@ export default function AdminInbox() {
       });
 
       if (error) throw error;
-
       setDraft("");
     } catch (e) {
       setMsgsError(e?.message || String(e));
@@ -301,14 +374,9 @@ export default function AdminInbox() {
     nav("/admin/login");
   }, [nav]);
 
-  const waitingCount = useMemo(
-    () => convos.filter((c) => c.mode === "waiting_agent").length,
-    [convos]
-  );
-  const liveCount = useMemo(
-    () => convos.filter((c) => c.mode === "live").length,
-    [convos]
-  );
+  const botCount = useMemo(() => convos.filter((c) => c.mode === "bot").length, [convos]);
+  const waitingCount = useMemo(() => convos.filter((c) => c.mode === "waiting_agent").length, [convos]);
+  const liveCount = useMemo(() => convos.filter((c) => c.mode === "live").length, [convos]);
 
   if (loadingUser) {
     return (
@@ -320,17 +388,16 @@ export default function AdminInbox() {
 
   return (
     <div className="min-h-screen p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-6">
         <aside className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md p-5">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h1 className="text-2xl font-semibold text-white">Admin Inbox</h1>
-              <p className="mt-1 text-sm text-white/60">
-                Logged in: {user?.email || "—"}
-              </p>
+              <p className="mt-1 text-sm text-white/60">Logged in: {user?.email || "—"}</p>
               <p className="mt-2 text-xs text-white/40">
-                waiting: {waitingCount} • live: {liveCount}
+                bot: {botCount} • waiting: {waitingCount} • live: {liveCount}
               </p>
+              {takingOver ? <p className="mt-2 text-xs text-white/60">Taking over…</p> : null}
             </div>
 
             <div className="flex gap-2">
@@ -349,80 +416,56 @@ export default function AdminInbox() {
             </div>
           </div>
 
-          {listError ? (
-            <div className="mt-4 text-sm text-red-300">{listError}</div>
-          ) : null}
+          {listError ? <div className="mt-4 text-sm text-red-300">{listError}</div> : null}
 
           <div className="mt-5 space-y-3">
-            {loadingList ? (
-              <div className="text-white/60 text-sm">Loading chats…</div>
-            ) : null}
+            {loadingList ? <div className="text-white/60 text-sm">Loading chats…</div> : null}
             {!loadingList && convos.length === 0 ? (
-              <div className="text-white/60 text-sm">
-                No waiting/live chats yet.
-              </div>
+              <div className="text-white/60 text-sm">No open chats yet.</div>
             ) : null}
 
             {convos.map((c) => {
               const isActive = c.id === activeId;
-              const isWaiting = c.mode === "waiting_agent";
-              const isLive = c.mode === "live";
               const mine = !!c.assigned_to && c.assigned_to === user?.id;
+              const presence = presenceState(c);
 
               return (
                 <div
                   key={c.id}
                   className={[
                     "rounded-2xl border p-4 transition",
-                    isActive
-                      ? "border-white/30 bg-white/10"
-                      : "border-white/10 bg-white/5 hover:bg-white/10",
+                    isActive ? "border-white/30 bg-white/10" : "border-white/10 bg-white/5 hover:bg-white/10",
                   ].join(" ")}
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <button
-                      onClick={() => setActiveId(c.id)}
-                      className="text-left flex-1"
-                      title={c.id}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={[
-                            "text-xs font-bold px-2 py-1 rounded-full border",
-                            isWaiting
-                              ? "border-amber-300/30 text-amber-200 bg-amber-400/10"
-                              : "border-emerald-300/30 text-emerald-200 bg-emerald-400/10",
-                          ].join(" ")}
-                        >
-                          {isWaiting ? "WAITING" : "LIVE"}
+                    <button onClick={() => setActiveId(c.id)} className="text-left flex-1" title={c.id}>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={["text-xs font-bold px-2 py-1 rounded-full border", modeBadgeClasses(c.mode)].join(" ")}>
+                          {modeLabel(c.mode)}
                         </span>
-                        {isLive && mine ? (
-                          <span className="text-xs text-white/70">
-                            assigned to you
-                          </span>
-                        ) : null}
+
+                        <span className={["text-xs font-bold px-2 py-1 rounded-full border", presence.tone].join(" ")}>
+                          {presence.label}
+                        </span>
+
+                        {c.mode === "live" && mine ? <span className="text-xs text-white/70">assigned to you</span> : null}
                       </div>
 
-                      <div className="mt-2 text-sm text-white/80 break-all">
-                        {c.subject ? c.subject : c.id}
-                      </div>
+                      <div className="mt-2 text-sm text-white/80 break-all">{c.subject ? c.subject : c.id}</div>
+
                       <div className="mt-2 text-xs text-white/50">
-                        {timeAgo(c.last_message_at || c.created_at)}
-                      </div>
-                      <div className="mt-2 text-xs text-white/40">
-                        assigned_to:{" "}
-                        {c.assigned_to
-                          ? String(c.assigned_to).slice(0, 8) + "…"
-                          : "—"}
+                        {timeAgo(c.last_message_at || c.created_at)}{" "}
+                        {c.visitor_last_seen_at ? `• last seen ${timeAgo(c.visitor_last_seen_at)}` : ""}
                       </div>
                     </button>
 
-                    {isWaiting ? (
+                    {(c.mode === "bot" || c.mode === "waiting_agent") ? (
                       <button
-                        onClick={() => acceptChat(c)}
-                        className="shrink-0 px-3 py-2 rounded-xl bg-emerald-500/15 text-emerald-200 border border-emerald-300/20 hover:bg-emerald-500/25"
+                        onClick={() => goLive(c)}
+                        className="shrink-0 px-3 py-2 rounded-xl bg-emerald-500/15 text-emerald-200 border border-emerald-300/20 hover:bg-emerald-500/25 disabled:opacity-60"
+                        disabled={takingOver}
                       >
-                        Accept
+                        Go LIVE
                       </button>
                     ) : null}
                   </div>
@@ -440,18 +483,14 @@ export default function AdminInbox() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-white font-semibold">Conversation</div>
-                  <div className="mt-1 text-xs text-white/50 break-all">
-                    {activeConvo.id}
+                  <div className="mt-1 text-xs text-white/50 break-all">{activeConvo.id}</div>
+                  <div className="mt-2 text-xs text-white/60">
+                    mode: <span className="text-white/80 font-semibold">{activeConvo.mode}</span> • status:{" "}
+                    <span className="text-white/80 font-semibold">{activeConvo.status}</span>
                   </div>
                   <div className="mt-2 text-xs text-white/60">
-                    mode:{" "}
-                    <span className="text-white/80 font-semibold">
-                      {activeConvo.mode}
-                    </span>{" "}
-                    • status:{" "}
-                    <span className="text-white/80 font-semibold">
-                      {activeConvo.status}
-                    </span>
+                    presence:{" "}
+                    <span className="text-white/80 font-semibold">{presenceState(activeConvo).label}</span>
                   </div>
                 </div>
 
@@ -462,6 +501,27 @@ export default function AdminInbox() {
                   >
                     Refresh messages
                   </button>
+
+                  {(activeConvo.mode === "bot" || activeConvo.mode === "waiting_agent") && (
+                    <button
+                      onClick={async () => {
+                        try {
+                          setTakingOver(true);
+                          await takeoverChat(activeConvo.id);
+                          await loadConvos();
+                          await loadMessages(activeConvo.id);
+                        } catch (e) {
+                          alert(e?.message || String(e));
+                        } finally {
+                          setTakingOver(false);
+                        }
+                      }}
+                      className="px-3 py-2 rounded-xl border border-emerald-300/20 bg-emerald-500/10 text-emerald-100 hover:bg-emerald-500/20 disabled:opacity-60"
+                      disabled={takingOver}
+                    >
+                      {takingOver ? "Taking over…" : "Go LIVE (take over)"}
+                    </button>
+                  )}
 
                   <button
                     onClick={async () => {
@@ -483,15 +543,9 @@ export default function AdminInbox() {
               </div>
 
               <div className="mt-4 flex-1 overflow-auto rounded-2xl border border-white/10 bg-black/20 p-4">
-                {loadingMsgs ? (
-                  <div className="text-white/60 text-sm">Loading messages…</div>
-                ) : null}
-                {msgsError ? (
-                  <div className="text-sm text-red-300">{msgsError}</div>
-                ) : null}
-                {!loadingMsgs && msgs.length === 0 ? (
-                  <div className="text-white/60 text-sm">No messages yet.</div>
-                ) : null}
+                {loadingMsgs ? <div className="text-white/60 text-sm">Loading messages…</div> : null}
+                {msgsError ? <div className="text-sm text-red-300">{msgsError}</div> : null}
+                {!loadingMsgs && msgs.length === 0 ? <div className="text-white/60 text-sm">No messages yet.</div> : null}
 
                 <div className="space-y-3">
                   {msgs.map((m) => {
@@ -511,17 +565,11 @@ export default function AdminInbox() {
                       >
                         <div className="text-xs opacity-70 flex items-center justify-between gap-3">
                           <span className="font-semibold">
-                            {m.role === "visitor"
-                              ? "Visitor"
-                              : m.role === "agent"
-                              ? "Agent"
-                              : "Bot"}
+                            {m.role === "visitor" ? "Visitor" : m.role === "agent" ? "Agent" : "Bot"}
                           </span>
-                          <span>{new Date(m.created_at).toLocaleString()}</span>
+                          <span>{m.created_at ? new Date(m.created_at).toLocaleString() : ""}</span>
                         </div>
-                        <div className="mt-2 text-sm whitespace-pre-wrap">
-                          {m.content}
-                        </div>
+                        <div className="mt-2 text-sm whitespace-pre-wrap">{m.content}</div>
                       </div>
                     );
                   })}
@@ -539,11 +587,7 @@ export default function AdminInbox() {
                       sendAgentMessage();
                     }
                   }}
-                  placeholder={
-                    activeConvo.mode === "live"
-                      ? "Type a message…"
-                      : "Accept the chat to go live…"
-                  }
+                  placeholder={activeConvo.mode === "live" ? "Type a message…" : "Go LIVE to reply as agent…"}
                   disabled={sending || activeConvo.mode !== "live"}
                   className="flex-1 rounded-2xl px-4 py-3 bg-black/20 border border-white/10 text-white placeholder:text-white/40 outline-none focus:border-white/25 disabled:opacity-60"
                 />

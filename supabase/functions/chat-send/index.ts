@@ -30,6 +30,38 @@ async function callAiReply(params: { message: string; conversation_id: string; p
   return data as { reply: string; request_live_agent: boolean };
 }
 
+async function fireTrackEvent(params: {
+  site_key: string;
+  visitor_external_id: string;
+  event_type: string;
+  pathname?: string;
+  conversation_id?: string;
+  referrer?: string | null;
+  meta?: Record<string, unknown>;
+}) {
+  const url = Deno.env.get("TRACK_URL") || "";
+  const shared = Deno.env.get("DOMI_AI_SHARED_SECRET") || "";
+  if (!url) return; // allow running without tracker
+  if (!shared) return;
+
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-site-key": params.site_key,
+      "x-domi-secret": shared,
+    },
+    body: JSON.stringify({
+      visitor_external_id: params.visitor_external_id,
+      event_type: params.event_type,
+      pathname: params.pathname || null,
+      conversation_id: params.conversation_id || null,
+      referrer: params.referrer || null,
+      meta: params.meta || {},
+    }),
+  }).catch(() => {});
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return json({ ok: true });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -50,7 +82,6 @@ Deno.serve(async (req) => {
 
   const conversationId = String(body?.conversation_id || "").trim();
   const content = String(body?.message || "").trim();
-
   const pathname = String(body?.meta?.pathname || body?.pathname || "").trim();
 
   if (!conversationId || !content) {
@@ -70,7 +101,7 @@ Deno.serve(async (req) => {
 
   const { data: convo, error: cErr } = await sb
     .from("conversations")
-    .select("id, account_id, site_id, mode, status")
+    .select("id, account_id, site_id, mode, status, visitor_id")
     .eq("id", conversationId)
     .maybeSingle();
 
@@ -95,6 +126,15 @@ Deno.serve(async (req) => {
   if (!site.is_active) return json({ error: "Site inactive" }, 403);
   if (site.site_key !== siteKey) return json({ error: "Invalid site_key for conversation" }, 403);
 
+  // fetch visitor external_id for tracking
+  const { data: visitor, error: vErr } = await sb
+    .from("visitors")
+    .select("external_id")
+    .eq("id", convo.visitor_id)
+    .maybeSingle();
+
+  const visitorExternalId = visitor?.external_id || "";
+
   const { data: visitorMsg, error: mErr } = await sb
     .from("messages")
     .insert({
@@ -112,6 +152,18 @@ Deno.serve(async (req) => {
   }
 
   await sb.from("conversations").update({ last_message_at: visitorMsg.created_at }).eq("id", convo.id);
+
+  // Track message_sent (best effort)
+  if (visitorExternalId) {
+    await fireTrackEvent({
+      site_key: siteKey,
+      visitor_external_id: visitorExternalId,
+      event_type: "message_sent",
+      pathname,
+      conversation_id: convo.id,
+      meta: {},
+    });
+  }
 
   if (convo.mode === "live") {
     return json({
@@ -159,6 +211,18 @@ Deno.serve(async (req) => {
   if (ai.request_live_agent && convo.mode !== "waiting_agent") {
     newMode = "waiting_agent";
     await sb.from("conversations").update({ mode: newMode }).eq("id", convo.id);
+
+    // Track agent_requested (and will email)
+    if (visitorExternalId) {
+      await fireTrackEvent({
+        site_key: siteKey,
+        visitor_external_id: visitorExternalId,
+        event_type: "agent_requested",
+        pathname,
+        conversation_id: convo.id,
+        meta: { source: "ai" },
+      });
+    }
   }
 
   await sb.from("conversations").update({ last_message_at: botMsg.created_at }).eq("id", convo.id);

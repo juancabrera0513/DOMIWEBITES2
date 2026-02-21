@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import useDomiTracker from "./hooks/useDomiTracker";
 
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -33,6 +34,8 @@ export default function App() {
   const { pathname } = useLocation();
 
   const hideChat = pathname.startsWith("/admin");
+
+  useDomiTracker();
 
   return (
     <div className="min-h-screen relative overflow-hidden nexus-bg hero-grid">
