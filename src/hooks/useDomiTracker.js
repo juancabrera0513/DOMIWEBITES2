@@ -37,13 +37,6 @@ export default function useDomiTracker() {
   useEffect(() => {
     if (!FUNCTIONS_BASE || !SITE_KEY || !DOMI_SECRET) return;
 
-    console.log("TRACK CONFIG", {
-        hasBase: !!FUNCTIONS_BASE,
-        hasSiteKey: !!SITE_KEY,
-        secretLen: (DOMI_SECRET || "").length,
-        trackUrl: TRACK_URL,
-      });
-
     fetch(TRACK_URL, {
       method: "POST",
       headers: {

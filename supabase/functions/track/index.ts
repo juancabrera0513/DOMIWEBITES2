@@ -22,7 +22,6 @@ function mustEnv(name: string) {
 }
 
 function getClientIp(req: Request): string {
-  // Cloudflare / proxies
   const cf = req.headers.get("cf-connecting-ip");
   if (cf) return cf.trim();
 
@@ -133,7 +132,6 @@ Deno.serve(async (req) => {
     if (siteErr || !site) return json({ error: "Invalid site_key" }, 404);
     if (!site.is_active) return json({ error: "Site inactive" }, 403);
 
-    // Upsert visitor (store ip_hash if available)
     const { data: visitor, error: vErr } = await sb
       .from("visitors")
       .upsert(
@@ -151,7 +149,6 @@ Deno.serve(async (req) => {
 
     if (vErr || !visitor) return json({ error: "Visitor upsert failed", details: vErr?.message }, 500);
 
-    // Insert event
     const { error: eErr } = await sb.from("visitor_events").insert({
       site_id: site.id,
       visitor_id: visitor.id,
@@ -167,7 +164,6 @@ Deno.serve(async (req) => {
 
     if (eErr) return json({ error: "Event insert failed", details: eErr.message }, 500);
 
-    // Notify by email for chat_opened and agent_requested
     if (eventType === "chat_opened" || eventType === "agent_requested") {
       const to = Deno.env.get("NOTIFY_EMAIL_TO") || "admin@domiwebsites.com";
       const from = Deno.env.get("RESEND_FROM") || "Domi AI <no-reply@domiwebsites.com>";

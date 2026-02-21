@@ -70,9 +70,7 @@ function renderMessageContent(raw = "") {
     const full = match[0];
     const index = match.index;
 
-    if (index > lastIndex) {
-      nodes.push(text.slice(lastIndex, index));
-    }
+    if (index > lastIndex) nodes.push(text.slice(lastIndex, index));
 
     const lower = full.toLowerCase();
 
@@ -170,13 +168,11 @@ export default function DomiChatWidget({ pathname = "/" }) {
   const cursorRef = useRef(null);
   const seenIdsRef = useRef(new Set(["seed"]));
 
-  // hint
   const [showHint, setShowHint] = useState(false);
   const hintTimer1Ref = useRef(null);
   const hintTimer2Ref = useRef(null);
   const HINT_FLAG = "domi_ai_hint_shown_v2";
 
-  // sound
   const [soundEnabled, setSoundEnabled] = useState(() => {
     try {
       const v = localStorage.getItem("domi_chat_sound_v1");
@@ -189,9 +185,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
   const audioUnlockedRef = useRef(false);
   const hintSoundPlayedRef = useRef(false);
 
-  // typing & presence
   const presenceTimerRef = useRef(null);
-  const typingTimerRef = useRef(null);
   const lastTypingSentAtRef = useRef(0);
   const typingIdleTimeoutRef = useRef(null);
 
@@ -307,7 +301,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
           created_at: m.created_at || null,
         });
 
-        // sound only for bot/agent messages when chat open
         if (open && (m.role === "bot" || m.role === "agent")) {
           shouldPingSound = true;
         }
@@ -332,7 +325,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
       const a = audioRef.current;
       if (!a) return;
 
-      // attempt to unlock by playing silently once
       a.volume = 0.0001;
       await a.play().catch(() => {});
       a.pause();
@@ -367,7 +359,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
     cursorRef.current = null;
     setConversationId(j.conversation_id);
 
-    // first presence ping
     setTimeout(() => presencePing("heartbeat"), 0);
   }
 
@@ -392,7 +383,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
     if (j?.cursor) cursorRef.current = j.cursor;
   }
 
-  // when open → start chat once
   useEffect(() => {
     if (!open) return;
 
@@ -411,13 +401,11 @@ export default function DomiChatWidget({ pathname = "/" }) {
       });
   }, [open, conversationId, pathname]);
 
-  // scroll on new messages
   useEffect(() => {
     if (!open) return;
     scrollToBottom();
   }, [open, messages.length]);
 
-  // poll messages when open
   useEffect(() => {
     if (!open || !conversationId) return;
 
@@ -436,7 +424,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
     };
   }, [open, conversationId, busy]);
 
-  // presence heartbeat while open (every 25s)
   useEffect(() => {
     if (!open || !conversationId) return;
 
@@ -451,7 +438,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
     };
   }, [open, conversationId]);
 
-  // hint behavior (with pulse + optional sound once per session IF audio unlocked)
   useEffect(() => {
     if (open) return;
 
@@ -469,7 +455,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
         sessionStorage.setItem(HINT_FLAG, "1");
       } catch {}
 
-      // Hint sound: only if user already unlocked audio in this session
       if (!hintSoundPlayedRef.current && audioUnlockedRef.current && soundEnabled) {
         hintSoundPlayedRef.current = true;
         playSoundSafely();
@@ -491,7 +476,10 @@ export default function DomiChatWidget({ pathname = "/" }) {
     if (!content || !conversationId || busy || closed) return;
 
     if (content.length > MAX_LEN) {
-      setMessages((m) => [...m, { id: `sys_${Date.now()}`, role: "system", content: `Message too long (max ${MAX_LEN} chars).` }]);
+      setMessages((m) => [
+        ...m,
+        { id: `sys_${Date.now()}`, role: "system", content: `Message too long (max ${MAX_LEN} chars).` },
+      ]);
       return;
     }
 
@@ -503,7 +491,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
     setBusy(true);
     setDraft("");
 
-    // typing stop (optional)
     presencePing("heartbeat");
 
     const r = await fetch(CHAT_SEND_URL, {
@@ -532,7 +519,10 @@ export default function DomiChatWidget({ pathname = "/" }) {
       const botId = j.bot_message?.id || `bot_${Date.now()}`;
       if (!seenIdsRef.current.has(botId)) {
         seenIdsRef.current.add(botId);
-        setMessages((m) => [...m, { id: botId, role: "bot", content: botText, created_at: j.bot_message?.created_at || null }]);
+        setMessages((m) => [
+          ...m,
+          { id: botId, role: "bot", content: botText, created_at: j.bot_message?.created_at || null },
+        ]);
       }
       if (j.cursor) cursorRef.current = j.cursor;
       return;
@@ -553,7 +543,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
           },
         ]);
 
-        // sound for bot response
         playSoundSafely();
       }
       if (j.cursor) cursorRef.current = j.cursor;
@@ -610,7 +599,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
     } catch {}
   }
 
-  // typing event (throttled)
   function handleDraftChange(val) {
     setDraft(val);
 
@@ -619,11 +607,8 @@ export default function DomiChatWidget({ pathname = "/" }) {
     const now = Date.now();
     const THROTTLE_MS = 1200;
 
-    // schedule typing stop when idle
     if (typingIdleTimeoutRef.current) clearTimeout(typingIdleTimeoutRef.current);
-    typingIdleTimeoutRef.current = setTimeout(() => {
-      // no explicit stop needed; typing TTL naturally expires
-    }, 1400);
+    typingIdleTimeoutRef.current = setTimeout(() => {}, 1400);
 
     if (now - lastTypingSentAtRef.current < THROTTLE_MS) return;
     lastTypingSentAtRef.current = now;
@@ -631,13 +616,10 @@ export default function DomiChatWidget({ pathname = "/" }) {
     presencePing("typing");
   }
 
-  const pulseClass = showHint ? "animate-[domiPulse_1.4s_ease-in-out_infinite]" : "";
-  // Add keyframes in your global CSS:
-  // @keyframes domiPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+  const pulseClass = showHint ? "animate-pulse" : "";
 
   return (
     <div className="fixed right-5 bottom-5 z-[9999]">
-      {/* audio element */}
       <audio ref={audioRef} src={CHAT_SOUND_SRC} preload="auto" />
 
       {!open ? (
@@ -660,8 +642,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
             onClick={async () => {
               setShowHint(false);
               setOpen(true);
-
-              // unlock audio and notify chat_opened
               await unlockAudioOnce();
               await trackEvent("chat_opened", { source: "widget_button" });
             }}
@@ -727,7 +707,17 @@ export default function DomiChatWidget({ pathname = "/" }) {
             </div>
           </div>
 
-          <div ref={listRef} className="px-4 py-4 h-[420px] overflow-auto space-y-3">
+          <div className="relative px-4 py-4 h-[420px] overflow-auto space-y-3" ref={listRef}>
+            {outsideHours && (
+              <div className="sticky top-0 z-10 -mt-2 mb-3">
+                <div className="rounded-2xl border border-white/10 bg-black/55 backdrop-blur-xl px-4 py-3 text-[12px] text-white/75 shadow-lg">
+                  <div className="font-semibold text-white/85">Outside business hours.</div>
+                  <div className="mt-0.5">Text us anytime — we’ll reply ASAP.</div>
+                  <div className="mt-1 text-white/50">Mon–Fri 9 AM–6 PM • Sat 9 AM–12 PM • Sun Closed</div>
+                </div>
+              </div>
+            )}
+
             {messages.map((m) => {
               const isVisitor = m.role === "visitor";
               const isBot = m.role === "bot";
@@ -783,14 +773,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
           </div>
 
           <div className="px-4 py-4 border-t border-white/10">
-            {outsideHours && (
-              <div className="mb-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-[12px] text-white/70">
-                <div className="font-semibold text-white/80">We’re currently outside business hours.</div>
-                <div className="mt-0.5">Text us anytime — we’ll reply ASAP.</div>
-                <div className="mt-1 text-white/50">Mon–Fri 9 AM–6 PM • Sat 9 AM–12 PM • Sun Closed</div>
-              </div>
-            )}
-
             {closed ? (
               <button
                 onClick={startNewChat}
@@ -825,10 +807,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
             <div className="mt-3 flex items-center justify-between text-[11px] text-white/45">
               <span>Powered by Domi AI</span>
               <span />
-            </div>
-
-            <div className="mt-2 text-[10px] text-white/35">
-              <span className="ml-1 font-mono">@keyframes domiPulse &#123; 0%,100%&#123;transform:scale(1)&#125; 50%&#123;transform:scale(1.04)&#125; &#125;</span>
             </div>
           </div>
         </div>

@@ -22,6 +22,60 @@ function mustEnv(name: string) {
 type OpenAIRole = "system" | "user" | "assistant";
 type Msg = { role: OpenAIRole; content: string };
 
+const DOMI = {
+  company: "Domi Websites",
+  city: "St. Louis, MO",
+  tz: "America/Chicago",
+  phone: "(314) 376-9667",
+  email: "admin@domiwebsites.com",
+  calendly: "https://calendly.com/domiwebsites/30min",
+  hours: {
+    mon: [9, 18],
+    tue: [9, 18],
+    wed: [9, 18],
+    thu: [9, 18],
+    fri: [9, 18],
+    sat: [9, 12],
+    sun: null as null | [number, number],
+  },
+};
+
+function getStlParts(now = new Date()) {
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone: DOMI.tz,
+    weekday: "short",
+    hour: "2-digit",
+    hour12: false,
+  });
+
+  const parts = dtf.formatToParts(now);
+  const weekday = (parts.find((p) => p.type === "weekday")?.value || "").toLowerCase();
+  const hourStr = parts.find((p) => p.type === "hour")?.value || "";
+  const hour = Number(hourStr);
+
+  return { weekday, hour: Number.isFinite(hour) ? hour : now.getUTCHours() };
+}
+
+function isWithinBusinessHoursSTL(now = new Date()) {
+  const { weekday, hour } = getStlParts(now);
+  const map: Record<string, keyof typeof DOMI.hours> = {
+    sun: "sun",
+    mon: "mon",
+    tue: "tue",
+    wed: "wed",
+    thu: "thu",
+    fri: "fri",
+    sat: "sat",
+  };
+
+  const key = map[weekday.slice(0, 3)] || "mon";
+  const range = DOMI.hours[key];
+  if (!range) return false;
+
+  const [start, end] = range;
+  return hour >= start && hour < end;
+}
+
 function isSpanish(text: string) {
   const t = (text || "").toLowerCase();
   return (
@@ -73,7 +127,8 @@ function detectPurchaseSignals(text: string, pathname: string) {
     t.includes("agente") ||
     t.includes("contactar") ||
     t.includes("contact") ||
-    t.includes("call me");
+    t.includes("call me") ||
+    t.includes("agent");
 
   return { strong, askHuman };
 }
@@ -90,19 +145,20 @@ function isContactQuestion(text: string) {
     t.includes("sales team") ||
     t.includes("equipo de ventas") ||
     t.includes("representative") ||
-    t.includes("agente")
+    t.includes("agente") ||
+    t.includes("agent")
   );
 }
 
-function systemPrompt(pathname: string, lang: "es" | "en") {
+function systemPrompt(pathname: string, lang: "es" | "en", withinHours: boolean) {
   const baseFacts = `
 BUSINESS FACTS (must be accurate):
-- Company: Domi Websites
-- Location: St. Louis, MO (serving local businesses)
-- Phone / WhatsApp / Text: (314) 376-9667
-- Email: admin@domiwebsites.com
-- Booking: https://calendly.com/domiwebsites/30min
-- Hours: Mon–Fri 9 AM–6 PM, Sat 9 AM–12 PM, Sun Closed
+- Company: ${DOMI.company}
+- Location: ${DOMI.city} (serving local businesses)
+- Phone / WhatsApp / Text: ${DOMI.phone}
+- Email: ${DOMI.email}
+- Booking: ${DOMI.calendly}
+- Hours: Mon–Fri 9 AM–6 PM, Sat 9 AM–12 PM, Sun Closed (St. Louis time)
 - We are NOT only websites: we do custom software + systems.
 
 KNOWN PRICING (do not invent):
@@ -111,6 +167,14 @@ KNOWN PRICING (do not invent):
 - Ongoing Growth: monthly retainer (quote after discovery)
 SEO: scoped based on goals/competition; can be part of a plan or quoted separately. DO NOT invent ranges.
 `.trim();
+
+  const hoursRuleEn = withinHours
+    ? `If the user explicitly asks for a person/agent, you may set request_live_agent=true.`
+    : `We are currently OUTSIDE business hours. Do NOT say you will connect them to a live agent now. Instead: tell them we're closed, share WhatsApp/Text + Email + Booking, and say we'll reply ASAP during business hours. request_live_agent MUST be false while closed.`;
+
+  const hoursRuleEs = withinHours
+    ? `Si el usuario pide explícitamente agente/persona/ventas, puedes marcar request_live_agent=true.`
+    : `Ahora mismo estamos FUERA de horario. NO digas que lo conectarás con un agente en vivo ahora. En su lugar: di que estamos cerrados, comparte WhatsApp/Text + Email + Calendly, y que responderemos ASAP en horario. request_live_agent DEBE ser false mientras estemos cerrados.`;
 
   const rulesEn = `
 You are "Domi AI" for Domi Websites.
@@ -128,6 +192,7 @@ CRITICAL RULES:
 7) If there are purchase signals (pricing, timeline, ready to start, quote):
    Offer to connect them with a person *inside this chat* OR give WhatsApp/Text + Email + Calendly.
    Only set request_live_agent=true when they explicitly ask for a person/agent or sales.
+8) ${hoursRuleEn}
 
 Current page pathname: "${pathname || "/"}"
 `.trim();
@@ -148,6 +213,7 @@ REGLAS CRÍTICAS:
 7) Si hay intención de compra (precio, timeline, cotizar, listo para empezar):
    Ofrece conectar con una persona *en este mismo chat* o dar WhatsApp/Email/Calendly.
    Solo marca request_live_agent=true si el usuario pide explícitamente agente/persona/ventas.
+8) ${hoursRuleEs}
 
 Página actual: "${pathname || "/"}"
 `.trim();
@@ -185,6 +251,21 @@ async function openaiChat(messages: Msg[]) {
   return String(text).trim();
 }
 
+function contactReply(lang: "es" | "en", withinHours: boolean) {
+  if (lang === "es") {
+    if (!withinHours) {
+      return `Ahora mismo estamos fuera de horario (hora de St. Louis). Puedes escribirnos y te respondemos ASAP:\n\n• WhatsApp/Text: ${DOMI.phone}\n• Email: ${DOMI.email}\n• Agenda 30 min: ${DOMI.calendly}\n\nHorario: Lun–Vie 9 AM–6 PM • Sáb 9 AM–12 PM • Dom cerrado.`;
+    }
+    return `Puedes contactarnos así:\n\n• WhatsApp/Text: ${DOMI.phone}\n• Email: ${DOMI.email}\n• Agenda 30 min: ${DOMI.calendly}\n\nSi quieres, dime “agente” y te conecto con una persona aquí mismo en el chat.`;
+  }
+
+  if (!withinHours) {
+    return `We’re currently outside business hours (St. Louis time). Message us anytime and we’ll reply ASAP:\n\n• WhatsApp/Text: ${DOMI.phone}\n• Email: ${DOMI.email}\n• Book 30 min: ${DOMI.calendly}\n\nHours: Mon–Fri 9 AM–6 PM • Sat 9 AM–12 PM • Sun closed.`;
+  }
+
+  return `You can reach us here:\n\n• WhatsApp/Text: ${DOMI.phone}\n• Email: ${DOMI.email}\n• Book 30 min: ${DOMI.calendly}\n\nIf you want, say “agent” and I’ll connect you with a person right here in this chat.`;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return json({ ok: true });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -207,20 +288,16 @@ Deno.serve(async (req) => {
   if (!message) return json({ error: "message required" }, 400);
 
   const lang: "es" | "en" = isSpanish(message) ? "es" : "en";
+  const withinHours = isWithinBusinessHoursSTL(new Date());
 
   if (isContactQuestion(message)) {
-    const reply =
-      lang === "es"
-        ? `Puedes contactarnos así:\n\n• WhatsApp/Text: (314) 376-9667\n• Email: admin@domiwebsites.com\n• Agenda 30 min: https://calendly.com/domiwebsites/30min\n\nSi quieres, dime “agente” y te conecto con una persona aquí mismo en el chat.`
-        : `You can reach us here:\n\n• WhatsApp/Text: (314) 376-9667\n• Email: admin@domiwebsites.com\n• Book 30 min: https://calendly.com/domiwebsites/30min\n\nIf you want, say “agent” and I’ll connect you with a person right here in this chat.`;
-
+    const reply = contactReply(lang, withinHours);
     const { askHuman } = detectPurchaseSignals(message, pathname);
-    return json({ reply, request_live_agent: askHuman });
+    return json({ reply, request_live_agent: withinHours ? askHuman : false });
   }
 
   const supabaseUrl = mustEnv("SUPABASE_URL");
-  const serviceKey =
-    Deno.env.get("SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+  const serviceKey = Deno.env.get("SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
   if (!serviceKey) return json({ error: "Missing env: SERVICE_ROLE_KEY" }, 500);
 
   const sb = createClient(supabaseUrl, serviceKey);
@@ -255,7 +332,7 @@ Deno.serve(async (req) => {
       : "";
 
   const msgs: Msg[] = [
-    { role: "system", content: systemPrompt(pathname, lang) + (purchaseNudge ? `\n\n${purchaseNudge}` : "") },
+    { role: "system", content: systemPrompt(pathname, lang, withinHours) + (purchaseNudge ? `\n\n${purchaseNudge}` : "") },
     ...history.slice(-12),
     { role: "user", content: message },
   ];
@@ -269,6 +346,6 @@ Deno.serve(async (req) => {
 
   return json({
     reply,
-    request_live_agent: askHuman,
+    request_live_agent: withinHours ? askHuman : false,
   });
 });

@@ -41,7 +41,7 @@ async function fireTrackEvent(params: {
 }) {
   const url = Deno.env.get("TRACK_URL") || "";
   const shared = Deno.env.get("DOMI_AI_SHARED_SECRET") || "";
-  if (!url) return; // allow running without tracker
+  if (!url) return;
   if (!shared) return;
 
   await fetch(url, {
@@ -126,7 +126,6 @@ Deno.serve(async (req) => {
   if (!site.is_active) return json({ error: "Site inactive" }, 403);
   if (site.site_key !== siteKey) return json({ error: "Invalid site_key for conversation" }, 403);
 
-  // fetch visitor external_id for tracking
   const { data: visitor, error: vErr } = await sb
     .from("visitors")
     .select("external_id")
@@ -153,7 +152,6 @@ Deno.serve(async (req) => {
 
   await sb.from("conversations").update({ last_message_at: visitorMsg.created_at }).eq("id", convo.id);
 
-  // Track message_sent (best effort)
   if (visitorExternalId) {
     await fireTrackEvent({
       site_key: siteKey,
@@ -212,7 +210,6 @@ Deno.serve(async (req) => {
     newMode = "waiting_agent";
     await sb.from("conversations").update({ mode: newMode }).eq("id", convo.id);
 
-    // Track agent_requested (and will email)
     if (visitorExternalId) {
       await fireTrackEvent({
         site_key: siteKey,

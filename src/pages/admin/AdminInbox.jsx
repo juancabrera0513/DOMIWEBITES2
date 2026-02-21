@@ -77,7 +77,7 @@ function presenceState(convo) {
   const last = convo?.visitor_last_seen_at ? new Date(convo.visitor_last_seen_at).getTime() : 0;
   if (!last) return { label: "UNKNOWN", tone: "border-white/10 text-white/60 bg-white/5" };
 
-  const diff = (Date.now() - last) / 1000; // seconds
+  const diff = (Date.now() - last) / 1000; 
 
   const typingUntil = convo?.visitor_typing_until ? new Date(convo.visitor_typing_until).getTime() : 0;
   const isTyping = typingUntil && typingUntil > Date.now();
@@ -201,7 +201,6 @@ export default function AdminInbox() {
         return false;
       });
 
-      // Prioritize typing/online at top (nice UX)
       const ranked = [...filtered].sort((a, b) => {
         const pa = presenceState(a).label;
         const pb = presenceState(b).label;
@@ -264,7 +263,6 @@ export default function AdminInbox() {
     loadMessages(activeId);
   }, [activeId, loadMessages]);
 
-  // realtime updates
   useEffect(() => {
     if (!user?.id) return;
 

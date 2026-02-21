@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
     if (!body) return json({ error: "Invalid JSON" }, 400);
 
     const conversationId = String(body?.conversation_id || "").trim();
-    const eventType = String(body?.event_type || "").trim(); // heartbeat | typing
+    const eventType = String(body?.event_type || "").trim(); 
     const pathname = String(body?.pathname || "").slice(0, 200) || null;
 
     if (!conversationId) return json({ error: "conversation_id required" }, 400);
@@ -51,7 +51,6 @@ Deno.serve(async (req) => {
 
     const sb = createClient(supabaseUrl, serviceKey);
 
-    // validate conversation belongs to site_key
     const { data: convo, error: cErr } = await sb
       .from("conversations")
       .select("id, site_id, status")
@@ -77,18 +76,15 @@ Deno.serve(async (req) => {
     const update: any = {
       visitor_last_seen_at: nowIso,
       visitor_is_online: true,
-      last_message_at: nowIso, // optional: keeps it fresh even if no messages
+      last_message_at: nowIso, 
     };
 
     if (eventType === "typing") {
-      // typing TTL 5s
       const until = new Date(now.getTime() + 5000).toISOString();
       update.visitor_typing_until = until;
     }
 
     if (pathname) {
-      // keep subject mildly updated (optional)
-      // not required; keep it in meta elsewhere if desired
     }
 
     await sb.from("conversations").update(update).eq("id", conversationId);

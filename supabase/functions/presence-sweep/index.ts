@@ -38,7 +38,6 @@ Deno.serve(async (req) => {
 
     const sb = createClient(supabaseUrl, serviceKey);
 
-    // thresholds
     const ONLINE_SECONDS = 100;
     const ABANDON_SECONDS = 5 * 60;
 
@@ -46,7 +45,6 @@ Deno.serve(async (req) => {
     const onlineCutoff = new Date(now - ONLINE_SECONDS * 1000).toISOString();
     const abandonCutoff = new Date(now - ABANDON_SECONDS * 1000).toISOString();
 
-    // 1) mark offline (visitor_is_online=false) when stale
     const { error: offErr } = await sb
       .from("conversations")
       .update({ visitor_is_online: false })
@@ -56,7 +54,6 @@ Deno.serve(async (req) => {
 
     if (offErr) return json({ error: "Offline update failed", details: offErr.message }, 500);
 
-    // 2) find newly abandoned convos (abandoned_at null AND last_seen < abandonCutoff)
     const { data: abandonList, error: aSelErr } = await sb
       .from("conversations")
       .select("id, account_id")
@@ -83,7 +80,6 @@ Deno.serve(async (req) => {
 
       marked = ids.length;
 
-      // 3) send bot nudge message once, when first abandoned
       const nudgeText =
         Deno.env.get("ABANDON_NUDGE_TEXT") ||
         "Looks like you stepped away — reply anytime and we’ll jump back in.";
