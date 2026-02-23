@@ -99,9 +99,9 @@ export default function WorkPage() {
               </h1>
 
               <p className="mt-8 text-[15px] sm:text-lg text-white/60 max-w-3xl mx-auto leading-relaxed text-center">
-                We design high-performing websites and build custom software —
+                We design high-performing websites and build custom software
                 including CRMs, automation platforms, AI-powered chatbots, and
-                intelligent internal tools — engineered to streamline operations
+                intelligent internal tools engineered to streamline operations
                 and drive scalable growth.
               </p>
 
