@@ -70,13 +70,13 @@ async function sendResendEmail(params: {
 
 Deno.serve(async (req) => {
   try {
-    if (req.method === "OPTIONS") return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders() });
+    if (req.method === "OPTIONS")
+      return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders() });
     if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
     const shared = req.headers.get("x-domi-secret") || "";
     const expected = Deno.env.get("DOMI_AI_SHARED_SECRET") || "";
-    
-   
+
     if (!expected || shared !== expected) {
       return json(
         {
@@ -90,6 +90,7 @@ Deno.serve(async (req) => {
         401
       );
     }
+
     const siteKey = req.headers.get("x-site-key") || "";
     if (!siteKey) return json({ error: "Missing x-site-key" }, 400);
 
@@ -100,14 +101,17 @@ Deno.serve(async (req) => {
     const pathname = String(body?.pathname || "").slice(0, 200) || null;
     const referrer = String(body?.referrer || "").slice(0, 500) || null;
 
-    const externalId = String(body?.visitor_external_id || "").trim();
-    if (!externalId) return json({ error: "visitor_external_id required" }, 400);
+    const meta = body?.meta && typeof body.meta === "object" ? body.meta : {};
+    const sessionIdRaw = String(meta?.session_id || "").trim();
+
+    const externalIdRaw = String(body?.visitor_external_id || "").trim();
+    const externalId = externalIdRaw || (sessionIdRaw ? `s_${sessionIdRaw}` : "");
 
     if (!eventType) return json({ error: "event_type required" }, 400);
+    if (!externalId) return json({ error: "visitor_external_id or meta.session_id required" }, 400);
 
     const conversationId = body?.conversation_id ? String(body.conversation_id).trim() : null;
 
-    const meta = (body?.meta && typeof body.meta === "object") ? body.meta : {};
     const ua = String(body?.user_agent || req.headers.get("user-agent") || "").slice(0, 500);
     const cfCountry = (req.headers.get("cf-ipcountry") || "").slice(0, 8) || null;
 
@@ -116,9 +120,7 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = mustEnv("SUPABASE_URL");
     const serviceKey =
-      Deno.env.get("SERVICE_ROLE_KEY") ||
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
-      "";
+      Deno.env.get("SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
     if (!serviceKey) return json({ error: "Missing env: SERVICE_ROLE_KEY" }, 500);
 
     const sb = createClient(supabaseUrl, serviceKey);
@@ -147,7 +149,8 @@ Deno.serve(async (req) => {
       .select("id")
       .single();
 
-    if (vErr || !visitor) return json({ error: "Visitor upsert failed", details: vErr?.message }, 500);
+    if (vErr || !visitor)
+      return json({ error: "Visitor upsert failed", details: vErr?.message }, 500);
 
     const { error: eErr } = await sb.from("visitor_events").insert({
       site_id: site.id,
@@ -202,6 +205,6 @@ Deno.serve(async (req) => {
 
     return json({ ok: true });
   } catch (e) {
-    return json({ error: String(e?.message || e) }, 500);
+    return json({ error: String((e as any)?.message || e) }, 500);
   }
 });

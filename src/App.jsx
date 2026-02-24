@@ -29,11 +29,12 @@ import AdminInbox from "./pages/admin/AdminInbox";
 import AdminLogin from "./pages/admin/AdminLogin";
 
 import DomiChatWidget from "./components/chat/DomiChatWidget";
+import CookieBanner from "./components/CookieBanner";
 
 export default function App() {
   const { pathname } = useLocation();
 
-  const hideChat = pathname.startsWith("/admin");
+  const isAdminRoute = pathname.startsWith("/admin");
 
   useDomiTracker();
 
@@ -79,9 +80,11 @@ export default function App() {
 
           <Route path="*" element={<HomePage />} />
         </Routes>
+
+        {!isAdminRoute && <CookieBanner />}
       </div>
 
-      {!hideChat && <DomiChatWidget pathname={pathname} />}
+      {!isAdminRoute && <DomiChatWidget pathname={pathname} />}
     </div>
   );
 }

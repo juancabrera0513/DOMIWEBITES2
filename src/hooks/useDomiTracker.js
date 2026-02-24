@@ -1,8 +1,31 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+
+const CONSENT_KEY = "domi_cookie_consent_v1";
+const VISITOR_KEY = "domi_ai_visitor_id_v1";
+const SESSION_KEY = "domi_session_id_v1";
 
 function uid(prefix) {
   return `${prefix}_${Math.random().toString(16).slice(2)}_${Date.now()}`;
+}
+
+function safeParse(json) {
+  try {
+    return JSON.parse(json);
+  } catch {
+    return null;
+  }
+}
+
+function getConsent() {
+  try {
+    const raw = localStorage.getItem(CONSENT_KEY);
+    const parsed = raw ? safeParse(raw) : null;
+    const consent = parsed?.consent;
+    return consent === "granted" || consent === "denied" ? consent : null;
+  } catch {
+    return null;
+  }
 }
 
 function getOrCreate(key, make, storage) {
@@ -26,13 +49,28 @@ export default function useDomiTracker() {
 
   const TRACK_URL = `${FUNCTIONS_BASE}/track`;
 
-  const visitorExternalId = useMemo(() => {
-    return getOrCreate("domi_ai_visitor_id_v1", () => uid("v"), localStorage);
+  const sessionId = useMemo(() => {
+    return getOrCreate(SESSION_KEY, () => uid("s"), sessionStorage);
   }, []);
 
-  const sessionId = useMemo(() => {
-    return getOrCreate("domi_session_id_v1", () => uid("s"), sessionStorage);
+  const [consent, setConsent] = useState(() => getConsent());
+
+  useEffect(() => {
+    const onUpdate = () => setConsent(getConsent());
+
+    window.addEventListener("domi-consent-updated", onUpdate);
+    window.addEventListener("storage", onUpdate);
+
+    return () => {
+      window.removeEventListener("domi-consent-updated", onUpdate);
+      window.removeEventListener("storage", onUpdate);
+    };
   }, []);
+
+  const visitorExternalId = useMemo(() => {
+    if (consent !== "granted") return null;
+    return getOrCreate(VISITOR_KEY, () => uid("v"), localStorage);
+  }, [consent]);
 
   useEffect(() => {
     if (!FUNCTIONS_BASE || !SITE_KEY || !DOMI_SECRET) return;
@@ -53,9 +91,19 @@ export default function useDomiTracker() {
           session_id: sessionId,
           screen: `${window.innerWidth}x${window.innerHeight}`,
           tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          consent,
         },
         user_agent: navigator.userAgent,
       }),
     }).catch(() => {});
-  }, [loc.pathname, FUNCTIONS_BASE, SITE_KEY, DOMI_SECRET, TRACK_URL, visitorExternalId, sessionId]);
+  }, [
+    loc.pathname,
+    FUNCTIONS_BASE,
+    SITE_KEY,
+    DOMI_SECRET,
+    TRACK_URL,
+    visitorExternalId,
+    sessionId,
+    consent,
+  ]);
 }
