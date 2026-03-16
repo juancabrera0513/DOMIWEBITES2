@@ -35,58 +35,58 @@ export const PROJECTS = [
       location: "St. Louis, MO",
       type: "real"
     },
-    {
-      id: "elind",
-      title: "ELIND – Install & Equipment Sales",
-      category: "Home Services",
-      description:
-        "Professional installation and equipment sales for HVAC, electrical panels, pumps and more.",
-      longDescription:
-        "ELIND offers installation and sales of air conditioners, water heaters, washers, dryers, electrical panels, and pump automation systems. The website highlights fast service, guaranteed work, and the brand’s wide range of solutions. The design focuses on clarity, professionalism, and easy access to service requests.",
-      image: "/portfolio/elind.jpg",
-      url: "https://elind.netlify.app/",
-      kpis: [
-        "Increase in service quote requests",
-        "Improved online professionalism",
-        "More mobile interactions"
-      ],
-      tags: ["HVAC", "Electrical", "Home Services", "Local SEO"],
-      location: "St. Louis, MO",
-      type: "real"
-    },
-    {
-      id: "shinepro",
-      title: "ShinePro Cleaning",
-      category: "Home Services",
-      description:
-        "Polished and professional cleaning service website with strong call-to-action funnels.",
-      longDescription:
-        "ShinePro Cleaning needed a trustworthy, clean, and modern online presence. We built a bright, organized layout that highlights services, communicates quality, and leads users directly into booking and quote requests. The design supports both residential and commercial cleaning audiences.",
-      image: "/portfolio/shinepro.jpg",
-      url: "https://shineprocleaning.netlify.app/",
-      kpis: ["More calls and quote requests", "Higher trust and credibility"],
-      tags: ["Cleaning", "Residential", "Commercial", "Leads"],
-      location: "St. Louis, MO",
-      type: "real"
-    },
-    {
-      id: "memorable-moments",
-      title: "Memorable Moments Productions",
-      category: "Creative & Events",
-      description:
-        "Cinematic website for a photography and videography production studio.",
-      longDescription:
-        "Memorable Moments Productions needed a visually impactful site to showcase photos, videos, and event coverage. The final design embraces a cinematic aesthetic with gallery-first presentation, dynamic layouts, and strong emphasis on showcasing creativity and visual storytelling.",
-      image: "/portfolio/memorable.jpg",
-      url: "https://memorablemomentsprod.netlify.app/",
-      kpis: [
-        "Increase in gallery interactions",
-        "More inquiries for event coverage"
-      ],
-      tags: ["Photography", "Videography", "Events", "Media"],
-      location: "St. Louis, MO",
-      type: "real"
-    },
+    // {
+    //   id: "elind",
+    //   title: "ELIND – Install & Equipment Sales",
+    //   category: "Home Services",
+    //   description:
+    //     "Professional installation and equipment sales for HVAC, electrical panels, pumps and more.",
+    //   longDescription:
+    //     "ELIND offers installation and sales of air conditioners, water heaters, washers, dryers, electrical panels, and pump automation systems. The website highlights fast service, guaranteed work, and the brand’s wide range of solutions. The design focuses on clarity, professionalism, and easy access to service requests.",
+    //   image: "/portfolio/elind.jpg",
+    //   url: "https://elind.netlify.app/",
+    //   kpis: [
+    //     "Increase in service quote requests",
+    //     "Improved online professionalism",
+    //     "More mobile interactions"
+    //   ],
+    //   tags: ["HVAC", "Electrical", "Home Services", "Local SEO"],
+    //   location: "St. Louis, MO",
+    //   type: "real"
+    // },
+    // {
+    //   id: "shinepro",
+    //   title: "ShinePro Cleaning",
+    //   category: "Home Services",
+    //   description:
+    //     "Polished and professional cleaning service website with strong call-to-action funnels.",
+    //   longDescription:
+    //     "ShinePro Cleaning needed a trustworthy, clean, and modern online presence. We built a bright, organized layout that highlights services, communicates quality, and leads users directly into booking and quote requests. The design supports both residential and commercial cleaning audiences.",
+    //   image: "/portfolio/shinepro.jpg",
+    //   url: "https://shineprocleaning.netlify.app/",
+    //   kpis: ["More calls and quote requests", "Higher trust and credibility"],
+    //   tags: ["Cleaning", "Residential", "Commercial", "Leads"],
+    //   location: "St. Louis, MO",
+    //   type: "real"
+    // },
+    // {
+    //   id: "memorable-moments",
+    //   title: "Memorable Moments Productions",
+    //   category: "Creative & Events",
+    //   description:
+    //     "Cinematic website for a photography and videography production studio.",
+    //   longDescription:
+    //     "Memorable Moments Productions needed a visually impactful site to showcase photos, videos, and event coverage. The final design embraces a cinematic aesthetic with gallery-first presentation, dynamic layouts, and strong emphasis on showcasing creativity and visual storytelling.",
+    //   image: "/portfolio/memorable.jpg",
+    //   url: "https://memorablemomentsprod.netlify.app/",
+    //   kpis: [
+    //     "Increase in gallery interactions",
+    //     "More inquiries for event coverage"
+    //   ],
+    //   tags: ["Photography", "Videography", "Events", "Media"],
+    //   location: "St. Louis, MO",
+    //   type: "real"
+    // },
     // {
     //   id: "primavera-flowers",
     //   title: "Primavera Flowers",

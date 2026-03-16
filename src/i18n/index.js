@@ -145,37 +145,37 @@ const resources = {
             "Kae’s Kitchen specializes in custom-made cakes and baked goods. The website focuses on displaying the bakery’s artistry through high-quality visuals, organized product categories, and an easy inquiry flow. The design creates an inviting atmosphere that matches the brand’s personality and improves the customer ordering experience."
         },
 
-        elind: {
-          name: "ELIND – Install & Equipment Sales",
-          short:
-            "Professional installation and equipment sales website for HVAC, electrical systems, water heaters, and more.",
-          long:
-            "ELIND offers installation and sales of air conditioners, water heaters, washers, dryers, electrical panels, and pump automation systems. The website highlights fast service, guaranteed work, and the brand’s wide range of solutions. The design focuses on clarity, professionalism, and easy access to service requests."
-        },
+        // elind: {
+        //   name: "ELIND – Install & Equipment Sales",
+        //   short:
+        //     "Professional installation and equipment sales website for HVAC, electrical systems, water heaters, and more.",
+        //   long:
+        //     "ELIND offers installation and sales of air conditioners, water heaters, washers, dryers, electrical panels, and pump automation systems. The website highlights fast service, guaranteed work, and the brand’s wide range of solutions. The design focuses on clarity, professionalism, and easy access to service requests."
+        // },
 
-        shinepro: {
-          name: "ShinePro Cleaning",
-          short:
-            "A polished and professional cleaning service website with strong call-to-action funnels.",
-          long:
-            "ShinePro Cleaning needed a trustworthy, clean, and modern online presence. We built a bright, organized layout that highlights services, communicates quality, and leads users directly into booking and quote requests. The design supports both residential and commercial cleaning audiences."
-        },
+        // shinepro: {
+        //   name: "ShinePro Cleaning",
+        //   short:
+        //     "A polished and professional cleaning service website with strong call-to-action funnels.",
+        //   long:
+        //     "ShinePro Cleaning needed a trustworthy, clean, and modern online presence. We built a bright, organized layout that highlights services, communicates quality, and leads users directly into booking and quote requests. The design supports both residential and commercial cleaning audiences."
+        // },
 
-        memorable_moments: {
-          name: "Memorable Moments Productions",
-          short:
-            "A cinematic website for a photography and videography production studio.",
-          long:
-            "Memorable Moments Productions needed a visually impactful site to showcase photos, videos, and event coverage. The final design embraces a cinematic aesthetic with gallery-first presentation, dynamic layouts, and strong emphasis on showcasing creativity and visual storytelling."
-        },
+        // memorable_moments: {
+        //   name: "Memorable Moments Productions",
+        //   short:
+        //     "A cinematic website for a photography and videography production studio.",
+        //   long:
+        //     "Memorable Moments Productions needed a visually impactful site to showcase photos, videos, and event coverage. The final design embraces a cinematic aesthetic with gallery-first presentation, dynamic layouts, and strong emphasis on showcasing creativity and visual storytelling."
+        // },
 
-        primavera_flowers: {
-          name: "Primavera Flowers",
-          short:
-            "A bilingual flower shop website with catalog, delivery features, and a modern brand experience.",
-          long:
-            "Primavera Flowers needed a bilingual platform to showcase floral products, offer same-day delivery, and improve customer experience. We delivered a modern, soft, and elegant website with product categories, delivery radius checks, and seamless navigation in both English and Spanish."
-        },
+        // primavera_flowers: {
+        //   name: "Primavera Flowers",
+        //   short:
+        //     "A bilingual flower shop website with catalog, delivery features, and a modern brand experience.",
+        //   long:
+        //     "Primavera Flowers needed a bilingual platform to showcase floral products, offer same-day delivery, and improve customer experience. We delivered a modern, soft, and elegant website with product categories, delivery radius checks, and seamless navigation in both English and Spanish."
+        // },
 
         glo_event: {
           name: "Glo Event Co",
