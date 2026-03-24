@@ -66,7 +66,7 @@ export default function ServicesSection() {
       bullets: [
         t("s_redesign_b1", "New UI, better layout, clearer messaging."),
         t("s_redesign_b2", "Fixes for trust: reviews, proof, structure."),
-        t("s_redesign_b3", "Built to convert — not just look nice."),
+        t("s_redesign_b3", "Built to convert not just look nice."),
       ],
     },
     {
@@ -173,77 +173,76 @@ export default function ServicesSection() {
             </article>
           ))}
         </div>
-
         <div className="mt-14 grid lg:grid-cols-2 gap-8 items-center">
-          <div className="reveal">
-            <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
-              {t("responsive_label", "Built to scale")}
-            </p>
+  <div className="reveal">
+    <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
+      Built for real businesses
+    </p>
 
-            <h3 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
-              {t("responsive_title_1", "Mobile-first")}{" "}
-              <span className="grad-text">
-                {t("responsive_title_2", "— fast, clean, and conversion-ready")}
-              </span>
-            </h3>
+    <h3 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
+      A website that helps your business{" "}
+      <span className="grad-text">
+        get more leads and run smoother
+      </span>
+    </h3>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Pill>{t("pill_1", "Fast loads")}</Pill>
-              <Pill>{t("pill_2", "SEO-ready")}</Pill>
-              <Pill>{t("pill_3", "Clear CTAs")}</Pill>
-              <Pill>{t("pill_4", "SaaS-capable")}</Pill>
-            </div>
+    <div className="mt-4 flex flex-wrap gap-2">
+      <Pill>Looks professional</Pill>
+      <Pill>Loads fast</Pill>
+      <Pill>Shows up on Google</Pill>
+      <Pill>Easy for customers to contact you</Pill>
+    </div>
 
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
-              <Link
-                to="/work"
-                className="btn btn-outline w-full sm:w-auto transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(34,211,238,.12)]"
-              >
-                {t("cta_secondary", "See more work")}
-              </Link>
+    <div className="mt-6 flex flex-col sm:flex-row gap-3">
+      <Link
+        to="/work"
+        className="btn btn-outline w-full sm:w-auto transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(34,211,238,.12)]"
+      >
+        See more work
+      </Link>
 
-              <Link
-                to="/contact"
-                className="btn btn-primary w-full sm:w-auto transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(34,211,238,.22)]"
-              >
-                {t("cta_primary", "Start a Project")}
-              </Link>
-            </div>
-          </div>
+      <Link
+        to="/contact"
+        className="btn btn-primary w-full sm:w-auto transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(34,211,238,.22)]"
+      >
+        Start a Project
+      </Link>
+    </div>
+  </div>
 
-          <div className="relative reveal">
-            <div className="glass rounded-3xl border border-white/10 p-6 md:p-7 shadow-[0_40px_120px_rgba(0,0,0,.65)]">
-              <div className="text-white font-semibold text-lg">
-                {t("concept_title", "A premium foundation")}
-              </div>
-              <div className="mt-1 text-sm text-white/60">
-                {t("concept_sub", "Launch lean → scale into real software.")}
-              </div>
+  <div className="relative reveal">
+    <div className="glass rounded-3xl border border-white/10 p-6 md:p-7 shadow-[0_40px_120px_rgba(0,0,0,.65)]">
+      <div className="text-white font-semibold text-lg">
+        Not just a website
+      </div>
+      <div className="mt-1 text-sm text-white/60">
+        This is a system for your business.
+      </div>
 
-              <div className="mt-5 grid sm:grid-cols-2 gap-3">
-                <MiniPoint
-                  title={t("mini_1_t", "Designed to convert")}
-                  desc={t("mini_1_d", "Messaging + layout built for leads.")}
-                />
-                <MiniPoint
-                  title={t("mini_2_t", "Trust built-in")}
-                  desc={t("mini_2_d", "Proof, structure, and clarity.")}
-                />
-                <MiniPoint
-                  title={t("mini_3_t", "Automation-ready")}
-                  desc={t("mini_3_d", "Forms, workflows, notifications.")}
-                />
-                <MiniPoint
-                  title={t("mini_4_t", "Scales with you")}
-                  desc={t("mini_4_d", "Portals, dashboards, CRM tools.")}
-                />
-              </div>
-            </div>
+      <div className="mt-5 grid sm:grid-cols-2 gap-3">
+        <MiniPoint
+          title="Brings you leads"
+          desc="Clear structure designed to generate calls and messages."
+        />
+        <MiniPoint
+          title="Builds trust"
+          desc="Professional design that makes your business look legit."
+        />
+        <MiniPoint
+          title="Saves you time"
+          desc="Forms, automations, and organized information."
+        />
+        <MiniPoint
+          title="Grows with you"
+          desc="Add booking, CRM, dashboards, or portals later."
+        />
+      </div>
+    </div>
 
-            <div className="pointer-events-none absolute -top-10 -right-10 h-44 w-44 rounded-full orb bg-[rgba(34,211,238,.14)]" />
-            <div className="pointer-events-none absolute -bottom-16 -left-12 h-52 w-52 rounded-full orb bg-[rgba(167,139,250,.12)]" />
-          </div>
-        </div>
+    <div className="pointer-events-none absolute -top-10 -right-10 h-44 w-44 rounded-full orb bg-[rgba(34,211,238,.14)]" />
+    <div className="pointer-events-none absolute -bottom-16 -left-12 h-52 w-52 rounded-full orb bg-[rgba(167,139,250,.12)]" />
+  </div>
+</div>
       </div>
     </section>
   );

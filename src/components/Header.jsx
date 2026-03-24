@@ -171,9 +171,7 @@ export default function Header() {
                     </Link>
                   </div>
 
-                  <div className="mt-5 text-center text-xs text-white/45">
-                    Tap any item to navigate — tap again to scroll to top.
-                  </div>
+      
                 </div>
               </div>
             )}

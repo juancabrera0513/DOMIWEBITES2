@@ -6,10 +6,10 @@ export default function AboutPage() {
   return (
     <>
       <Helmet>
-        <title>About Domi Websites | Custom Software & Web Development</title>
+        <title>About Domi Websites | Web Development & Business Systems</title>
         <meta
           name="description"
-          content="Learn how Domi Websites builds high-performing websites and custom software systems — including CRMs, automation platforms, and AI-powered tools — engineered to scale with your business."
+          content="Domi Websites helps small businesses grow with high-performing websites, automation, and custom business systems built to scale."
         />
         <link rel="canonical" href="https://domiwebsites.com/about" />
       </Helmet>
@@ -32,14 +32,14 @@ export default function AboutPage() {
                   We build more than websites.
                 </span>
                 <span className="block text-[48px] sm:text-[64px] md:text-[82px] grad-text">
-                  We build systems.
+                  We build business systems.
                 </span>
               </h1>
 
               <p className="mt-8 text-[15px] sm:text-lg text-white/60 max-w-3xl mx-auto leading-relaxed">
-                Domi Websites is a digital & software studio focused on building
-                high-performing websites and custom software solutions that help
-                small and growing businesses operate smarter and scale faster.
+                Most businesses don’t just need a website. They need a system.
+                A system that brings leads, saves time, and helps the business grow.
+                That’s what we build at Domi Websites.
               </p>
             </div>
 
@@ -49,14 +49,13 @@ export default function AboutPage() {
                   Our Mission
                 </h2>
                 <p className="text-white/60 mt-4 leading-relaxed">
-                  To empower small and local businesses with technology that was
-                  once only available to large companies — including CRMs,
-                  automation tools, AI-powered chatbots, internal dashboards,
-                  and scalable web platforms.
+                  Our mission is simple. Help small and local businesses use technology
+                  the same way big companies do.
                 </p>
                 <p className="text-white/60 mt-4 leading-relaxed">
-                  We believe software should simplify operations, increase
-                  revenue, and create leverage — not complexity.
+                  That means websites that generate leads, systems that automate work,
+                  and software that helps you run your business more efficiently.
+                  Technology should make your business easier to run, not more complicated.
                 </p>
               </div>
 
@@ -65,10 +64,10 @@ export default function AboutPage() {
                   What Makes Us Different
                 </h2>
                 <ul className="mt-4 space-y-3 text-white/60">
-                  <li>• We focus on performance and conversion — not just design.</li>
-                  <li>• We build scalable systems, not static pages.</li>
-                  <li>• We integrate automation and AI from day one.</li>
-                  <li>• We think long-term growth, not short-term fixes.</li>
+                  <li>• We don’t just build websites. We build tools that help businesses grow.</li>
+                  <li>• We focus on results, leads, and automation.</li>
+                  <li>• We think like business owners, not just developers.</li>
+                  <li>• We build for long-term growth, not just to launch a site.</li>
                 </ul>
               </div>
             </div>
@@ -80,20 +79,21 @@ export default function AboutPage() {
                 </h2>
 
                 <p className="text-white/60 mt-4 leading-relaxed">
-                  Domi Websites was founded by Juan Cabrera, a developer focused
-                  on combining modern web technologies with scalable software
-                  architecture.
+                  Domi Websites was founded by Juan Cabrera, a developer focused on building
+                  websites and custom business software for small and growing companies.
                 </p>
 
                 <p className="text-white/60 mt-4 leading-relaxed">
-                  With experience building custom systems, internal platforms,
-                  and performance-driven websites, Juan approaches each project
-                  with a long-term mindset: build once, scale properly.
+                  After working with different businesses, one thing became clear.
+                  Most companies don’t just need a website. They need better systems.
+                  They need automation, better lead tracking, better internal tools,
+                  and technology that actually helps the business grow.
                 </p>
 
                 <p className="text-white/60 mt-4 leading-relaxed">
-                  Every project is engineered with growth, automation, and
-                  future expansion in mind.
+                  That’s why Domi Websites focuses not only on design, but on building
+                  the technology behind the business. Websites, internal tools, automation,
+                  and custom systems built to scale as the business grows.
                 </p>
               </div>
             </div>
@@ -101,16 +101,16 @@ export default function AboutPage() {
             <div className="mt-24 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: "Performance First",
-                  text: "Speed, structure, and clean architecture are non-negotiable."
+                  title: "Built for Growth",
+                  text: "Everything is designed to help your business grow, not just look good."
                 },
                 {
-                  title: "Scalable by Design",
-                  text: "Everything is built to grow with your business."
+                  title: "Automation Focused",
+                  text: "We build systems that save time and reduce manual work."
                 },
                 {
-                  title: "Automation-Ready",
-                  text: "We integrate systems that reduce manual work."
+                  title: "Long-Term Thinking",
+                  text: "We build things the right way so they can scale with your business."
                 }
               ].map((item) => (
                 <div
@@ -129,11 +129,11 @@ export default function AboutPage() {
 
             <div className="mt-28 text-center">
               <h3 className="text-2xl md:text-3xl font-bold text-white">
-                Ready to build something scalable?
+                Ready to build something that actually helps your business grow?
               </h3>
 
               <p className="text-white/60 mt-4">
-                Let’s design and develop the right system for your business.
+                Let’s talk and see what we can build for you.
               </p>
 
               <div className="mt-8">

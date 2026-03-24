@@ -11,7 +11,7 @@ export default function LatestProjectHighlight() {
   const title = t("latest_project_title", "Latest Project Highlight");
   const subtitle = t(
     "latest_project_sub",
-    "A real client build — modern redesign, fast performance, and conversion-focused UX."
+    "A real client build modern redesign, fast performance, and conversion-focused UX."
   );
 
   const ctaPrimary = t("latest_project_cta_primary", "Start a Project");
@@ -19,7 +19,7 @@ export default function LatestProjectHighlight() {
 
   const note = t(
     "latest_project_note",
-    "Explore the full site experience — open the live project in a new tab."
+    "Explore the full site experience: Open the live project in a new tab."
   );
 
   const hostname = useMemo(() => {

@@ -103,7 +103,7 @@ export default function FounderSection() {
 
 
             <p className="text-[11px] text-white/40">
-              Built for local businesses — fast load times, clean UX, and systems
+              Built for local businesses, fast load times, clean UX, and systems
               that reduce manual work.
             </p>
           </div>

@@ -210,7 +210,7 @@ export default function WorkProjectPage() {
                   Looking for something similar?
                 </h3>
                 <p className="text-white/60 mt-2">
-                  We build conversion-focused websites and custom software — CRMs,
+                  We build conversion-focused websites and custom software, CRMs,
                   automation tools, AI chatbots, and internal platforms.
                 </p>
                 <div className="mt-4">
