@@ -5,7 +5,7 @@ const MIN_MSG = 10;
 
 const CALENDLY = "https://calendly.com/domiwebsites/30min";
 const WHATSAPP = "https://wa.me/13143769667";
-const EMAIL_TO = "admin@domiwebsites.com";
+const EMAIL_TO = "hello@domiwebsites.com";
 const PHONE_TEL = "tel:13143769667";
 
 function cx(...a) {
