@@ -21,9 +21,9 @@ export default function Footer() {
           </p>
 
           <div className="flex flex-wrap items-center gap-6 text-sm text-white/70">
-            <a href={PHONE_TEL} className="hover:text-white transition">
+            {/* <a href={PHONE_TEL} className="hover:text-white transition">
               {t("common:footer.phone_label")}: {PHONE_DISPLAY}
-            </a>
+            </a> */}
             <Link to="/privacy" className="hover:text-white transition">
               Privacy
             </Link>
