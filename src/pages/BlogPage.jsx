@@ -89,7 +89,7 @@ export default function BlogPage() {
               </h1>
 
               <p className="mt-6 text-[15px] sm:text-lg text-white/60 max-w-3xl mx-auto leading-relaxed">
-                Practical guides for small businesses — from high-converting websites to local SEO and scalable systems.
+                Practical guides for small businesses from high-converting websites to local SEO and scalable systems.
               </p>
             </div>
 

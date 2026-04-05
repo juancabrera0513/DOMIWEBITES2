@@ -14,6 +14,8 @@ import WorkProjectPage from "./pages/WorkProjectPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPost from "./pages/BlogPost";
 
+import SpecialOfferPage from "./pages/SpecialOfferPage";
+
 import ThankYouPage from "./pages/ThankYouPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
@@ -55,6 +57,8 @@ export default function App() {
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/contact" element={<ContactPage />} />
+
+          <Route path="/special" element={<SpecialOfferPage  />} />
 
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
