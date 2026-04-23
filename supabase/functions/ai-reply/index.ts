@@ -29,6 +29,7 @@ const DOMI = {
   phone: "(314) 376-9667",
   email: "admin@domiwebsites.com",
   calendly: "https://calendly.com/domiwebsites/30min",
+  auditUrl: "https://domiwebsites.com/audit",
   hours: {
     mon: [9, 18],
     tue: [9, 18],
@@ -150,6 +151,29 @@ function isContactQuestion(text: string) {
   );
 }
 
+function isAuditRequest(text: string) {
+  const t = (text || "").toLowerCase();
+
+  return (
+    t.includes("audit") ||
+    t.includes("review my site") ||
+    t.includes("check my website") ||
+    t.includes("feedback on my site") ||
+    t.includes("website review") ||
+    t.includes("seo audit") ||
+    t.includes("analizar mi sitio") ||
+    t.includes("revisar mi pagina") ||
+    t.includes("auditoria") ||
+    t.includes("audit my site")
+  );
+}
+
+function extractUrl(text: string) {
+  const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/i;
+  const match = text.match(urlRegex);
+  return match ? match[0] : null;
+}
+
 function systemPrompt(pathname: string, lang: "es" | "en", withinHours: boolean) {
   const baseFacts = `
 BUSINESS FACTS (must be accurate):
@@ -158,6 +182,7 @@ BUSINESS FACTS (must be accurate):
 - Phone / WhatsApp / Text: ${DOMI.phone}
 - Email: ${DOMI.email}
 - Booking: ${DOMI.calendly}
+- Audit request form: ${DOMI.auditUrl}
 - Hours: Mon–Fri 9 AM–6 PM, Sat 9 AM–12 PM, Sun Closed (St. Louis time)
 - We are NOT only websites: we do custom software + systems.
 
@@ -193,6 +218,10 @@ CRITICAL RULES:
    Offer to connect them with a person *inside this chat* OR give WhatsApp/Text + Email + Calendly.
    Only set request_live_agent=true when they explicitly ask for a person/agent or sales.
 8) ${hoursRuleEn}
+9) If the user asks for a website audit or shares a website URL:
+   Direct them to submit their site here: ${DOMI.auditUrl}
+   Do NOT ask unnecessary questions before sharing the link.
+   Keep it simple and action-oriented.
 
 Current page pathname: "${pathname || "/"}"
 `.trim();
@@ -214,6 +243,10 @@ REGLAS CRÍTICAS:
    Ofrece conectar con una persona *en este mismo chat* o dar WhatsApp/Email/Calendly.
    Solo marca request_live_agent=true si el usuario pide explícitamente agente/persona/ventas.
 8) ${hoursRuleEs}
+9) Si el usuario pide un audit o comparte un sitio web:
+   Dirígelo a enviar su sitio aquí: ${DOMI.auditUrl}
+   NO hagas preguntas innecesarias antes de dar el link.
+   Mantén la respuesta simple y directa.
 
 Página actual: "${pathname || "/"}"
 `.trim();
@@ -266,6 +299,14 @@ function contactReply(lang: "es" | "en", withinHours: boolean) {
   return `You can reach us here:\n\n• WhatsApp/Text: ${DOMI.phone}\n• Email: ${DOMI.email}\n• Book 30 min: ${DOMI.calendly}\n\nIf you want, say “agent” and I’ll connect you with a person right here in this chat.`;
 }
 
+function auditReply(lang: "es" | "en") {
+  if (lang === "es") {
+    return `¡Perfecto! Puedes solicitar tu auditoría gratuita aquí:\n${DOMI.auditUrl}\n\nRevisaremos tu sitio y te mostraremos oportunidades de mejora, incluyendo cambios simples que puedes hacer tú mismo.`;
+  }
+
+  return `Great! You can request your free website audit here:\n${DOMI.auditUrl}\n\nWe’ll review your site and highlight opportunities for improvement, including simple updates you can make yourself.`;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return json({ ok: true });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -296,9 +337,24 @@ Deno.serve(async (req) => {
     return json({ reply, request_live_agent: withinHours ? askHuman : false });
   }
 
+  const detectedUrl = extractUrl(message);
+
+  if (isAuditRequest(message) || detectedUrl) {
+    return json({
+      reply: auditReply(lang),
+      request_live_agent: false,
+    });
+  }
+
   const supabaseUrl = mustEnv("SUPABASE_URL");
-  const serviceKey = Deno.env.get("SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-  if (!serviceKey) return json({ error: "Missing env: SERVICE_ROLE_KEY" }, 500);
+  const serviceKey =
+    Deno.env.get("SERVICE_ROLE_KEY") ||
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+    "";
+
+  if (!serviceKey) {
+    return json({ error: "Missing env: SERVICE_ROLE_KEY" }, 500);
+  }
 
   const sb = createClient(supabaseUrl, serviceKey);
 
@@ -332,7 +388,12 @@ Deno.serve(async (req) => {
       : "";
 
   const msgs: Msg[] = [
-    { role: "system", content: systemPrompt(pathname, lang, withinHours) + (purchaseNudge ? `\n\n${purchaseNudge}` : "") },
+    {
+      role: "system",
+      content:
+        systemPrompt(pathname, lang, withinHours) +
+        (purchaseNudge ? `\n\n${purchaseNudge}` : ""),
+    },
     ...history.slice(-12),
     { role: "user", content: message },
   ];
