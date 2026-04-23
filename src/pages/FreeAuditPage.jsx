@@ -13,7 +13,6 @@ const AUDIT_ITEMS = [
   "Clear recommendations on what to change",
 ];
 
-
 const WHO_ITS_FOR = [
   "You already have a website but it’s not performing well",
   "Your site feels outdated or slow",
@@ -134,6 +133,10 @@ export default function FreeAuditPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  };
+
   const normalizeWebsite = (url) => {
     if (!url) return "";
     const trimmed = url.trim();
@@ -161,11 +164,19 @@ export default function FreeAuditPage() {
       return;
     }
 
+    if (!isValidEmail(form.email)) {
+      setStatus("Please enter a valid email address.");
+      setStatusType("error");
+      setLoading(false);
+      return;
+    }
+
     const website = normalizeWebsite(form.website);
+    const userName = form.name.trim();
 
     const { error } = await supabase.from("website_audit_requests").insert([
       {
-        name: form.name.trim(),
+        name: userName,
         email: form.email.trim(),
         website,
         message: form.message.trim() || null,
@@ -179,8 +190,11 @@ export default function FreeAuditPage() {
       return;
     }
 
-    setStatus(`Thanks, ${form.name}! We’ll review your site and send your results within 72 hours.`);
-        setForm({
+    setStatus(
+      `Thanks, ${userName}! We’ll review your site and send your results within 72 hours.`
+    );
+    setStatusType("success");
+    setForm({
       name: "",
       email: "",
       website: "",
@@ -373,9 +387,6 @@ export default function FreeAuditPage() {
           </div>
         </section>
 
-
-      
-
         <section
           className="section relative overflow-hidden"
           style={{ background: "rgba(6,12,24,0.95)" }}
@@ -422,7 +433,6 @@ export default function FreeAuditPage() {
           </div>
         </section>
 
-      
         <section
           id="audit-form"
           className="section relative overflow-hidden"
@@ -478,6 +488,7 @@ export default function FreeAuditPage() {
                       value={form.email}
                       onChange={handleChange}
                       required
+                      pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                       className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none focus:border-cyan-400/40 focus:bg-white/[0.07] transition"
                       placeholder="Your email"
                     />
