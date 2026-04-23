@@ -13,6 +13,7 @@ const AUDIT_ITEMS = [
   "Clear recommendations on what to change",
 ];
 
+
 const WHO_ITS_FOR = [
   "You already have a website but it’s not performing well",
   "Your site feels outdated or slow",
