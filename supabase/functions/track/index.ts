@@ -1,11 +1,12 @@
 import "@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
+import { verifyChatToken } from "../_shared/chat-token.ts";
 
 function corsHeaders(extra: Record<string, string> = {}) {
   return {
     "content-type": "application/json; charset=utf-8",
     "access-control-allow-origin": "*",
-    "access-control-allow-headers": "content-type, x-site-key, x-domi-secret",
+    "access-control-allow-headers": "content-type, x-site-key, x-chat-token, x-domi-secret",
     "access-control-allow-methods": "POST, OPTIONS",
     ...extra,
   };
@@ -77,19 +78,7 @@ Deno.serve(async (req) => {
     const shared = req.headers.get("x-domi-secret") || "";
     const expected = Deno.env.get("DOMI_AI_SHARED_SECRET") || "";
 
-    if (!expected || shared !== expected) {
-      return json(
-        {
-          error: "Unauthorized",
-          debug: {
-            expectedLen: (expected || "").length,
-            sharedLen: (shared || "").length,
-            hasSiteKey: !!req.headers.get("x-site-key"),
-          },
-        },
-        401
-      );
-    }
+    const isInternal = Boolean(expected && shared === expected);
 
     const siteKey = req.headers.get("x-site-key") || "";
     if (!siteKey) return json({ error: "Missing x-site-key" }, 400);
@@ -108,9 +97,20 @@ Deno.serve(async (req) => {
     const externalId = externalIdRaw || (sessionIdRaw ? `s_${sessionIdRaw}` : "");
 
     if (!eventType) return json({ error: "event_type required" }, 400);
+    const allowedEvents = ["page_view", "chat_opened", "message_sent", "agent_requested"];
+    if (!allowedEvents.includes(eventType)) return json({ error: "Invalid event_type" }, 400);
     if (!externalId) return json({ error: "visitor_external_id or meta.session_id required" }, 400);
 
     const conversationId = body?.conversation_id ? String(body.conversation_id).trim() : null;
+    let chatAuth: Awaited<ReturnType<typeof verifyChatToken>> = null;
+    if (eventType !== "page_view" && !isInternal) {
+      if (!conversationId) return json({ error: "conversation_id required" }, 400);
+      chatAuth = await verifyChatToken(
+        req.headers.get("x-chat-token") || "",
+        conversationId,
+      );
+      if (!chatAuth) return json({ error: "Invalid or expired chat token" }, 401);
+    }
 
     const ua = String(body?.user_agent || req.headers.get("user-agent") || "").slice(0, 500);
     const cfCountry = (req.headers.get("cf-ipcountry") || "").slice(0, 8) || null;
@@ -133,6 +133,7 @@ Deno.serve(async (req) => {
 
     if (siteErr || !site) return json({ error: "Invalid site_key" }, 404);
     if (!site.is_active) return json({ error: "Site inactive" }, 403);
+    if (chatAuth && chatAuth.site_id !== site.id) return json({ error: "Invalid chat token" }, 403);
 
     const { data: visitor, error: vErr } = await sb
       .from("visitors")

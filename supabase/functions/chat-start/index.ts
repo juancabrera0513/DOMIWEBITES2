@@ -1,5 +1,6 @@
 import "@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
+import { createChatToken } from "../_shared/chat-token.ts";
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -22,10 +23,6 @@ function mustEnv(name: string) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return json({ ok: true });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
-
-  const shared = req.headers.get("x-domi-secret") || "";
-  const expected = Deno.env.get("DOMI_AI_SHARED_SECRET") || "";
-  if (!expected || shared !== expected) return json({ error: "Unauthorized" }, 401);
 
   const siteKey = req.headers.get("x-site-key") || "";
   if (!siteKey) return json({ error: "Missing x-site-key" }, 400);
@@ -97,8 +94,11 @@ Deno.serve(async (req) => {
 
   if (cErr || !convo) return json({ error: "Conversation create failed", details: cErr?.message }, 500);
 
+  const chatToken = await createChatToken(convo.id, site.id);
+
   return json({
     conversation_id: convo.id,
+    chat_token: chatToken,
     account_id: site.account_id,
     site_id: site.id,
     visitor_id: visitor.id,

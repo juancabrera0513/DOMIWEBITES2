@@ -153,6 +153,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
   });
 
   const [conversationId, setConversationId] = useState("");
+  const [chatToken, setChatToken] = useState("");
   const [messages, setMessages] = useState([
     { id: "seed", role: "bot", content: "Hi! I’m Domi AI. How can I help today?" },
   ]);
@@ -201,7 +202,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
 
   const FUNCTIONS_BASE = process.env.REACT_APP_SUPABASE_FUNCTIONS_BASE;
   const SITE_KEY = process.env.REACT_APP_DOMI_CHAT_SITE_KEY;
-  const DOMI_SECRET = process.env.REACT_APP_DOMI_CHAT_SHARED_SECRET;
 
   const CHAT_START_URL = `${FUNCTIONS_BASE}/chat-start`;
   const CHAT_SEND_URL = `${FUNCTIONS_BASE}/chat-send`;
@@ -213,15 +213,14 @@ export default function DomiChatWidget({ pathname = "/" }) {
     () => ({
       "content-type": "application/json",
       "x-site-key": SITE_KEY || "",
-      "x-domi-secret": DOMI_SECRET || "",
+      ...(chatToken ? { "x-chat-token": chatToken } : {}),
     }),
-    [SITE_KEY, DOMI_SECRET]
+    [SITE_KEY, chatToken]
   );
 
   function assertEnv() {
     if (!FUNCTIONS_BASE) throw new Error("Missing REACT_APP_SUPABASE_FUNCTIONS_BASE");
     if (!SITE_KEY) throw new Error("Missing REACT_APP_DOMI_CHAT_SITE_KEY");
-    if (!DOMI_SECRET) throw new Error("Missing REACT_APP_DOMI_CHAT_SHARED_SECRET");
   }
 
   function scrollToBottom() {
@@ -355,11 +354,29 @@ export default function DomiChatWidget({ pathname = "/" }) {
     setBusy(false);
 
     if (!r.ok) throw new Error(j?.error || "chat-start failed");
+    if (!j?.chat_token) throw new Error("chat-start returned no token");
 
     cursorRef.current = null;
+    setChatToken(j.chat_token);
     setConversationId(j.conversation_id);
 
-    setTimeout(() => presencePing("heartbeat"), 0);
+    fetch(TRACK_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-site-key": SITE_KEY,
+        "x-chat-token": j.chat_token,
+      },
+      body: JSON.stringify({
+        visitor_external_id: visitorId,
+        conversation_id: j.conversation_id,
+        event_type: "chat_opened",
+        pathname: pathname || window.location.pathname,
+        referrer: document.referrer || null,
+        meta: { source: "widget_button" },
+        user_agent: navigator.userAgent,
+      }),
+    }).catch(() => {});
   }
 
   async function fetchNewMessages({ bootstrap = false } = {}) {
@@ -643,7 +660,6 @@ export default function DomiChatWidget({ pathname = "/" }) {
               setShowHint(false);
               setOpen(true);
               await unlockAudioOnce();
-              await trackEvent("chat_opened", { source: "widget_button" });
             }}
             className={cx(
               "relative h-[92px] w-[92px] md:h-[112px] md:w-[112px] transition-transform hover:scale-105",

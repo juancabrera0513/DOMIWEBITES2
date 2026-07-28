@@ -45,7 +45,6 @@ export default function useDomiTracker() {
 
   const FUNCTIONS_BASE = process.env.REACT_APP_SUPABASE_FUNCTIONS_BASE;
   const SITE_KEY = process.env.REACT_APP_DOMI_CHAT_SITE_KEY;
-  const DOMI_SECRET = process.env.REACT_APP_DOMI_CHAT_SHARED_SECRET;
 
   const TRACK_URL = `${FUNCTIONS_BASE}/track`;
 
@@ -73,14 +72,13 @@ export default function useDomiTracker() {
   }, [consent]);
 
   useEffect(() => {
-    if (!FUNCTIONS_BASE || !SITE_KEY || !DOMI_SECRET) return;
+    if (!FUNCTIONS_BASE || !SITE_KEY) return;
 
     fetch(TRACK_URL, {
       method: "POST",
       headers: {
         "content-type": "application/json",
         "x-site-key": SITE_KEY,
-        "x-domi-secret": DOMI_SECRET,
       },
       body: JSON.stringify({
         visitor_external_id: visitorExternalId,
@@ -100,7 +98,6 @@ export default function useDomiTracker() {
     loc.pathname,
     FUNCTIONS_BASE,
     SITE_KEY,
-    DOMI_SECRET,
     TRACK_URL,
     visitorExternalId,
     sessionId,
