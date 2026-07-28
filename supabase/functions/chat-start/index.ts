@@ -8,7 +8,7 @@ function json(data: unknown, status = 200) {
     headers: {
       "content-type": "application/json; charset=utf-8",
       "access-control-allow-origin": "*",
-      "access-control-allow-headers": "content-type, x-site-key, x-domi-secret",
+      "access-control-allow-headers": "content-type, x-site-key",
       "access-control-allow-methods": "POST, OPTIONS",
     },
   });

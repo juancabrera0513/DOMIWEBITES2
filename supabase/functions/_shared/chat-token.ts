@@ -81,25 +81,3 @@ export async function verifyChatToken(
     return null;
   }
 }
-
-export async function verifyChatAccess(req: Request, conversationId: string) {
-  const tokenPayload = await verifyChatToken(
-    req.headers.get("x-chat-token") || "",
-    conversationId,
-  );
-  if (tokenPayload) return { tokenPayload, legacy: false };
-
-  const legacyUntil = Date.parse(Deno.env.get("LEGACY_CHAT_SECRET_UNTIL") || "");
-  const legacySecret = Deno.env.get("DOMI_AI_SHARED_SECRET") || "";
-  const providedSecret = req.headers.get("x-domi-secret") || "";
-  if (
-    Number.isFinite(legacyUntil) &&
-    Date.now() < legacyUntil &&
-    legacySecret &&
-    providedSecret === legacySecret
-  ) {
-    return { tokenPayload: null, legacy: true };
-  }
-
-  return null;
-}

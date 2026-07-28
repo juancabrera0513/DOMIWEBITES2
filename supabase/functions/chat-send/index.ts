@@ -1,6 +1,6 @@
 import "@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { verifyChatAccess } from "../_shared/chat-token.ts";
+import { verifyChatToken } from "../_shared/chat-token.ts";
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -8,7 +8,7 @@ function json(data: unknown, status = 200) {
     headers: {
       "content-type": "application/json; charset=utf-8",
       "access-control-allow-origin": "*",
-      "access-control-allow-headers": "content-type, x-site-key, x-chat-token, x-domi-secret",
+      "access-control-allow-headers": "content-type, x-site-key, x-chat-token",
       "access-control-allow-methods": "POST, OPTIONS",
     },
   });
@@ -85,7 +85,10 @@ Deno.serve(async (req) => {
     return json({ error: "conversation_id and message required" }, 400);
   }
 
-  const chatAuth = await verifyChatAccess(req, conversationId);
+  const chatAuth = await verifyChatToken(
+    req.headers.get("x-chat-token") || "",
+    conversationId,
+  );
   if (!chatAuth) return json({ error: "Invalid or expired chat token" }, 401);
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
@@ -106,9 +109,7 @@ Deno.serve(async (req) => {
     .maybeSingle();
 
   if (cErr || !convo) return json({ error: "Conversation not found" }, 404);
-  if (chatAuth.tokenPayload && chatAuth.tokenPayload.site_id !== convo.site_id) {
-    return json({ error: "Invalid chat token" }, 403);
-  }
+  if (chatAuth.site_id !== convo.site_id) return json({ error: "Invalid chat token" }, 403);
 
   if (convo.status === "closed") {
     return json({
