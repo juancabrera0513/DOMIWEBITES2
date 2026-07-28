@@ -15,6 +15,7 @@ import BlogPage from "./pages/BlogPage";
 import BlogPost from "./pages/BlogPost";
 
 import SpecialOfferPage from "./pages/SpecialOfferPage";
+import FreeAuditPage from "./pages/FreeAuditPage";
 
 import ThankYouPage from "./pages/ThankYouPage";
 import PrivacyPage from "./pages/PrivacyPage";
@@ -58,7 +59,8 @@ export default function App() {
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/contact" element={<ContactPage />} />
 
-          <Route path="/special" element={<SpecialOfferPage  />} />
+          <Route path="/special" element={<SpecialOfferPage />} />
+          <Route path="/audit" element={<FreeAuditPage />} />
 
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
