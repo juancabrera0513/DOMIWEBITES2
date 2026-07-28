@@ -13,8 +13,9 @@ to authenticated
 using (
   exists (
     select 1
-    from public.account_users au
-    where au.account_id = chat_leads.account_id
+    from public.conversations c
+    join public.account_users au on au.account_id = c.account_id
+    where c.id = chat_leads.conversation_id
       and au.user_id = auth.uid()
   )
 );
@@ -33,4 +34,3 @@ using (
       and au.user_id = auth.uid()
   )
 );
-
