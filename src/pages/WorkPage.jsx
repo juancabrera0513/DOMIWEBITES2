@@ -162,6 +162,7 @@ export default function WorkPage() {
                             alt={projectTitle}
                             className="absolute inset-0 w-full h-full object-cover"
                             loading="lazy"
+                            decoding="async"
                           />
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-black/0" />
