@@ -9,7 +9,7 @@ export const PROJECTS = [
       "Kae’s Kitchen needed an online home that felt as personal as the bakery while giving customers a clearer path from inspiration to inquiry.",
     solution:
       "We created a welcoming, photo-led website with organized offerings, mobile-friendly navigation, and simple ways to request a custom order.",
-    image: "/portfolio/kae.webp",
+    image: "/portfolio/kaes-kitchen-website-design.webp",
     url: "https://kaeskitchen.com/",
     details: [
       "Custom cake and dessert presentation",
@@ -36,7 +36,7 @@ export const PROJECTS = [
       "Glo Event Co needed a website that matched its high-energy events and helped visitors quickly understand the different experiences available.",
     solution:
       "We designed an immersive neon experience with clear service choices, strong calls to action, and a direct path to booking information.",
-    image: "/portfolio/glo.webp",
+    image: "/portfolio/glo-event-co-website-design.webp",
     url: "https://www.gloeventco.com/",
     details: [
       "Interactive live website experience",
@@ -63,7 +63,7 @@ export const PROJECTS = [
       "Bendecidos con Propósito needed to explain its mission across two languages and give supporters clear ways to learn, volunteer, and contribute.",
     solution:
       "We built a bilingual, story-led website with organized programs, community photography, and visible paths for donations and involvement.",
-    image: "/portfolio/bendecidos.webp",
+    image: "/portfolio/bendecidos-nonprofit-website-design.webp",
     url: "https://bendecidos.netlify.app/",
     details: [
       "English and Spanish content",
@@ -90,7 +90,7 @@ export const PROJECTS = [
       "Group Travel Co needed to make planning feel less complicated for families, schools, churches, and business groups.",
     solution:
       "We created a visual, easy-to-follow experience with destination highlights, trip information, and a focused quote-request path.",
-    image: "/portfolio/grouptravel.webp",
+    image: "/portfolio/group-travel-co-website-design.webp",
     url: "https://grouptravelco.netlify.app/",
     details: [
       "Destination and trip presentation",
