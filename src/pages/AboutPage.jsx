@@ -23,9 +23,6 @@ export default function AboutPage() {
           <div className="container max-w-5xl">
 
             <div className="text-center">
-              <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-200/70 mb-3">
-                ABOUT DOMI WEBSITES
-              </p>
 
               <h1 className="font-extrabold tracking-tight leading-[1.05]">
                 <span className="block text-[40px] sm:text-[56px] md:text-[72px] text-white">

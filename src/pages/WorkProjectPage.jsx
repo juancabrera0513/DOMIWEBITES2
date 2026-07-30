@@ -64,7 +64,9 @@ export default function WorkProjectPage() {
   const summary = safeText(project.description, "");
   const category = safeText(project.category, "");
   const url = `${SITE_URL}/work/${project.id}`;
-  const imageUrl = project.image ? `${SITE_URL}${project.image}` : `${SITE_URL}/og.webp`;
+  const imageUrl = project.image
+    ? `${SITE_URL}${project.image}`
+    : `${SITE_URL}/domi-websites-custom-business-software-og.jpg`;
 
   const portfolioSchema = {
     "@context": "https://schema.org",
@@ -154,19 +156,6 @@ export default function WorkProjectPage() {
                   <p className="text-white/60 mt-3 leading-relaxed">{summary}</p>
                 ) : null}
 
-                {project.kpis?.length ? (
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {project.kpis.map((k) => (
-                      <span
-                        key={k}
-                        className="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-200 border border-emerald-300/20"
-                      >
-                        {k}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
-
                 {project.tags?.length ? (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {project.tags.map((t) => (
@@ -180,22 +169,65 @@ export default function WorkProjectPage() {
                   </div>
                 ) : null}
 
-                {project.details?.length ? (
-                  <div className="mt-8">
-                    <h2 className="text-lg font-bold text-white">
-                      What we delivered
-                    </h2>
-                    <ul className="mt-3 space-y-2 text-white/70 list-disc pl-5">
-                      {project.details.map((d) => (
-                        <li key={d}>{d}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
+                <div className="mt-8 grid gap-6">
+                  {project.challenge ? (
+                    <section>
+                      <h2 className="text-lg font-bold text-white">The business needed</h2>
+                      <p className="mt-2 text-white/65 leading-relaxed">{project.challenge}</p>
+                    </section>
+                  ) : null}
+
+                  {project.solution ? (
+                    <section>
+                      <h2 className="text-lg font-bold text-white">What we built</h2>
+                      <p className="mt-2 text-white/65 leading-relaxed">{project.solution}</p>
+                    </section>
+                  ) : null}
+
+                  {project.details?.length ? (
+                    <section>
+                      <h2 className="text-lg font-bold text-white">Included in the project</h2>
+                      <ul className="mt-3 grid sm:grid-cols-2 gap-3 text-white/70">
+                        {project.details.map((detail) => (
+                          <li key={detail} className="flex items-start gap-2">
+                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300" />
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ) : null}
+
+                  {project.goals?.length ? (
+                    <section>
+                      <h2 className="text-lg font-bold text-white">Built to support</h2>
+                      <ul className="mt-3 space-y-2 text-white/70">
+                        {project.goals.map((goal) => (
+                          <li key={goal} className="flex items-start gap-2">
+                            <svg className="mt-1 h-4 w-4 shrink-0 text-emerald-300" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                              <path fillRule="evenodd" d="M16.704 5.29a1 1 0 010 1.414l-7.5 7.5a1 1 0 01-1.414 0l-3.5-3.5A1 1 0 015.704 9.29l2.793 2.793 6.793-6.793a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            <span>{goal}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ) : null}
+                </div>
 
                 <div className="mt-10 flex flex-col sm:flex-row gap-3">
+                  {project.url ? (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn btn-outline"
+                    >
+                      Visit live website
+                    </a>
+                  ) : null}
                   <Link to="/contact" className="btn btn-primary">
-                    Start a Project
+                    Build something similar
                   </Link>
                   <Link to="/work" className="btn btn-outline">
                     View more work
@@ -210,8 +242,8 @@ export default function WorkProjectPage() {
                   Looking for something similar?
                 </h3>
                 <p className="text-white/60 mt-2">
-                  We build conversion-focused websites and custom software, CRMs,
-                  automation tools, AI chatbots, and internal platforms.
+                  Tell us what your business needs. We will recommend a clear,
+                  practical approach without unnecessary complexity.
                 </p>
                 <div className="mt-4">
                   <Link to="/services" className="btn btn-outline w-full">

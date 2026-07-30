@@ -20,33 +20,33 @@ export default function ProcessSection() {
   const steps = [
     {
       n: "01",
-      title: "Strategy & Offer Clarity",
+      title: "Understand Your Business",
       desc:
         "We define what you sell, who it's for, and how your website should guide visitors toward action.",
     },
     {
       n: "02",
-      title: "UX & Conversion Structure",
+      title: "Plan the Right Pages",
       desc:
         "We design pages that remove confusion, highlight value, and make it easy to take the next step.",
     },
     {
       n: "03",
-      title: "Build & Performance",
+      title: "Design and Build",
       desc:
-        "Fast-loading, SEO-ready builds optimized for mobile and long-term scalability.",
+        "We build a fast, professional website that works beautifully on phones and computers.",
     },
     {
       n: "04",
-      title: "Systems & Automation",
+      title: "Save You Time",
       desc:
-        "Forms, CRM routing, automations, booking flows — your website becomes a working system.",
+        "We can add forms, online booking, reminders, and faster follow-up where they help most.",
     },
     {
       n: "05",
-      title: "Launch & Optimization",
+      title: "Launch With Confidence",
       desc:
-        "Tracking, refinements, and continuous improvements based on real user behavior.",
+        "We test everything, help you go live, and make improvements based on real results.",
     },
   ];
 
@@ -55,15 +55,11 @@ export default function ProcessSection() {
       <div className="hero-vignette" />
       <div className="max-w-6xl mx-auto px-4" ref={ref}>
         <div className="text-center max-w-3xl mx-auto">
-          <p className="text-[11px] tracking-[0.3em] uppercase text-cyan-400 mb-3">
-            HOW IT WORKS
-          </p>
           <h2 className="text-3xl md:text-4xl font-extrabold text-white">
-            From website to business engine
+            A simple process from idea to launch
           </h2>
           <p className="text-slate-300 mt-3 text-sm md:text-base">
-            Every project follows a structured process designed to generate
-            clarity, conversions, and scalable systems.
+            You always know what we are working on, why it matters, and what comes next.
           </p>
         </div>
 
@@ -74,7 +70,7 @@ export default function ProcessSection() {
               className="reveal group glass border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/40 hover:shadow-[0_0_40px_rgba(34,211,238,.08)]"
               style={{ animationDelay: `${i * 60}ms` }}
             >
-              <div className="text-cyan-400 text-xs font-bold tracking-wider mb-2">
+              <div className="text-cyan-400 text-xs font-bold mb-2">
                 {s.n}
               </div>
               <h3 className="text-white font-semibold mb-2">

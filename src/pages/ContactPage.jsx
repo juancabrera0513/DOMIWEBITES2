@@ -10,12 +10,15 @@ export default function ContactPage() {
   return (
     <>
       <Helmet>
-        <title>{t("meta:title")} — Contact</title>
-        <meta name="description" content="Contact Domi Websites: WhatsApp, book a call, or send a form." />
+        <title>{t("meta:title")} | Contact</title>
+        <meta
+          name="description"
+          content="Contact Domi Websites by WhatsApp, text message, consultation, or project form."
+        />
       </Helmet>
       <Header />
       <main id="main-content">
-        <ContactSection />
+        <ContactSection standalone />
       </main>
       <Footer />
     </>

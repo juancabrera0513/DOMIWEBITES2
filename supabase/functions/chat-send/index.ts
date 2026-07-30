@@ -192,7 +192,7 @@ Deno.serve(async (req) => {
 
   let botText = (ai.reply || "").trim();
   if (ai.request_live_agent && !botText) {
-    botText = "Got it — I’ll connect you with a live agent now. One moment…";
+    botText = "Got it. I’ll connect you with a live agent now. One moment…";
   }
 
   const { data: botMsg, error: bErr } = await sb

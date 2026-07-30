@@ -1,38 +1,34 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import useDomiTracker from "./hooks/useDomiTracker";
 
 import HomePage from "./pages/HomePage";
-import AboutPage from "./pages/AboutPage";
-import ServicesPage from "./pages/ServicesPage";
-import PricingPage from "./pages/PricingPage";
-import ContactPage from "./pages/ContactPage";
-
-import WorkPage from "./pages/WorkPage";
-import WorkProjectPage from "./pages/WorkProjectPage";
-
-import BlogPage from "./pages/BlogPage";
-import BlogPost from "./pages/BlogPost";
-
-import SpecialOfferPage from "./pages/SpecialOfferPage";
-import FreeAuditPage from "./pages/FreeAuditPage";
-
-import ThankYouPage from "./pages/ThankYouPage";
-import PrivacyPage from "./pages/PrivacyPage";
-import TermsPage from "./pages/TermsPage";
-
 import ScrollToTop from "./components/ScrollToTop";
-
-import AuthCallback from "./pages/AuthCallback";
-import SetPassword from "./pages/SetPassword";
-import ForgotPassword from "./pages/ForgotPassword";
-
-import RequireAdmin from "./pages/admin/RequireAdmin";
-import AdminInbox from "./pages/admin/AdminInbox";
-import AdminLogin from "./pages/admin/AdminLogin";
-
-import DomiChatWidget from "./components/chat/DomiChatWidget";
 import CookieBanner from "./components/CookieBanner";
+import RouteSeo from "./components/RouteSeo";
+
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const ServicesPage = lazy(() => import("./pages/ServicesPage"));
+const PricingPage = lazy(() => import("./pages/PricingPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const WorkPage = lazy(() => import("./pages/WorkPage"));
+const WorkProjectPage = lazy(() => import("./pages/WorkProjectPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const SpecialOfferPage = lazy(() => import("./pages/SpecialOfferPage"));
+const FreeAuditPage = lazy(() => import("./pages/FreeAuditPage"));
+const ServiceDetailPage = lazy(() => import("./pages/ServiceDetailPage"));
+const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+const AuthCallback = lazy(() => import("./pages/AuthCallback"));
+const SetPassword = lazy(() => import("./pages/SetPassword"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const RequireAdmin = lazy(() => import("./pages/admin/RequireAdmin"));
+const AdminInbox = lazy(() => import("./pages/admin/AdminInbox"));
+const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const DomiChatWidget = lazy(() => import("./components/chat/DomiChatWidget"));
 
 export default function App() {
   const { pathname } = useLocation();
@@ -48,6 +44,14 @@ export default function App() {
       <div className="relative z-10">
         <ScrollToTop />
 
+        <Suspense
+          fallback={
+            <main className="min-h-[70vh] grid place-items-center" aria-live="polite">
+              <span className="sr-only">Loading page</span>
+              <div className="h-9 w-9 rounded-full border-2 border-cyan-300/25 border-t-cyan-300 animate-spin" />
+            </main>
+          }
+        >
         <Routes>
           <Route path="/" element={<HomePage />} />
 
@@ -61,6 +65,12 @@ export default function App() {
 
           <Route path="/special" element={<SpecialOfferPage />} />
           <Route path="/audit" element={<FreeAuditPage />} />
+          <Route path="/web-design-st-louis" element={<ServiceDetailPage />} />
+          <Route path="/small-business-websites" element={<ServiceDetailPage />} />
+          <Route path="/website-redesign-st-louis" element={<ServiceDetailPage />} />
+          <Route path="/local-seo-st-louis" element={<ServiceDetailPage />} />
+          <Route path="/customer-follow-up-tools" element={<ServiceDetailPage />} />
+          <Route path="/custom-business-tools" element={<ServiceDetailPage />} />
 
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
@@ -84,13 +94,19 @@ export default function App() {
             }
           />
 
-          <Route path="*" element={<HomePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        </Suspense>
+        <RouteSeo />
 
         {!isAdminRoute && <CookieBanner />}
       </div>
 
-      {!isAdminRoute && <DomiChatWidget pathname={pathname} />}
+      {!isAdminRoute && (
+        <Suspense fallback={null}>
+          <DomiChatWidget pathname={pathname} />
+        </Suspense>
+      )}
     </div>
   );
 }

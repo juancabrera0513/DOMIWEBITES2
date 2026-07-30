@@ -84,9 +84,6 @@ export default function WorkPage() {
         <section className="section relative z-10">
           <div className="container">
             <div className="text-center max-w-4xl mx-auto">
-              <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-200/70 mb-3">
-                OUR WORK
-              </p>
 
               <h1 className="font-extrabold tracking-tight leading-[1.05] text-center">
                 <span className="block text-[40px] sm:text-[56px] md:text-[72px] lg:text-[88px] text-white">
@@ -94,24 +91,23 @@ export default function WorkPage() {
                 </span>
 
                 <span className="block text-[48px] sm:text-[64px] md:text-[82px] lg:text-[98px] grad-text">
-                  Custom software that scales.
+                  Business tools that save time.
                 </span>
               </h1>
 
               <p className="mt-8 text-[15px] sm:text-lg text-white/60 max-w-3xl mx-auto leading-relaxed text-center">
-                We design high-performing websites and build custom software
-                including CRMs, automation platforms, AI-powered chatbots, and
-                intelligent internal tools engineered to streamline operations
-                and drive scalable growth.
+                See real websites and business tools we have created to help
+                companies look professional, attract customers, organize their
+                work, and grow with confidence.
               </p>
 
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 {[
-                  "Mobile-first",
-                  "Conversion-focused",
-                  "AI-enabled",
-                  "Automation-ready",
-                  "Built to scale",
+                  "Works on every device",
+                  "Clear and easy to use",
+                  "Built for real customers",
+                  "Made to save time",
+                  "Ready to grow",
                 ].map((tag) => (
                   <span
                     key={tag}

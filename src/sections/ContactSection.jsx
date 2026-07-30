@@ -1,18 +1,29 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import {
+  CalendarDays,
+  Clock3,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Send,
+  Smartphone,
+} from "lucide-react";
 
 const MIN_NAME = 2;
 const MIN_MSG = 10;
 
-const CALENDLY = "https://calendly.com/domiwebsites/30min";
-const WHATSAPP = "https://wa.me/13143769667";
+const CALENDLY = "https://calendly.com/domiwebsites/website-consultation";
+const WHATSAPP =
+  "https://wa.me/13143769667?text=Hi%20Domi%20Websites.%20I%20would%20like%20to%20talk%20about%20a%20project.";
+const SMS =
+  "sms:+13143769667?body=Hi%20Domi%20Websites.%20I%20would%20like%20to%20talk%20about%20a%20project.";
 const EMAIL_TO = "hello@domiwebsites.com";
-const PHONE_TEL = "tel:13143769667";
 
 function cx(...a) {
   return a.filter(Boolean).join(" ");
 }
 
-export default function ContactSection() {
+export default function ContactSection({ standalone = false }) {
   const rootRef = useRef(null);
   const formRef = useRef(null);
   const nameRef = useRef(null);
@@ -88,7 +99,7 @@ export default function ContactSection() {
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(trimmed.email);
     if (!emailOk) next.email = "Please enter a valid email.";
     if (trimmed.phone && !/^[\d\s()+-]{7,}$/.test(trimmed.phone)) {
-      next.phone = "Please enter a valid phone (digits, spaces, +, (), -).";
+      next.phone = "Please enter a valid mobile number.";
     }
     if (!trimmed.subject) next.subject = "Please add a subject.";
     if (trimmed.message.length < MIN_MSG) next.message = `Message must be at least ${MIN_MSG} characters.`;
@@ -168,126 +179,156 @@ export default function ContactSection() {
   const quickCards = useMemo(
     () => [
       {
-        k: "book",
-        title: "Free consultation",
-        desc: "15–30 min call. Clear next steps, no pressure.",
-        href: CALENDLY,
-        accent: "from-cyan-400/20 to-indigo-400/10",
-        btn: "btn btn-primary w-full",
-        label: "Book on Calendly",
-        icon: "📅",
-        onClick: () => window.gtag && window.gtag("event", "click_calendly", { place: "contact_section" }),
+        k: "whats",
+        title: "Message on WhatsApp",
+        desc: "The fastest way to start. Send a short message and we will reply as soon as possible.",
+        href: WHATSAPP,
+        accent: "from-emerald-400/20 via-cyan-400/10 to-transparent",
+        label: "Open WhatsApp",
+        icon: MessageCircle,
+        external: true,
+        onClick: () => window.gtag && window.gtag("event", "click_whatsapp", { place: "contact_section" }),
       },
       {
-        k: "whats",
-        title: "WhatsApp",
-        desc: "Fast questions? Send a message anytime.",
-        href: WHATSAPP,
-        accent: "from-emerald-400/18 to-cyan-400/10",
-        btn: "btn btn-outline w-full",
-        label: "Message on WhatsApp",
-        icon: "💬",
-        onClick: () => window.gtag && window.gtag("event", "click_whatsapp", { place: "contact_section" }),
+        k: "text",
+        title: "Send a text",
+        desc: "Prefer regular text messages? Send one directly from your phone.",
+        href: SMS,
+        accent: "from-cyan-400/18 via-blue-400/10 to-transparent",
+        label: "Start a text",
+        icon: Smartphone,
+        external: false,
+        onClick: () => window.gtag && window.gtag("event", "click_text", { place: "contact_section" }),
+      },
+      {
+        k: "book",
+        title: "Book a consultation",
+        desc: "Choose a convenient time when your project needs a focused conversation.",
+        href: CALENDLY,
+        accent: "from-violet-400/18 via-indigo-400/10 to-transparent",
+        label: "View available times",
+        icon: CalendarDays,
+        external: true,
+        onClick: () => window.gtag && window.gtag("event", "click_calendly", { place: "contact_section" }),
       },
     ],
     []
   );
 
+  const HeadingTag = standalone ? "h1" : "h2";
+
   return (
-    <section id="contact" className="section relative overflow-hidden nexus-bg hero-grid">
+    <section
+      id="contact"
+      className={cx(
+        "relative overflow-hidden nexus-bg hero-grid",
+        standalone ? "pt-36 pb-24 md:pt-44 md:pb-28" : "section"
+      )}
+    >
       <div className="hero-vignette" />
+      <div
+        className="pointer-events-none absolute left-[-12rem] top-40 h-96 w-96 rounded-full bg-cyan-400/10 blur-[110px]"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute right-[-10rem] top-24 h-[30rem] w-[30rem] rounded-full bg-violet-500/10 blur-[130px]"
+        aria-hidden="true"
+      />
 
       <div ref={rootRef} className="container relative z-10">
-        <div className="text-center max-w-3xl mx-auto reveal">
-          <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
-            Let’s talk
-          </p>
+        <div className="text-center max-w-4xl mx-auto reveal">
+          <HeadingTag
+            id="contact-heading"
+            className={cx(
+              "font-extrabold text-white tracking-tight",
+              standalone
+                ? "text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
+                : "text-3xl md:text-5xl"
+            )}
+          >
+            Start with a <span className="grad-text">message</span>
+          </HeadingTag>
 
-          <h2 id="contact-heading" className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
-            Tell me about your <span className="grad-text">project</span>
-          </h2>
-
-          <p className="mt-3 text-sm md:text-base text-white/60">
-            Short message is fine. We typically reply within{" "}
-            <span className="text-white/80 font-medium">one business day</span>.
+          <p className="mt-5 text-base md:text-lg leading-relaxed text-white/65 max-w-2xl mx-auto">
+            Tell us what you are working on. WhatsApp and text are the fastest
+            ways to reach us, and a short message is completely fine.
           </p>
         </div>
 
-        <div className="mt-10 grid lg:grid-cols-[0.9fr,1.1fr] gap-6 lg:gap-8 items-start">
+        <div className="mt-12 md:mt-14 grid lg:grid-cols-[0.82fr,1.18fr] gap-7 lg:gap-10 items-start">
           <aside className="reveal space-y-4">
             {quickCards.map((c, i) => (
               <a
                 key={c.k}
                 href={c.href}
-                target="_blank"
-                rel="noreferrer"
+                target={c.external ? "_blank" : undefined}
+                rel={c.external ? "noreferrer" : undefined}
                 onClick={c.onClick}
                 className={cx(
-                  "block glass rounded-2xl border border-white/10 p-5",
-                  "transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(0,0,0,.55)]",
-                  "relative overflow-hidden"
+                  "group block glass rounded-3xl border p-6",
+                  "transition-all duration-300 hover:-translate-y-1",
+                  "relative overflow-hidden",
+                  c.k === "whats"
+                    ? "border-emerald-300/25 shadow-[0_24px_80px_rgba(16,185,129,.10)] hover:border-emerald-300/40 hover:shadow-[0_28px_90px_rgba(16,185,129,.16)]"
+                    : "border-white/10 hover:border-white/20 hover:shadow-[0_28px_80px_rgba(0,0,0,.45)]"
                 )}
                 style={{ animationDelay: `${i * 70}ms` }}
               >
-                <div className={cx("absolute inset-0 opacity-70 bg-gradient-to-br", c.accent)} />
+                <div className={cx("absolute inset-0 opacity-80 bg-gradient-to-br", c.accent)} />
                 <div className="relative">
                   <div className="flex items-start gap-3">
-                    <div className="h-11 w-11 rounded-2xl grid place-items-center bg-white/7 border border-white/10">
-                      <span className="text-lg">{c.icon}</span>
+                    <div
+                      className={cx(
+                        "h-12 w-12 shrink-0 rounded-2xl grid place-items-center border",
+                        c.k === "whats"
+                          ? "bg-emerald-300/10 border-emerald-200/20 text-emerald-200"
+                          : "bg-white/[.06] border-white/10 text-cyan-200"
+                      )}
+                    >
+                      <c.icon size={22} strokeWidth={1.8} />
                     </div>
                     <div className="min-w-0">
-                      <div className="text-white font-semibold">{c.title}</div>
-                      <div className="mt-1 text-sm text-white/60">{c.desc}</div>
+                      <div className="text-white text-lg font-semibold">{c.title}</div>
+                      <div className="mt-1.5 text-sm leading-6 text-white/55">{c.desc}</div>
                     </div>
                   </div>
 
-                  <div className="mt-4">
-                    <div
-                      className={cx(
-                        c.btn,
-                        "transition-all duration-300 hover:-translate-y-0.5",
-                        c.k === "book"
-                          ? "hover:shadow-[0_18px_55px_rgba(34,211,238,.22)]"
-                          : "hover:shadow-[0_18px_55px_rgba(34,211,238,.12)]"
-                      )}
-                    >
-                      {c.label}
-                    </div>
+                  <div
+                    className={cx(
+                      "mt-5 flex items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition",
+                      c.k === "whats"
+                        ? "border-emerald-200/20 bg-emerald-300/10 text-emerald-100 group-hover:bg-emerald-300/15"
+                        : "border-white/10 bg-white/[.04] text-white/80 group-hover:bg-white/[.08]"
+                    )}
+                  >
+                    <span>{c.label}</span>
+                    <span aria-hidden="true">→</span>
                   </div>
                 </div>
               </a>
             ))}
 
             <div
-              className="glass rounded-2xl border border-white/10 p-5 reveal"
-              style={{ animationDelay: "160ms" }}
+              className="glass rounded-3xl border border-white/10 p-6 reveal"
+              style={{ animationDelay: "210ms" }}
             >
-              <div className="text-white font-semibold">Direct contact</div>
-
-              <div className="mt-3 space-y-2 text-sm text-white/65">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-white/50">Phone</span>
-                  <a
-                    href={PHONE_TEL}
-                    className="text-white/80 hover:text-white underline decoration-white/20 hover:decoration-white/40 transition"
-                    onClick={() => window.gtag && window.gtag("event", "click_call", { place: "contact_section" })}
-                  >
-                    (314) 376-9667
-                  </a>
+              <div className="space-y-4 text-sm text-white/60">
+                <div className="flex items-center gap-3">
+                  <Clock3 size={18} className="text-cyan-300" />
+                  <span>Replies usually arrive within one business day.</span>
                 </div>
-
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-white/50">Email</span>
+                <div className="flex items-center gap-3">
+                  <Mail size={18} className="text-cyan-300" />
                   <a
                     href={`mailto:${EMAIL_TO}`}
-                    className="text-white/80 hover:text-white underline decoration-white/20 hover:decoration-white/40 transition truncate"
+                    className="text-white/80 hover:text-white transition"
                   >
                     {EMAIL_TO}
                   </a>
                 </div>
-
-                <div className="pt-2 text-xs text-white/45">
-                  St. Louis, MO • Remote projects welcome
+                <div className="flex items-center gap-3">
+                  <MapPin size={18} className="text-cyan-300" />
+                  <span>St. Louis, MO. Remote projects welcome.</span>
                 </div>
               </div>
             </div>
@@ -297,13 +338,30 @@ export default function ContactSection() {
             <form
               ref={formRef}
               onSubmit={sendEmail}
-              className="glass rounded-3xl border border-white/10 p-6 sm:p-7 shadow-[0_30px_90px_rgba(0,0,0,.55)]"
+              className="glass relative overflow-hidden rounded-[2rem] border border-white/10 p-6 sm:p-8 shadow-[0_35px_110px_rgba(0,0,0,.55)]"
               aria-label="Contact form"
               noValidate
             >
+              <div
+                className="pointer-events-none absolute right-[-8rem] top-[-8rem] h-64 w-64 rounded-full bg-cyan-400/10 blur-[90px]"
+                aria-hidden="true"
+              />
               <input type="text" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="relative mb-7 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-white">Send project details</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    Share only what you know. We can help with the rest.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-white/45">
+                  <Clock3 size={15} />
+                  One business day
+                </div>
+              </div>
+
+              <div className="relative grid sm:grid-cols-2 gap-5">
                 <div className={fieldWrap}>
                   <label className="text-xs text-white/55">Full name *</label>
                   <input
@@ -341,12 +399,14 @@ export default function ContactSection() {
                 </div>
 
                 <div className={fieldWrap}>
-                  <label className="text-xs text-white/55">Phone (optional)</label>
+                  <label className="text-xs text-white/55">
+                    Mobile number for text replies
+                  </label>
                   <input
                     ref={phoneRef}
                     type="tel"
                     name="phone"
-                    placeholder="+1 (___) ___-____"
+                    placeholder="+1 (___) ___-____ (optional)"
                     className={cx(inputBase, errors.phone && "border-rose-400/70 focus:border-rose-300/70 focus:ring-rose-300/15")}
                     autoComplete="tel"
                     aria-invalid={!!errors.phone}
@@ -376,7 +436,7 @@ export default function ContactSection() {
                 </div>
               </div>
 
-              <div className={cx("mt-4", fieldWrap)}>
+              <div className={cx("relative mt-5", fieldWrap)}>
                 <label className="text-xs text-white/55">Message *</label>
                 <textarea
                   ref={msgRef}
@@ -402,7 +462,7 @@ export default function ContactSection() {
                 </div>
               ) : null}
 
-              <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+              <div className="relative mt-6 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -413,7 +473,8 @@ export default function ContactSection() {
                   )}
                   aria-busy={isSubmitting}
                 >
-                  {isSubmitting ? "Sending..." : "Send message"}
+                  <Send size={17} />
+                  {isSubmitting ? "Sending..." : "Send my message"}
                 </button>
 
                 <div className="text-xs text-white/45 text-center sm:text-right">

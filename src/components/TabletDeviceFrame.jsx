@@ -12,7 +12,7 @@ export default function TabletDeviceFrame({ url }) {
           <iframe
             src={url}
             className="absolute inset-0 w-full h-full border-0"
-            loading="eager"
+            loading="lazy"
             title="Tablet live preview"
             referrerPolicy="no-referrer-when-downgrade"
           />

@@ -3,6 +3,7 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import SeoJsonLd from "../components/SeoJsonLd";
 import { blogPosts } from "../data/blogPosts";
 
 const SITE_URL = "https://domiwebsites.com";
@@ -20,7 +21,7 @@ function toISO(dateStr) {
 
 function formatDate(dateStr) {
   try {
-    return new Date(dateStr).toLocaleDateString(undefined, {
+    return new Date(`${dateStr}T12:00:00`).toLocaleDateString(undefined, {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -103,12 +104,8 @@ export default function BlogPost() {
     image: [image],
     datePublished: publishedISO || undefined,
     dateModified: modifiedISO || undefined,
-    author: { "@type": "Person", name: "Juan Cabrera" },
-    publisher: {
-      "@type": "Organization",
-      name: "Domi Websites",
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/DomiLogo.webp` },
-    },
+    author: { "@id": `${SITE_URL}#founder` },
+    publisher: { "@id": `${SITE_URL}#business` },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
 
@@ -134,6 +131,7 @@ export default function BlogPost() {
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
+      <SeoJsonLd />
       <Header />
 
       <main id="main-content" className="section">
@@ -152,7 +150,10 @@ export default function BlogPost() {
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
               {post.title}
             </h1>
-            <p className="mt-3 text-white/55 text-sm">{formatDate(post.date)}</p>
+            <p className="mt-3 text-white/55 text-sm">
+              Published {formatDate(post.date)}
+              {post.updated ? ` · Updated ${formatDate(post.updated)}` : ""}
+            </p>
           </header>
 
           {post.image ? (
@@ -177,8 +178,8 @@ export default function BlogPost() {
           <section className="mt-8 glass rounded-2xl border border-white/10 p-6 md:p-7">
             <h2 className="text-xl font-extrabold text-white">Need help implementing this?</h2>
             <p className="mt-2 text-white/60">
-              We build conversion-focused websites and custom software (CRMs, automation tools, AI chatbots,
-              and internal platforms).
+              Tell us what is getting in the way of your business. We will recommend
+              a clear next step in plain language.
             </p>
             <div className="mt-5 flex flex-col sm:flex-row gap-3">
               <Link to="/contact" className="btn btn-primary">
@@ -203,7 +204,7 @@ export default function BlogPost() {
                     to={`/blog/${r.slug}`}
                     className="block rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
                   >
-                    <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                    <div className="text-xs text-white/55">
                       {formatDate(r.date)}
                     </div>
                     <div className="mt-2 font-semibold text-white/90 leading-snug">{r.title}</div>
@@ -226,7 +227,7 @@ export default function BlogPost() {
                   to={`/blog/${prev.slug}`}
                   className="block glass rounded-2xl border border-white/10 p-5 hover:bg-white/5 transition"
                 >
-                  <div className="text-[11px] tracking-[0.25em] uppercase text-white/55">Previous</div>
+                  <div className="text-xs text-white/55">Previous</div>
                   <div className="mt-2 font-semibold text-white/90 leading-snug">{prev.title}</div>
                 </Link>
               ) : (
@@ -238,7 +239,7 @@ export default function BlogPost() {
                   to={`/blog/${next.slug}`}
                   className="block glass rounded-2xl border border-white/10 p-5 hover:bg-white/5 transition"
                 >
-                  <div className="text-[11px] tracking-[0.25em] uppercase text-white/55">Next</div>
+                  <div className="text-xs text-white/55">Next</div>
                   <div className="mt-2 font-semibold text-white/90 leading-snug">{next.title}</div>
                 </Link>
               ) : null}

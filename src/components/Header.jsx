@@ -64,6 +64,8 @@ export default function Header() {
                 <img
                   src="/DomiLogo.webp"
                   alt="Domi Websites"
+                  width="500"
+                  height="301"
                   className="h-16 w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,.6)]"
                 />
               </a>

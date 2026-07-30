@@ -17,7 +17,7 @@ export default function MobileDeviceFrame({ url }) {
                 <iframe
                   src={url}
                   className="absolute inset-0 w-full h-full border-0"
-                  loading="eager"
+                  loading="lazy"
                   title="Mobile live preview"
                   referrerPolicy="no-referrer-when-downgrade"
                 />

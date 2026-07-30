@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root{
   --bg: #05060a;
   --bg-2: #070812;
@@ -40,8 +39,24 @@
     margin: 0;
     background: var(--bg);
     color: var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3{
+    font-family: "Manrope Variable", "Manrope", system-ui, sans-serif;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+
+  .font-display{
+    font-family: "Manrope Variable", "Manrope", system-ui, sans-serif;
+    font-optical-sizing: auto;
+  }
+
+  p{
+    text-wrap: pretty;
   }
 
   #root{
@@ -212,4 +227,216 @@
 .btn-outline:hover {
   @apply bg-white/10 border-white/50;
   box-shadow: 0 0 25px rgba(255,255,255,0.15);
+}
+
+.home-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: clamp(720px, 94svh, 920px);
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(8.5rem, 15vh, 11rem) 0 clamp(6rem, 11vh, 8rem);
+}
+
+.home-hero__visual {
+  position: absolute;
+  z-index: 0;
+  inset: -18%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.home-hero__aurora {
+  position: absolute;
+  top: 3%;
+  left: 50%;
+  width: min(92vw, 1180px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      from 205deg,
+      transparent 0deg,
+      rgba(34, 211, 238, .34) 54deg,
+      rgba(59, 130, 246, .18) 112deg,
+      transparent 154deg,
+      rgba(139, 92, 246, .26) 225deg,
+      transparent 302deg
+    );
+  filter: blur(78px);
+  opacity: .72;
+  transform: translateX(-50%) rotate(-12deg) scale(1.08);
+  animation: home-hero-aurora 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.home-hero__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(62px);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.home-hero__glow--cyan {
+  top: 27%;
+  left: 6%;
+  width: clamp(260px, 34vw, 540px);
+  height: clamp(170px, 21vw, 340px);
+  background: rgba(16, 200, 232, .2);
+  animation: home-hero-drift-cyan 13s ease-in-out infinite alternate;
+}
+
+.home-hero__glow--violet {
+  right: 4%;
+  bottom: 17%;
+  width: clamp(280px, 38vw, 600px);
+  height: clamp(180px, 24vw, 380px);
+  background: rgba(125, 79, 255, .2);
+  animation: home-hero-drift-violet 16s ease-in-out infinite alternate;
+}
+
+.home-hero__ring {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  border: 1px solid rgba(173, 231, 255, .14);
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 42px rgba(45, 212, 191, .035),
+    0 0 42px rgba(96, 165, 250, .04);
+  transform: translate(-50%, -50%) rotate(-12deg);
+}
+
+.home-hero__ring--outer {
+  width: min(90vw, 1150px);
+  aspect-ratio: 1.85;
+  animation: home-hero-ring 16s ease-in-out infinite alternate;
+}
+
+.home-hero__ring--inner {
+  width: min(68vw, 850px);
+  aspect-ratio: 1.8;
+  border-color: rgba(196, 181, 253, .12);
+  transform: translate(-50%, -50%) rotate(14deg);
+  animation: home-hero-ring-inner 14s ease-in-out infinite alternate;
+}
+
+.home-hero__trail {
+  position: absolute;
+  left: 50%;
+  width: min(84vw, 1100px);
+  height: 1px;
+  transform-origin: center;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 211, 238, .08) 18%,
+    rgba(125, 211, 252, .7) 50%,
+    rgba(167, 139, 250, .12) 82%,
+    transparent
+  );
+  box-shadow: 0 0 22px rgba(56, 189, 248, .28);
+}
+
+.home-hero__trail--one {
+  top: 37%;
+  transform: translateX(-50%) rotate(-9deg);
+  animation: home-hero-trail-one 9s ease-in-out infinite alternate;
+}
+
+.home-hero__trail--two {
+  top: 70%;
+  opacity: .6;
+  transform: translateX(-50%) rotate(8deg);
+  animation: home-hero-trail-two 11s ease-in-out infinite alternate;
+}
+
+.home-hero__shade {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 58% at 50% 45%, rgba(2, 8, 15, .05) 0%, rgba(2, 8, 15, .2) 64%, rgba(2, 8, 15, .76) 100%),
+    linear-gradient(to bottom, rgba(2, 8, 15, .38), transparent 22%, transparent 67%, rgba(2, 8, 15, .88));
+}
+
+@keyframes home-hero-aurora {
+  from { transform: translateX(-52%) rotate(-14deg) scale(1.02); }
+  to { transform: translateX(-48%) rotate(10deg) scale(1.16); }
+}
+
+@keyframes home-hero-drift-cyan {
+  from { transform: translate3d(-5%, -4%, 0) rotate(-8deg); opacity: .55; }
+  to { transform: translate3d(16%, 10%, 0) rotate(7deg); opacity: .9; }
+}
+
+@keyframes home-hero-drift-violet {
+  from { transform: translate3d(7%, 8%, 0) rotate(8deg); opacity: .5; }
+  to { transform: translate3d(-14%, -8%, 0) rotate(-8deg); opacity: .82; }
+}
+
+@keyframes home-hero-ring {
+  from { transform: translate(-50%, -50%) rotate(-12deg) scale(.97); opacity: .5; }
+  to { transform: translate(-50%, -50%) rotate(-5deg) scale(1.05); opacity: .95; }
+}
+
+@keyframes home-hero-ring-inner {
+  from { transform: translate(-50%, -50%) rotate(14deg) scale(1.04); opacity: .42; }
+  to { transform: translate(-50%, -50%) rotate(7deg) scale(.96); opacity: .8; }
+}
+
+@keyframes home-hero-trail-one {
+  from { transform: translateX(-52%) rotate(-9deg) scaleX(.92); opacity: .35; }
+  to { transform: translateX(-48%) rotate(-6deg) scaleX(1.06); opacity: .85; }
+}
+
+@keyframes home-hero-trail-two {
+  from { transform: translateX(-48%) rotate(8deg) scaleX(1.04); opacity: .25; }
+  to { transform: translateX(-52%) rotate(5deg) scaleX(.92); opacity: .65; }
+}
+
+@media (max-width: 640px) {
+  .home-hero {
+    min-height: 780px;
+    padding-top: 8.5rem;
+    padding-bottom: 6rem;
+  }
+
+  .home-hero__visual {
+    inset: -10% -45%;
+  }
+
+  .home-hero__aurora {
+    top: 17%;
+    width: 145vw;
+    filter: blur(60px);
+  }
+
+  .home-hero__ring--outer {
+    width: 160vw;
+  }
+
+  .home-hero__ring--inner {
+    width: 112vw;
+  }
+
+  .home-hero__trail {
+    width: 150vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__aurora,
+  .home-hero__glow,
+  .home-hero__ring,
+  .home-hero__trail {
+    animation: none;
+  }
+
+  .home-hero__aurora {
+    transform: translateX(-50%) rotate(-4deg) scale(1.08);
+  }
 }

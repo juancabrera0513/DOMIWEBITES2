@@ -4,48 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#05060a" />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
-    <link rel="canonical" href="https://domiwebsites.com/" />
-
-    <title>Web Design & Custom Software in St. Louis | Domi Websites</title>
-
-    <meta
-      name="description"
-      content="Web design, custom software, AI chatbots, and automation systems for St. Louis small businesses. We build websites that convert and software that scales."
-    />
-
-    <meta property="og:site_name" content="Domi Websites" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://domiwebsites.com/" />
-    <meta property="og:title" content="Web Design & Custom Software in St. Louis | Domi Websites" />
-    <meta
-      property="og:description"
-      content="Web design, custom software, AI chatbots, and automation systems for St. Louis small businesses. Websites that convert and software that scales."
-    />
-    <meta
-      property="og:image"
-      content="https://domiwebsites.com/domi-websites-custom-business-software-og.jpg"
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Web Design & Custom Software in St. Louis | Domi Websites" />
-    <meta
-      name="twitter:description"
-      content="Websites that convert and software that scales. Serving St. Louis businesses with modern digital solutions."
-    />
-    <meta
-      name="twitter:image"
-      content="https://domiwebsites.com/domi-websites-custom-business-software-og.jpg"
-    />
+    <title data-react-helmet="true">Web Design & Custom Software in St. Louis | Domi Websites</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
+    <link
+      rel="preload"
+      href="/fonts/manrope-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    >
+    <style>
+      @font-face {
+        font-family: "Manrope Variable";
+        font-style: normal;
+        font-display: swap;
+        font-weight: 200 800;
+        src: url("/fonts/manrope-variable.woff2") format("woff2-variations");
+      }
+    </style>
 
     <link
       rel="sitemap"
@@ -53,9 +34,6 @@
       title="Sitemap"
       href="https://domiwebsites.com/sitemap.xml"
     />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -72,13 +50,31 @@
       gtag('set', 'ads_data_redaction', true);
     </script>
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16964586391"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-16964586391');
-      gtag('config', 'G-D36JEC3KD1');
+      window.loadDomiAnalytics = function () {
+        if (window.__domiAnalyticsLoaded) return;
+        window.__domiAnalyticsLoaded = true;
+
+        gtag('js', new Date());
+        gtag('config', 'AW-16964586391');
+        gtag('config', 'G-D36JEC3KD1');
+
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-16964586391';
+        document.head.appendChild(script);
+      };
+
+      try {
+        var savedConsent = JSON.parse(
+          localStorage.getItem('domi_cookie_consent_v1') || 'null'
+        );
+        if (savedConsent && savedConsent.consent === 'granted') {
+          window.loadDomiAnalytics();
+        }
+      } catch (error) {
+        // The consent banner will handle unavailable storage.
+      }
     </script>
 
     <script>
@@ -94,38 +90,6 @@
       }
     </script>
 
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "Domi Websites",
-        "url": "https://domiwebsites.com/",
-        "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg",
-        "telephone": "+1-314-376-9667",
-        "areaServed": {
-          "@type": "City",
-          "name": "St. Louis"
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "St. Louis",
-          "addressRegion": "MO",
-          "addressCountry": "US"
-        },
-        "sameAs": [
-          "https://www.facebook.com/domiwebsites",
-          "https://www.instagram.com/domiwebsites"
-        ],
-        "serviceType": [
-          "Web Design",
-          "Custom Software Development",
-          "CRM Development",
-          "AI Chatbots",
-          "Business Automation",
-          "Website Redesign"
-        ]
-      }
-    </script>
   </head>
 
   <body>

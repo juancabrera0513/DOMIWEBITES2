@@ -37,26 +37,28 @@ export default function ServicesSection() {
     return () => io.disconnect();
   }, []);
 
-  const CALENDLY = "https://calendly.com/domiwebsites/30min";
+  const CALENDLY = "https://calendly.com/domiwebsites/website-consultation";
   const WHATS = "https://wa.me/13143769667";
 
   const services = [
     {
       k: "websites",
+      path: "/web-design-st-louis",
       icon: "🌐",
-      title: t("s_websites_title", "High-converting websites"),
+      title: t("s_websites_title", "Websites that bring inquiries"),
       desc: t(
         "s_websites_desc",
         "Modern, fast websites built to turn visitors into calls, forms, and bookings."
       ),
       bullets: [
-        t("s_websites_b1", "Mobile-first UX that looks premium."),
-        t("s_websites_b2", "Speed + SEO foundations for local search."),
-        t("s_websites_b3", "Clear CTAs: Call / WhatsApp / Book / Quote."),
+        t("s_websites_b1", "Looks professional on phones and computers."),
+        t("s_websites_b2", "Built to help local customers find you."),
+        t("s_websites_b3", "Clear buttons to call, message, book, or request a quote."),
       ],
     },
     {
       k: "redesign",
+      path: "/website-redesign-st-louis",
       icon: "✨",
       title: t("s_redesign_title", "Website redesigns"),
       desc: t(
@@ -64,37 +66,39 @@ export default function ServicesSection() {
         "If your current site feels outdated or doesn’t convert, we redesign it with a clean, modern system."
       ),
       bullets: [
-        t("s_redesign_b1", "New UI, better layout, clearer messaging."),
-        t("s_redesign_b2", "Fixes for trust: reviews, proof, structure."),
-        t("s_redesign_b3", "Built to convert not just look nice."),
+        t("s_redesign_b1", "A fresh look with a simpler layout."),
+        t("s_redesign_b2", "Reviews and proof placed where customers need them."),
+        t("s_redesign_b3", "A clear next step on every important page."),
       ],
     },
     {
       k: "systems",
+      path: "/customer-follow-up-tools",
       icon: "🧩",
-      title: t("s_systems_title", "CRM-style systems & automation"),
+      title: t("s_systems_title", "Customer follow-up tools"),
       desc: t(
         "s_systems_desc",
-        "Simple internal tools that help you follow up faster and run operations smoother."
+        "Keep new inquiries organized, send reminders, and respond faster without adding more daily work."
       ),
       bullets: [
-        t("s_systems_b1", "Lead capture + pipeline + reminders."),
-        t("s_systems_b2", "Automations: notifications, forms, workflows."),
-        t("s_systems_b3", "Less manual work, more consistency."),
+        t("s_systems_b1", "Keep every inquiry in one organized place."),
+        t("s_systems_b2", "Automatic messages, notifications, and reminders."),
+        t("s_systems_b3", "Less repetitive work and fewer missed opportunities."),
       ],
     },
     {
       k: "custom",
+      path: "/custom-business-tools",
       icon: "⚙️",
-      title: t("s_custom_title", "Custom business software"),
+      title: t("s_custom_title", "Tools made for your business"),
       desc: t(
         "s_custom_desc",
-        "When your business outgrows templates, we build custom software that fits your process."
+        "When off-the-shelf apps no longer fit, we build a private tool around the way your team works."
       ),
       bullets: [
-        t("s_custom_b1", "Dashboards, portals, internal apps."),
-        t("s_custom_b2", "Scalable architecture for growth."),
-        t("s_custom_b3", "Built like a real SaaS product."),
+        t("s_custom_b1", "Private workspaces for your team or customers."),
+        t("s_custom_b2", "Keep jobs, customers, and information together."),
+        t("s_custom_b3", "Easy to expand as your business grows."),
       ],
     },
   ];
@@ -109,19 +113,16 @@ export default function ServicesSection() {
 
       <div className="container relative z-10">
         <div className="text-center max-w-3xl mx-auto">
-          <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
-            {t("label", "Services")}
-          </p>
 
           <h2 className="text-3xl md:text-4xl font-semibold text-white tracking-tight">
-            {t("title", "Digital systems built to")}{" "}
-            <span className="grad-text">{t("title_grad", "drive growth")}</span>
+            {t("title", "Practical tools built to")}{" "}
+            <span className="grad-text">{t("title_grad", "help your business grow")}</span>
           </h2>
 
           <p className="mt-3 text-sm md:text-base text-white/60 leading-relaxed">
             {t(
               "sub",
-              "Websites, redesigns, automation, and CRM-style systems — built to help your business get more leads and run smoother."
+              "Websites and business tools that help you get more inquiries, respond faster, and stay organized."
             )}
           </p>
 
@@ -170,14 +171,17 @@ export default function ServicesSection() {
                   </li>
                 ))}
               </ul>
+              <Link
+                to={s.path}
+                className="inline-flex mt-5 text-sm font-semibold text-cyan-300 hover:underline underline-offset-4"
+              >
+                Explore {s.title}
+              </Link>
             </article>
           ))}
         </div>
         <div className="mt-14 grid lg:grid-cols-2 gap-8 items-center">
   <div className="reveal">
-    <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 mb-2">
-      Built for real businesses
-    </p>
 
     <h3 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
       A website that helps your business{" "}
@@ -230,11 +234,11 @@ export default function ServicesSection() {
         />
         <MiniPoint
           title="Saves you time"
-          desc="Forms, automations, and organized information."
+          desc="Forms, automatic follow-up, and organized information."
         />
         <MiniPoint
           title="Grows with you"
-          desc="Add booking, CRM, dashboards, or portals later."
+          desc="Add booking, customer tracking, or a private workspace later."
         />
       </div>
     </div>

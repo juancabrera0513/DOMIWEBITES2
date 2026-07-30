@@ -28,6 +28,9 @@ function writeConsent(consent) {
       v: 1,
     })
   );
+  window.dispatchEvent(new CustomEvent("domi-consent-updated", {
+    detail: { consent },
+  }));
 }
 
 function gtagConsentUpdate(consent) {
@@ -47,6 +50,7 @@ function gtagConsentUpdate(consent) {
 
   if (status === "granted") {
     window.gtag("set", "ads_data_redaction", false);
+    window.loadDomiAnalytics?.();
   }
 }
 

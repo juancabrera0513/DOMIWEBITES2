@@ -74,7 +74,7 @@ const FAQS = [
   },
   {
     q: "How do I get started?",
-    a: "Use the contact form below and mention the special, or call us at (314) 376-9667 to book a free consultation.",
+    a: "Use the contact form below and mention the special, or send us a message on WhatsApp or by text.",
   },
 ];
 
@@ -83,12 +83,6 @@ const HERO_STATS = [
   { value: "7 to 10 days", label: "delivery time" },
   { value: "$1,500+", label: "regular pricing" },
 ];
-
-const SectionLabel = ({ children }) => (
-  <p className="text-[11px] tracking-[0.3em] uppercase text-cyan-400 mb-3">
-    {children}
-  </p>
-);
 
 const GradientHeading = ({ plain, gradient, level = 2 }) => {
   const Tag = `h${level}`;
@@ -214,7 +208,6 @@ export default function SpecialOfferPage() {
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
               <div className="reveal">
-                <SectionLabel>Limited Offer</SectionLabel>
                 <GradientHeading
                   level={1}
                   plain="A professional website"
@@ -235,10 +228,12 @@ export default function SpecialOfferPage() {
                     Claim this offer
                   </a>
                   <a
-                    href="tel:3143769667"
+                    href="https://wa.me/13143769667?text=Hi%20Domi%20Websites.%20I%20am%20interested%20in%20the%20website%20special."
+                    target="_blank"
+                    rel="noreferrer"
                     className="btn btn-outline transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(34,211,238,.12)]"
                   >
-                    Call (314) 376-9667
+                    Message on WhatsApp
                   </a>
                 </div>
 
@@ -250,7 +245,7 @@ export default function SpecialOfferPage() {
                       style={{ background: "rgba(255,255,255,0.04)" }}
                     >
                       <div className="text-xl font-extrabold text-white">{s.value}</div>
-                      <div className="text-[11px] text-slate-400 mt-0.5 tracking-wide">{s.label}</div>
+                      <div className="text-[11px] text-slate-400 mt-0.5">{s.label}</div>
                     </div>
                   ))}
                 </div>
@@ -264,10 +259,10 @@ export default function SpecialOfferPage() {
                     style={{ background: "rgba(10,18,35,0.72)" }}
                   >
                     <div className="flex items-center justify-between mb-6">
-                      <span className="px-3 py-1 rounded-full text-[11px] font-bold tracking-wide bg-cyan-400/15 text-cyan-200 border border-cyan-400/25">
+                      <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-cyan-400/15 text-cyan-200 border border-cyan-400/25">
                         LIMITED SPECIAL
                       </span>
-                      <span className="text-[11px] text-amber-400 font-semibold tracking-wide">
+                      <span className="text-[11px] text-amber-400 font-semibold">
                         3 SPOTS LEFT
                       </span>
                     </div>
@@ -330,7 +325,6 @@ export default function SpecialOfferPage() {
         >
           <div className="max-w-6xl mx-auto px-4">
             <div className="text-center mb-14 reveal">
-              <SectionLabel>Details</SectionLabel>
               <GradientHeading plain="Everything" gradient="in this offer" />
               <p className="text-slate-400 text-sm mt-4 max-w-lg mx-auto leading-relaxed">
                 A clear breakdown of what is included, who this is built for,
@@ -449,7 +443,6 @@ export default function SpecialOfferPage() {
           <div className="hero-vignette" />
           <div className="max-w-6xl mx-auto px-4 relative">
             <div className="text-center mb-12 reveal">
-              <SectionLabel>Process</SectionLabel>
               <GradientHeading plain="How it" gradient="works" />
               <p className="text-slate-400 text-sm mt-3 max-w-md mx-auto">
                 Four straightforward steps. No surprises along the way.
@@ -466,7 +459,7 @@ export default function SpecialOfferPage() {
                     animationDelay: `${i * 60}ms`,
                   }}
                 >
-                  <div className="text-[11px] font-bold tracking-[0.25em] text-cyan-400 mb-3">
+                  <div className="text-[11px] font-bold text-cyan-400 mb-3">
                     {step.number}
                   </div>
                   <h3 className="text-white font-semibold text-base mb-2">{step.title}</h3>
@@ -484,7 +477,6 @@ export default function SpecialOfferPage() {
         >
           <div className="max-w-3xl mx-auto px-4">
             <div className="text-center mb-12 reveal">
-              <SectionLabel>FAQ</SectionLabel>
               <GradientHeading plain="Common" gradient="questions" />
             </div>
             <div className="space-y-3 reveal">
@@ -504,7 +496,6 @@ export default function SpecialOfferPage() {
           </div>
 
           <div className="max-w-2xl mx-auto px-4 relative text-center reveal">
-            <SectionLabel>Ready to start?</SectionLabel>
             <GradientHeading plain="Only 3 spots available" gradient="at this price" />
             <p className="text-slate-400 mt-4 text-base leading-relaxed">
               Once these spots are filled, standard pricing applies. If this looks
@@ -520,10 +511,10 @@ export default function SpecialOfferPage() {
                 Claim this offer
               </a>
               <a
-                href="tel:3143769667"
+                href="sms:+13143769667?body=Hi%20Domi%20Websites.%20I%20am%20interested%20in%20the%20website%20special."
                 className="btn btn-outline transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(34,211,238,.12)]"
               >
-                Call (314) 376-9667
+                Send a text
               </a>
             </div>
 

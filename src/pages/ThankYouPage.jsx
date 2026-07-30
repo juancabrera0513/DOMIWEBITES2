@@ -33,9 +33,6 @@ export default function ThankYouPage() {
         <section className="section">
           <div className="container">
             <div className="max-w-2xl mx-auto text-center glass rounded-2xl p-8 md:p-10 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,.55)]">
-              <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-200/70 mb-3">
-                THANK YOU
-              </p>
 
               <h1 className="text-3xl md:text-4xl font-extrabold text-white">
                 We got your message.

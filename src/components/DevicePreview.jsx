@@ -22,9 +22,6 @@ export default function DevicePreview({ url }) {
     <section className="w-full max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-4 md:mb-6">
         <div className="min-w-0">
-          <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-200/70">
-            Live preview
-          </p>
           <p className="mt-1 text-sm text-white/60 truncate">{hostname}</p>
         </div>
 

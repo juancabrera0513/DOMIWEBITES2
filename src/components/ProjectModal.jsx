@@ -23,7 +23,8 @@ const ProjectModal = ({ project, onClose }) => {
   const key = project.i18nKey;
   const title = key ? t(`${key}.name`) : project.title;
   const description = key ? t(`${key}.short`) : project.description;
-  const longDescription = key ? t(`${key}.long`) : project.longDescription;
+  const challenge = project.challenge;
+  const solution = key ? t(`${key}.long`) : project.solution;
 
   const closeLabel = t("common.cta.cancel", "Close");
   const visitLabel = t("portfolio.visit", "Visit site");
@@ -87,18 +88,30 @@ const ProjectModal = ({ project, onClose }) => {
                   </p>
                 ) : null}
 
-                {longDescription ? (
-                  <p className="text-white/55 text-sm leading-relaxed whitespace-pre-line">
-                    {longDescription}
-                  </p>
+                {challenge ? (
+                  <div className="pt-2">
+                    <h4 className="text-sm font-bold text-white">The business needed</h4>
+                    <p className="mt-2 text-white/55 text-sm leading-relaxed">
+                      {challenge}
+                    </p>
+                  </div>
                 ) : null}
 
-                {project.kpis?.length ? (
+                {solution ? (
+                  <div className="pt-2">
+                    <h4 className="text-sm font-bold text-white">What we built</h4>
+                  <p className="text-white/55 text-sm leading-relaxed whitespace-pre-line">
+                    {solution}
+                  </p>
+                  </div>
+                ) : null}
+
+                {project.details?.length ? (
                   <ul className="mt-3 space-y-2 text-xs md:text-sm text-white/70">
-                    {project.kpis.map((k) => (
-                      <li key={k} className="flex items-start gap-2">
+                    {project.details.map((detail) => (
+                      <li key={detail} className="flex items-start gap-2">
                         <span className="mt-1.5 h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_18px_rgba(34,211,238,.35)]" />
-                        <span className="leading-relaxed">{k}</span>
+                        <span className="leading-relaxed">{detail}</span>
                       </li>
                     ))}
                   </ul>
@@ -108,7 +121,7 @@ const ProjectModal = ({ project, onClose }) => {
               <div className="space-y-4 md:space-y-5">
                 {project.tags?.length ? (
                   <div>
-                    <p className="text-xs font-semibold text-white/60 mb-2 tracking-wide">
+                    <p className="text-xs font-semibold text-white/60 mb-2">
                       Tags
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -126,7 +139,7 @@ const ProjectModal = ({ project, onClose }) => {
 
                 {project.category ? (
                   <div>
-                    <p className="text-xs font-semibold text-white/60 mb-2 tracking-wide">
+                    <p className="text-xs font-semibold text-white/60 mb-2">
                       Category
                     </p>
                     <span className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold border border-white/10 bg-white/5 text-white/80">
@@ -143,7 +156,7 @@ const ProjectModal = ({ project, onClose }) => {
                       rel="noreferrer"
                       className="btn btn-primary inline-flex items-center gap-2 w-full sm:w-auto"
                     >
-                      {visitLabel}
+                      {visitLabel || "Visit live website"}
                       <svg
                         className="w-4 h-4"
                         viewBox="0 0 20 20"
@@ -159,7 +172,7 @@ const ProjectModal = ({ project, onClose }) => {
                     </a>
 
                     <p className="mt-2 text-[11px] text-white/45">
-                      Tip: open in a new tab for the smoothest experience.
+                      Opens the live website in a new tab.
                     </p>
                   </div>
                 ) : null}

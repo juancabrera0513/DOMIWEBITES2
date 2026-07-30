@@ -391,7 +391,7 @@ export default function AdminInbox() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <h1 className="text-2xl font-semibold text-white">Admin Inbox</h1>
-              <p className="mt-1 text-sm text-white/60">Logged in: {user?.email || "—"}</p>
+              <p className="mt-1 text-sm text-white/60">Logged in: {user?.email || "Not available"}</p>
               <p className="mt-2 text-xs text-white/40">
                 bot: {botCount} • waiting: {waitingCount} • live: {liveCount}
               </p>

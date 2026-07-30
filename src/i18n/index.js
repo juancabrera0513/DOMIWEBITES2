@@ -41,7 +41,7 @@ const resources = {
     home: {
       h1: "Websites that turn {{highlight}} into clients.",
       highlight: "clicks",
-      sub: "We build fast, modern sites for small businesses—designed to rank and convert."
+      sub: "We build fast, modern sites for small businesses, designed to rank and convert."
     },
 
     about: {
@@ -357,7 +357,7 @@ const resources = {
     home: {
       h1: "Webs que convierten {{highlight}} en clientes.",
       highlight: "clics",
-      sub: "Creamos sitios modernos y rápidos para pequeñas empresas—pensados para posicionar y convertir."
+      sub: "Creamos sitios modernos y rápidos para pequeñas empresas, pensados para posicionar y convertir."
     },
 
     about: {

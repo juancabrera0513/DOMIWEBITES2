@@ -30,15 +30,7 @@ function useReveal() {
   return ref;
 }
 
-function Pill({ children }) {
-  return (
-    <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] tracking-[0.22em] uppercase text-white/70">
-      {children}
-    </span>
-  );
-}
-
-function ServiceCard({ icon, title, desc, bullets, tag }) {
+function ServiceCard({ icon, title, desc, bullets, tag, path }) {
   return (
     <article className="group glass rounded-2xl border border-white/10 p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(0,0,0,.55)]">
       <div className="flex items-start gap-4">
@@ -67,6 +59,14 @@ function ServiceCard({ icon, title, desc, bullets, tag }) {
                 </li>
               ))}
             </ul>
+          ) : null}
+          {path ? (
+            <Link
+              to={path}
+              className="inline-flex mt-5 text-sm font-semibold text-cyan-200/90 hover:underline underline-offset-4"
+            >
+              Learn more
+            </Link>
           ) : null}
         </div>
       </div>
@@ -112,7 +112,7 @@ function ResourceCard({ post }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/0" />
       </div>
       <div className="p-5">
-        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">Resource</div>
+        <div className="text-xs text-white/55">Resource</div>
         <h3 className="mt-2 text-base sm:text-lg font-semibold text-white/90 leading-snug">
           {post.title}
         </h3>
@@ -138,50 +138,54 @@ export default function ServicesPage() {
   const services = [
     {
       icon: "🌐",
-      title: "Growth Websites",
-      tag: "Web + SEO",
+      path: "/web-design-st-louis",
+      title: "Websites That Bring Inquiries",
+      tag: "For local businesses",
       desc:
         "Modern websites designed to make your business look professional, build trust, and turn visitors into calls, bookings, and leads.",
       bullets: [
-        "Mobile-first design with clear calls-to-action.",
-        "Fast, modern, and built with SEO fundamentals.",
-        "Pages structured to build trust and generate leads.",
+        "Looks professional on phones and computers.",
+        "Helps nearby customers find your business.",
+        "Makes it easy to call, message, book, or request a quote.",
       ],
     },
     {
       icon: "🎨",
-      title: "Redesign & Conversion Upgrades",
-      tag: "Best for existing sites",
+      path: "/website-redesign-st-louis",
+      title: "Website Makeovers",
+      tag: "For existing websites",
       desc:
         "If your website looks outdated or isn’t bringing leads, we redesign it with a better layout, better messaging, and a better user flow.",
       bullets: [
-        "Modern design that makes your business look more premium.",
-        "Better structure so users know what to do next.",
-        "Improved layout focused on conversions.",
+        "A modern design that builds confidence.",
+        "Simpler pages so visitors know what to do next.",
+        "Clearer messages focused on winning inquiries.",
       ],
     },
     {
       icon: "🧠",
-      title: "CRM-Style Business Systems",
-      tag: "Software",
+      path: "/customer-follow-up-tools",
+      title: "Customer and Job Tracking",
+      tag: "Stay organized",
       desc:
-        "Custom business systems to manage leads, customers, projects, and operations built specifically for how your business works.",
+        "A private place to manage inquiries, customers, jobs, and notes, built around the way your business already works.",
       bullets: [
-        "Lead tracking and customer management.",
-        "Dashboards, notes, statuses, assignments.",
-        "Automations to reduce manual work.",
+        "Keep every customer and inquiry organized.",
+        "See jobs, notes, progress, and responsibilities.",
+        "Reduce repetitive work and missed follow-ups.",
       ],
     },
     {
       icon: "⚙️",
-      title: "Automation & Integrations",
-      tag: "Ops",
+      path: "/custom-business-tools",
+      title: "Faster Follow-Up",
+      tag: "Save time",
       desc:
-        "We connect your forms, emails, booking tools, and systems so your business runs smoother and you respond faster to new leads.",
+        "Connect your forms, email, and booking so customers receive a faster response and your team has less to do manually.",
       bullets: [
-        "Reduce repetitive tasks.",
-        "Faster follow-ups with new leads.",
-        "Systems that grow with your business.",
+        "Spend less time repeating the same tasks.",
+        "Reply to new inquiries sooner.",
+        "Add more capabilities as your business grows.",
       ],
     },
   ];
@@ -200,15 +204,14 @@ export default function ServicesPage() {
         <section className="section relative overflow-hidden nexus-bg hero-grid">
           <div className="hero-vignette" />
           <div className="container relative z-10 text-center">
-            <Pill>Services</Pill>
 
             <h1 className="mt-4 font-extrabold tracking-tight leading-[1.02] text-white">
               <span className="block text-[40px] sm:text-[52px] md:text-[64px]">
-                Websites + Business Systems
+                Websites + Business Tools
               </span>
 
               <span className="block mt-2 text-[22px] sm:text-[26px] text-white/80 font-semibold">
-                Built to bring leads and make your business run smoother
+                Built to bring inquiries and make work easier
               </span>
             </h1>
 
@@ -234,7 +237,7 @@ export default function ServicesPage() {
           <div className="container relative z-10">
             <div className="text-center max-w-3xl mx-auto">
               <h2 className="text-3xl font-extrabold text-white">
-                Simple services. Built the right way.
+                Clear services built around your business
               </h2>
               <p className="mt-3 text-white/60">
                 Tell me what your business needs and I’ll recommend the best solution.

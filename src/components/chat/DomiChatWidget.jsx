@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-const CHAT_ICON_SRC = "/chat-icon.png";
+const CHAT_ICON_SRC = "/chat-icon.webp";
 const CHAT_SOUND_SRC = "/sounds/domi-pop.mp3";
 
 function uid() {
@@ -34,7 +34,7 @@ function buildMailto(email, subject, body) {
 const DOMI = {
   phone: "(314) 376-9667",
   email: "admin@domiwebsites.com",
-  calendly: "https://calendly.com/domiwebsites/30min",
+  calendly: "https://calendly.com/domiwebsites/website-consultation",
   hours: {
     mon: [9, 18],
     tue: [9, 18],
@@ -101,7 +101,7 @@ function renderMessageContent(raw = "") {
       const domiDigits = DOMI.phone.replace(/[^\d]/g, "");
 
       if (digits.endsWith(domiDigits)) {
-        const wa = buildWhatsAppLink(DOMI.phone, "Hi Domi Websites — I have a quick question.");
+        const wa = buildWhatsAppLink(DOMI.phone, "Hi Domi Websites. I have a quick question.");
         nodes.push(
           <a
             key={`wa_${index}`}
@@ -115,13 +115,13 @@ function renderMessageContent(raw = "") {
           </a>
         );
       } else {
-        const tel = digits.length === 10 ? `+1${digits}` : `+${digits}`;
+        const sms = digits.length === 10 ? `+1${digits}` : `+${digits}`;
         nodes.push(
           <a
-            key={`tel_${index}`}
-            href={`tel:${tel}`}
+            key={`sms_${index}`}
+            href={`sms:${sms}`}
             className="text-sky-300 underline underline-offset-2 hover:text-sky-200 transition"
-            title="Call / Text"
+            title="Send a text message"
           >
             {full}
           </a>
@@ -598,12 +598,12 @@ export default function DomiChatWidget({ pathname = "/" }) {
   const outsideHours = !isWithinBusinessHours(new Date());
 
   function handleWhatsApp() {
-    const prefill = "Hi Domi Websites — I’d like help with a website / software project.";
+    const prefill = "Hi Domi Websites. I’d like help with a website / software project.";
     window.open(buildWhatsAppLink(DOMI.phone, prefill), "_blank", "noopener,noreferrer");
   }
 
   function handleEmail() {
-    const subject = "Project inquiry — Domi Websites";
+    const subject = "Project inquiry | Domi Websites";
     const body =
       "Hi Domi Websites,\n\nI’d like help with:\n\n- Business name:\n- What I need (website / software / chatbot / SEO):\n- Timeline:\n- Budget range:\n\nThanks!";
     window.location.href = buildMailto(DOMI.email, subject, body);
@@ -636,14 +636,14 @@ export default function DomiChatWidget({ pathname = "/" }) {
   const pulseClass = showHint ? "animate-pulse" : "";
 
   return (
-    <div className="fixed right-5 bottom-5 z-[9999]">
-      <audio ref={audioRef} src={CHAT_SOUND_SRC} preload="auto" />
+    <div className="fixed right-3 bottom-3 sm:right-5 sm:bottom-5 z-[9999]">
+      <audio ref={audioRef} src={CHAT_SOUND_SRC} preload="none" />
 
       {!open ? (
         <div className="relative">
           <div
             className={cx(
-              "absolute bottom-[110px] right-0 w-[240px] md:w-[260px] pointer-events-none",
+              "hidden sm:block absolute bottom-[110px] right-0 w-[240px] md:w-[260px] pointer-events-none",
               "transition-all duration-300",
               showHint ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             )}
@@ -662,7 +662,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
               await unlockAudioOnce();
             }}
             className={cx(
-              "relative h-[92px] w-[92px] md:h-[112px] md:w-[112px] transition-transform hover:scale-105",
+              "relative h-[76px] w-[76px] sm:h-[92px] sm:w-[92px] md:h-[112px] md:w-[112px] transition-transform hover:scale-105",
               pulseClass
             )}
             aria-label="Open chat"
@@ -675,7 +675,14 @@ export default function DomiChatWidget({ pathname = "/" }) {
                    radial-gradient(circle_at_50%_85%,rgba(34,197,94,.25),transparent_62%)]"
             />
 
-            <img src={CHAT_ICON_SRC} alt="Domi AI" className="relative h-full w-full object-contain" draggable="false" />
+            <img
+              src={CHAT_ICON_SRC}
+              alt="Domi AI"
+              width="224"
+              height="224"
+              className="relative h-full w-full object-contain"
+              draggable="false"
+            />
 
             <span
               className="absolute bottom-3 right-3 h-3.5 w-3.5 rounded-full
@@ -728,7 +735,7 @@ export default function DomiChatWidget({ pathname = "/" }) {
               <div className="sticky top-0 z-10 -mt-2 mb-3">
                 <div className="rounded-2xl border border-white/10 bg-black/55 backdrop-blur-xl px-4 py-3 text-[12px] text-white/75 shadow-lg">
                   <div className="font-semibold text-white/85">Outside business hours.</div>
-                  <div className="mt-0.5">Text us anytime — we’ll reply ASAP.</div>
+                  <div className="mt-0.5">Text us anytime. We’ll reply ASAP.</div>
                   <div className="mt-1 text-white/50">Mon–Fri 9 AM–6 PM • Sat 9 AM–12 PM • Sun Closed</div>
                 </div>
               </div>

@@ -82,7 +82,7 @@ Deno.serve(async (req) => {
 
       const nudgeText =
         Deno.env.get("ABANDON_NUDGE_TEXT") ||
-        "Looks like you stepped away — reply anytime and we’ll jump back in.";
+        "Looks like you stepped away. Reply anytime and we’ll jump back in.";
 
       const rows = abandonList.map((c) => ({
         conversation_id: c.id,

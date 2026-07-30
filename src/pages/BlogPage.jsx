@@ -6,9 +6,18 @@ import Footer from "../components/Footer";
 import SeoJsonLd from "../components/SeoJsonLd";
 import { blogPosts } from "../data/blogPosts";
 
+const BLOG_GRADIENTS = {
+  cyan: "linear-gradient(135deg, #082f49 0%, #0e7490 48%, #172554 100%)",
+  violet: "linear-gradient(135deg, #2e1065 0%, #6d28d9 48%, #172554 100%)",
+  blue: "linear-gradient(135deg, #172554 0%, #1d4ed8 52%, #083344 100%)",
+  emerald: "linear-gradient(135deg, #052e2b 0%, #047857 48%, #172554 100%)",
+  pink: "linear-gradient(135deg, #500724 0%, #be185d 48%, #312e81 100%)",
+  amber: "linear-gradient(135deg, #451a03 0%, #b45309 48%, #312e81 100%)",
+};
+
 function formatDate(dateStr) {
   try {
-    const d = new Date(dateStr);
+    const d = new Date(`${dateStr}T12:00:00`);
     return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
   } catch {
     return dateStr;
@@ -77,19 +86,17 @@ export default function BlogPage() {
         <section className="section relative">
           <div className="container">
             <div className="text-center max-w-4xl mx-auto">
-              <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-200/70 mb-3">BLOG</p>
-
               <h1 className="font-extrabold tracking-tight leading-[1.06]">
                 <span className="block text-[40px] sm:text-[56px] md:text-[72px] text-white">
                   Insights for growth.
                 </span>
                 <span className="block text-[44px] sm:text-[62px] md:text-[80px] grad-text">
-                  SEO, web, and automation.
+                  Get found, earn trust, and grow.
                 </span>
               </h1>
 
               <p className="mt-6 text-[15px] sm:text-lg text-white/60 max-w-3xl mx-auto leading-relaxed">
-                Practical guides for small businesses from high-converting websites to local SEO and scalable systems.
+                Straightforward advice to help your business improve its website, reach more local customers, and make better technology decisions.
               </p>
             </div>
 
@@ -114,13 +121,26 @@ export default function BlogPage() {
                               e.currentTarget.style.display = "none";
                             }}
                           />
-                        ) : null}
+                        ) : (
+                          <div
+                            className="absolute inset-0 overflow-hidden"
+                            style={{ background: BLOG_GRADIENTS[post.theme] || BLOG_GRADIENTS.blue }}
+                            aria-hidden="true"
+                          >
+                            <div className="absolute -left-10 -top-16 h-52 w-52 rounded-full border border-white/15 bg-white/5 blur-[1px]" />
+                            <div className="absolute right-8 top-8 h-20 w-20 rotate-12 rounded-2xl border border-white/15 bg-white/10" />
+                            <div className="absolute bottom-[-70px] right-[-30px] h-60 w-60 rounded-full bg-cyan-300/15 blur-2xl" />
+                            <div className="absolute inset-0 opacity-25 hero-grid" />
+                          </div>
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-black/0" />
                         <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
                       </div>
 
                       <div className="p-6">
-                        <p className="text-xs text-white/50">{formatDate(post.date)}</p>
+                        <p className="text-xs text-white/50">
+                          {post.updated ? `Updated ${formatDate(post.updated)}` : formatDate(post.date)}
+                        </p>
                         <h2 className="mt-2 text-xl font-semibold text-white/90 leading-snug">
                           {post.title}
                         </h2>
@@ -146,7 +166,7 @@ export default function BlogPage() {
             </div>
 
             <div className="mt-10 text-center text-sm text-white/55">
-              Want a quick teardown of your current site?{" "}
+              Want a clear review of your current site?{" "}
               <Link to="/contact" className="text-cyan-200/90 underline underline-offset-4">
                 Book a free consultation
               </Link>

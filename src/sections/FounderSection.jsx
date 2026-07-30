@@ -43,8 +43,10 @@ export default function FounderSection() {
                 <div className="absolute inset-0 pointer-events-none rounded-[30px] ring-1 ring-white/10 group-hover:ring-white/20 transition-all duration-300" />
 
                 <img
-                  src="/images/juan.webp"
+                  src="/images/juan-optimized.webp"
                   alt="Juan Cabrera"
+                  width="760"
+                  height="950"
                   className="w-full aspect-[4/5] object-cover scale-[1.02] transition-transform duration-500 group-hover:scale-[1.06]"
                   loading="lazy"
                   decoding="async"
@@ -53,7 +55,7 @@ export default function FounderSection() {
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-transparent" />
                   <div className="relative z-10">
-                    <p className="text-lg font-semibold tracking-wide text-white drop-shadow-[0_2px_10px_rgba(0,0,0,.75)]">
+                    <p className="text-lg font-semibold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,.75)]">
                       Juan Cabrera
                     </p>
                     <p className="text-sm text-white/75 drop-shadow-[0_2px_10px_rgba(0,0,0,.75)]">
@@ -69,42 +71,38 @@ export default function FounderSection() {
 
           <div className="space-y-8 founder-enter founder-delay">
             <div className="space-y-4">
-              <p className="text-[11px] tracking-[0.25em] uppercase text-cyan-300/90 font-semibold">
-                OUR TEAM
-              </p>
 
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-tight">
-                Websites are the surface.{" "}
+                Your website should do more than look good.{" "}
                 <span className="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">
-                  Systems are the power.
+                  It should help your business.
                 </span>
               </h2>
 
               <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-2xl">
-                Most websites look good. Very few actually{" "}
+                We create websites and simple business tools that help you{" "}
                 <span className="text-white font-semibold">
-                  generate leads, automate work, or improve operations.
+                  get more inquiries, follow up faster, and reduce repetitive work.
                 </span>
               </p>
 
               <p className="text-white/55 leading-relaxed max-w-2xl">
-                We build high-performance websites and custom business systems (CRM,
-                automations, internal tools) that reduce manual work, increase
-                conversions, and help local businesses scale with clarity.
+                Everything is built around how your business already works. You get
+                clear guidance, personal support, and technology that makes daily
+                work easier instead of more complicated.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              <Feature text="Conversion-focused UX + clear offers" />
-              <Feature text="Automation: forms, follow-ups, CRM" />
-              <Feature text="Performance-first builds (fast, SEO-ready)" />
-              <Feature text="Scalable systems built to grow" />
+              <Feature text="Clear pages that turn visitors into inquiries" />
+              <Feature text="Faster follow-up with new customers" />
+              <Feature text="Fast websites that work on every device" />
+              <Feature text="Tools that can grow with your business" />
             </div>
 
 
             <p className="text-[11px] text-white/40">
-              Built for local businesses, fast load times, clean UX, and systems
-              that reduce manual work.
+              Built for local businesses that want more customers and less busywork.
             </p>
           </div>
         </div>

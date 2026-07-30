@@ -28,7 +28,7 @@ const DOMI = {
   tz: "America/Chicago",
   phone: "(314) 376-9667",
   email: "admin@domiwebsites.com",
-  calendly: "https://calendly.com/domiwebsites/30min",
+  calendly: "https://calendly.com/domiwebsites/website-consultation",
   auditUrl: "https://domiwebsites.com/audit",
   hours: {
     mon: [9, 18],
@@ -187,9 +187,11 @@ BUSINESS FACTS (must be accurate):
 - We are NOT only websites: we do custom software + systems.
 
 KNOWN PRICING (do not invent):
-- Performance Website: starting at $1,500
-- Website + Systems: custom scope (quote after discovery)
-- Ongoing Growth: monthly retainer (quote after discovery)
+- Starter Website: starting at $1,500
+- Growth Website: starting at $2,500
+- Website That Follows Up: starting at $4,500
+- Custom Business Tool: starting at $7,500
+- Final pricing is confirmed in a written scope before work begins.
 SEO: scoped based on goals/competition; can be part of a plan or quoted separately. DO NOT invent ranges.
 `.trim();
 
