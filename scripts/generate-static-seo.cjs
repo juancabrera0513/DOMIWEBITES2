@@ -75,7 +75,9 @@ function injectSeo(template, routePath, seo) {
 
 function outputPathForRoute(routePath) {
   if (routePath === "/") return path.join(BUILD_DIR, "index.html");
-  return path.join(BUILD_DIR, ...routePath.slice(1).split("/"), "index.html");
+  const segments = routePath.slice(1).split("/");
+  const filename = `${segments.pop()}.html`;
+  return path.join(BUILD_DIR, ...segments, filename);
 }
 
 function generateStaticSeoPages() {
