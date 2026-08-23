@@ -164,14 +164,14 @@ export const PROJECTS = [
           alt: "Conceptual weekly scheduling dashboard for the Gaitway program hours platform",
           title: "Scheduling dashboard",
           caption:
-            "Temporary concept image. Replace it with a real weekly schedule showing fictional or redacted names.",
+            "Temporary concept image; all names and figures shown are fictional. Replace it with a real weekly schedule using fictional or redacted data.",
         },
         {
           src: "/portfolio/gaitway/gaitway-hours-report-concept.webp",
           alt: "Conceptual printable participant hours report for the Gaitway platform",
           title: "Printable hours report",
           caption:
-            "Temporary concept image. Replace it with a real report preview using fictional or redacted participant data.",
+            "Temporary concept image; all names, dates, and figures shown are fictional. Replace it with a real report preview using fictional or redacted participant data.",
         },
       ],
     },

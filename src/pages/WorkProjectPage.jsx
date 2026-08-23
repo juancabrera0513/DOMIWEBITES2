@@ -164,7 +164,7 @@ export default function WorkProjectPage() {
                 {project.draft ? (
                   <div className="absolute bottom-4 right-4">
                     <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold border border-white/20 bg-black/55 text-white/90 backdrop-blur-sm">
-                      Concept image — replace before publishing
+                      Concept image — fictional data
                     </span>
                   </div>
                 ) : null}
