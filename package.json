@@ -6,6 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build && node scripts/generate-static-seo.cjs && node scripts/verify-static-seo.cjs",
     "test:seo": "node scripts/verify-static-seo.cjs",
+    "indexnow": "node scripts/submit-indexnow.cjs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
