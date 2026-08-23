@@ -147,6 +147,14 @@
     "imageWidth": 1260,
     "imageHeight": 630
   },
+  "/blog/replace-paper-timesheets-excel-automated-kiosk": {
+    "title": "How We Replaced Paper Timesheets and Excel With an Automated Kiosk System | Domi Websites",
+    "description": "See how a custom kiosk, scheduling, and reporting platform turned a manual participant-hours workflow into one connected system.",
+    "type": "article",
+    "image": "https://domiwebsites.com/portfolio/gaitway/gaitway-participant-kiosk.webp",
+    "imageWidth": 1586,
+    "imageHeight": 992
+  },
   "/work/kaes-kitchen": {
     "title": "Kae’s Kitchen | Domi Websites Portfolio",
     "description": "A warm bakery website that makes custom cakes, desserts, and ordering information easy to explore.",
@@ -178,5 +186,13 @@
     "image": "https://domiwebsites.com/portfolio/group-travel-co-website-design.webp",
     "imageWidth": 1800,
     "imageHeight": 880
+  },
+  "/work/gaitway-program-hours-platform": {
+    "title": "Gaitway Program Hours Platform | Domi Websites Portfolio",
+    "description": "A custom kiosk and operations platform that replaces paper timesheets and spreadsheet calculations with centralized attendance, scheduling, and reporting.",
+    "type": "website",
+    "image": "https://domiwebsites.com/portfolio/gaitway/gaitway-participant-kiosk.webp",
+    "imageWidth": 1586,
+    "imageHeight": 992
   }
 }

@@ -2,7 +2,7 @@
 
 > Domi Websites is a St. Louis web design and custom software company serving small and growing businesses.
 
-Last updated: 2026-08-22
+Last updated: 2026-08-23
 Canonical website: https://domiwebsites.com/
 
 ## Primary pages
@@ -29,6 +29,7 @@ Canonical website: https://domiwebsites.com/
 - [Google Business Profile Checklist](https://domiwebsites.com/blog/google-business-profile-optimization-checklist)
 - [Website vs Social Media](https://domiwebsites.com/blog/website-vs-social-media-small-business)
 - [Automating Customer Follow-Up](https://domiwebsites.com/blog/automate-customer-follow-up-small-business)
+- [Replacing Paper Timesheets and Excel With an Automated Kiosk](https://domiwebsites.com/blog/replace-paper-timesheets-excel-automated-kiosk)
 
 ## Services and starting prices
 
@@ -46,6 +47,7 @@ Final scope and pricing are confirmed in writing before work begins. The limited
 - [Glo Event Co](https://domiwebsites.com/work/glo-event-co): Event services and booking-focused website
 - [Bendecidos con Propósito](https://domiwebsites.com/work/bendecidos): Bilingual nonprofit website
 - [Group Travel Co](https://domiwebsites.com/work/group-travel-co): Group travel and quote-request website
+- [Gaitway Program Hours Platform](https://domiwebsites.com/work/gaitway-program-hours-platform): Custom kiosk, scheduling, automatic hour calculations, and printable participant reports
 
 ## Business information
 

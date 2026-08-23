@@ -117,7 +117,7 @@ export const PROJECTS = [
       "Gaitway was tracking participant program hours with paper sheets and Excel. Staff then had to combine records and calculate totals manually, creating repetitive administrative work and making reporting harder to prepare.",
     solution:
       "Domi Websites designed and developed a centralized system with kiosk clock-in and clock-out, automatic hour calculations, staff scheduling, and printable participant reports.",
-    image: "/portfolio/gaitway/gaitway-kiosk-concept.webp",
+    image: "/portfolio/gaitway/gaitway-participant-kiosk.webp",
     details: [
       "Participant kiosk for clock-in and clock-out",
       "Automatic program-hour calculations",
@@ -135,7 +135,6 @@ export const PROJECTS = [
     tags: ["Custom Software", "Kiosk", "Scheduling", "Reporting"],
     location: "St. Louis, MO",
     type: "real",
-    draft: true,
     caseStudy: {
       lead:
         "The platform turns a paper-and-spreadsheet workflow into one connected operational process, from a participant's arrival through the report staff can print later.",
@@ -160,18 +159,18 @@ export const PROJECTS = [
       ],
       images: [
         {
-          src: "/portfolio/gaitway/gaitway-scheduling-concept.webp",
-          alt: "Conceptual weekly scheduling dashboard for the Gaitway program hours platform",
+          src: "/portfolio/gaitway/gaitway-scheduling-dashboard.webp",
+          alt: "Weekly scheduling dashboard for the Gaitway program hours platform",
           title: "Scheduling dashboard",
           caption:
-            "Temporary concept image; all names and figures shown are fictional. Replace it with a real weekly schedule using fictional or redacted data.",
+            "A weekly view that helps staff coordinate participant activities and team schedules in one place.",
         },
         {
-          src: "/portfolio/gaitway/gaitway-hours-report-concept.webp",
-          alt: "Conceptual printable participant hours report for the Gaitway platform",
+          src: "/portfolio/gaitway/gaitway-participant-hours-report.webp",
+          alt: "Printable participant hours report for the Gaitway platform",
           title: "Printable hours report",
           caption:
-            "Temporary concept image; all names, dates, and figures shown are fictional. Replace it with a real report preview using fictional or redacted participant data.",
+            "A report view for reviewing automatically calculated participant hours and preparing a printable record.",
         },
       ],
     },
@@ -184,4 +183,5 @@ export const PORTFOLIO_CATEGORIES = [
   "Creative & Events",
   "Non-profit",
   "Travel",
+  "Custom Business Software",
 ];

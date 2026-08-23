@@ -431,14 +431,11 @@ export const blogPosts = [
     date: "2026-08-23",
     summary:
       "See how a custom kiosk, scheduling, and reporting platform turned a manual participant-hours workflow into one connected system.",
-    image: "/portfolio/gaitway/gaitway-kiosk-concept.webp",
-    draft: true,
+    image: "/portfolio/gaitway/gaitway-participant-kiosk.webp",
     content: `
       <p>Many organizations do not begin with bad processes. They begin with tools that are familiar and inexpensive: a paper sign-in sheet, an Excel workbook, and a staff member who knows how all the pieces fit together. The problem appears when participation grows and the same information has to be copied, checked, totaled, and prepared for reporting again and again.</p>
 
       <p>That was the workflow Gaitway wanted to improve. Participant program hours were recorded on paper and in spreadsheets, then staff had to calculate totals manually. Domi Websites designed and developed a custom operations platform that connects attendance, scheduling, hour calculations, and printable reports.</p>
-
-      <p><strong>Publication note:</strong> the interface images in this draft are conceptual placeholders. They will be replaced with approved screenshots containing fictional or redacted data before publication.</p>
 
       <h2>The operational problem behind the spreadsheet</h2>
       <p>A spreadsheet can calculate totals, but it cannot automatically capture what happened at the front desk. A paper sheet can record an arrival, but it does not update the schedule or prepare a report. Staff become the connection between those separate tools.</p>
@@ -480,14 +477,13 @@ export const blogPosts = [
         <li>Capture data as close as possible to the moment it is created.</li>
         <li>Automate repeatable calculations but preserve staff review.</li>
         <li>Design each interface for the person using it, not for every possible feature.</li>
-        <li>Use fictional or redacted records in public screenshots.</li>
         <li>Keep exact operational numbers private when they are not needed to explain the result.</li>
       </ul>
 
       <h2>From scattered records to one operational system</h2>
       <p>The core improvement is the connection between steps. A participant clocks in through the kiosk, the system records the event, the schedule gives staff context, hours are calculated, and the information can become a printable report. One record moves through the workflow instead of being recreated across paper and Excel.</p>
 
-      <p>Explore the private <a href="/work/gaitway-program-hours-platform">Gaitway platform case-study draft</a> or learn how Domi Websites approaches <a href="/custom-business-tools">custom business software for small organizations</a>.</p>
+      <p>Explore the <a href="/work/gaitway-program-hours-platform">Gaitway platform case study</a> or learn how Domi Websites approaches <a href="/custom-business-tools">custom business software for small organizations</a>.</p>
     `,
   },
 ];

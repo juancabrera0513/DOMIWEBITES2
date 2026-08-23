@@ -26,9 +26,9 @@ function formatDate(dateStr) {
 
 export default function BlogPage() {
   const posts = useMemo(() => {
-    return blogPosts
-      .filter((post) => !post.draft)
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return [...blogPosts].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
   }, []);
 
   const title = "Domi Websites Blog | Insights & Web Design Tips";
