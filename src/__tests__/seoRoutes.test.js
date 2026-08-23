@@ -34,8 +34,8 @@ const expectedContentPaths = [
   "/local-seo-st-louis",
   "/customer-follow-up-tools",
   "/custom-business-tools",
-  ...blogPosts.map((post) => `/blog/${post.slug}`),
-  ...PROJECTS.map((project) => `/work/${project.id}`),
+  ...blogPosts.filter((post) => !post.draft).map((post) => `/blog/${post.slug}`),
+  ...PROJECTS.filter((project) => !project.draft).map((project) => `/work/${project.id}`),
 ];
 
 describe("public SEO routes", () => {
@@ -79,14 +79,14 @@ describe("public SEO routes", () => {
   });
 
   test("blog and portfolio metadata stays synchronized with page content", () => {
-    for (const post of blogPosts) {
+    for (const post of blogPosts.filter((candidate) => !candidate.draft)) {
       const seo = seoPages[`/blog/${post.slug}`];
       expect(seo.title).toBe(`${post.title} | Domi Websites`);
       expect(seo.description).toBe(post.summary);
       expect(seo.type).toBe("article");
     }
 
-    for (const project of PROJECTS) {
+    for (const project of PROJECTS.filter((candidate) => !candidate.draft)) {
       const seo = seoPages[`/work/${project.id}`];
       expect(seo.title).toBe(`${project.title} | Domi Websites Portfolio`);
       expect(seo.description).toBe(project.description);
@@ -102,6 +102,8 @@ describe("public SEO routes", () => {
       "/set-password",
       "/forgot-password",
       "/thank-you",
+      "/work/gaitway-program-hours-platform",
+      "/blog/replace-paper-timesheets-excel-automated-kiosk",
     ];
     for (const routePath of privatePaths) {
       expect(sitemapPaths).not.toContain(routePath);

@@ -31,6 +31,17 @@ const PRIVATE_ROUTES = {
     title: "Admin Inbox | Domi Websites",
     description: "Private administration area for Domi Websites.",
   },
+  "/work/gaitway-program-hours-platform": {
+    title: "Gaitway Program Hours Platform | Our Work | Domi Websites",
+    description:
+      "A custom kiosk and operations platform that replaces paper timesheets and spreadsheet calculations with centralized attendance, scheduling, and reporting.",
+  },
+  "/blog/replace-paper-timesheets-excel-automated-kiosk": {
+    title:
+      "How We Replaced Paper Timesheets and Excel With an Automated Kiosk System | Domi Websites Blog",
+    description:
+      "See how a custom kiosk, scheduling, and reporting platform turned a manual participant-hours workflow into one connected system.",
+  },
 };
 
 const PAGE_MODULES = {

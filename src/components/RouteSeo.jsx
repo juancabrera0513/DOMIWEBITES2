@@ -7,6 +7,23 @@ import { JsonLd } from "../lib/jsonld";
 const SITE_URL = "https://domiwebsites.com";
 const DEFAULT_IMAGE = `${SITE_URL}/domi-websites-custom-business-software-og.jpg`;
 
+const draftPages = {
+  "/work/gaitway-program-hours-platform": {
+    title: "Gaitway Program Hours Platform | Our Work | Domi Websites",
+    description:
+      "A custom kiosk and operations platform that replaces paper timesheets and spreadsheet calculations with centralized attendance, scheduling, and reporting.",
+    image: `${SITE_URL}/portfolio/gaitway/gaitway-kiosk-concept.webp`,
+  },
+  "/blog/replace-paper-timesheets-excel-automated-kiosk": {
+    title:
+      "How We Replaced Paper Timesheets and Excel With an Automated Kiosk System | Domi Websites Blog",
+    description:
+      "See how a custom kiosk, scheduling, and reporting platform turned a manual participant-hours workflow into one connected system.",
+    image: `${SITE_URL}/portfolio/gaitway/gaitway-kiosk-concept.webp`,
+    type: "article",
+  },
+};
+
 const privatePrefixes = [
   "/admin",
   "/auth",
@@ -42,7 +59,7 @@ export default function RouteSeo() {
     (prefix) => path === prefix || path.startsWith(`${prefix}/`)
   );
 
-  let seo = pages[path];
+  let seo = pages[path] || draftPages[path];
   const type = seo?.type || "website";
   const image = seo?.image || DEFAULT_IMAGE;
 

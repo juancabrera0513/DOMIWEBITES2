@@ -87,6 +87,9 @@ export default function WorkProjectPage() {
           name="description"
           content={summary || "Project details and deliverables."}
         />
+        {project.draft ? (
+          <meta name="robots" content="noindex,follow,noarchive" />
+        ) : null}
         <link rel="canonical" href={url} />
 
         <meta property="og:type" content="website" />
@@ -106,7 +109,9 @@ export default function WorkProjectPage() {
         />
         <meta name="twitter:image" content={imageUrl} />
 
-        <script type="application/ld+json">{JSON.stringify(portfolioSchema)}</script>
+        {!project.draft ? (
+          <script type="application/ld+json">{JSON.stringify(portfolioSchema)}</script>
+        ) : null}
       </Helmet>
 
       <SeoJsonLd />
@@ -126,6 +131,15 @@ export default function WorkProjectPage() {
             <span className="text-white/70">{name}</span>
           </nav>
 
+          {project.draft ? (
+            <div className="mt-6 rounded-2xl border border-amber-300/25 bg-amber-300/10 p-5 text-sm leading-relaxed text-amber-50/90">
+              <strong className="text-amber-100">Private draft:</strong> this case
+              study is not listed in the public portfolio or sitemap and is marked
+              noindex. Confirm client permission and replace the conceptual images
+              with approved, redacted screenshots before publishing.
+            </div>
+          ) : null}
+
           <div className="mt-6 grid lg:grid-cols-[1.15fr_.85fr] gap-6">
             <article className="rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-[0_10px_30px_rgba(0,0,0,.35)]">
               <div className="relative h-[260px] sm:h-[340px] bg-black/35">
@@ -144,6 +158,13 @@ export default function WorkProjectPage() {
                   <div className="absolute top-4 left-4">
                     <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold border border-white/10 bg-white/5 text-white/80">
                       {category}
+                    </span>
+                  </div>
+                ) : null}
+                {project.draft ? (
+                  <div className="absolute bottom-4 right-4">
+                    <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold border border-white/20 bg-black/55 text-white/90 backdrop-blur-sm">
+                      Concept image — replace before publishing
                     </span>
                   </div>
                 ) : null}
@@ -185,6 +206,50 @@ export default function WorkProjectPage() {
                     </section>
                   ) : null}
 
+                  {project.caseStudy?.lead ? (
+                    <section className="rounded-2xl border border-cyan-300/15 bg-cyan-300/5 p-5">
+                      <h2 className="text-lg font-bold text-white">The connected workflow</h2>
+                      <p className="mt-2 text-white/70 leading-relaxed">
+                        {project.caseStudy.lead}
+                      </p>
+                    </section>
+                  ) : null}
+
+                  {project.caseStudy?.workflow?.length ? (
+                    <section>
+                      <h2 className="text-lg font-bold text-white">How the system works</h2>
+                      <div className="mt-4 grid gap-3">
+                        {project.caseStudy.workflow.map((step, index) => (
+                          <div
+                            key={step.title}
+                            className="rounded-xl border border-white/10 bg-white/[0.035] p-4"
+                          >
+                            <div className="flex items-start gap-3">
+                              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-cyan-300/15 text-xs font-bold text-cyan-200">
+                                {index + 1}
+                              </span>
+                              <div>
+                                <h3 className="font-semibold text-white/90">{step.title}</h3>
+                                <p className="mt-1 text-sm leading-relaxed text-white/60">
+                                  {step.description}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  ) : null}
+
+                  {project.caseStudy?.scale ? (
+                    <section>
+                      <h2 className="text-lg font-bold text-white">Designed for real operations</h2>
+                      <p className="mt-2 text-white/65 leading-relaxed">
+                        {project.caseStudy.scale}
+                      </p>
+                    </section>
+                  ) : null}
+
                   {project.details?.length ? (
                     <section>
                       <h2 className="text-lg font-bold text-white">Included in the project</h2>
@@ -212,6 +277,34 @@ export default function WorkProjectPage() {
                           </li>
                         ))}
                       </ul>
+                    </section>
+                  ) : null}
+
+                  {project.caseStudy?.images?.length ? (
+                    <section>
+                      <h2 className="text-lg font-bold text-white">System views</h2>
+                      <div className="mt-4 space-y-5">
+                        {project.caseStudy.images.map((image) => (
+                          <figure
+                            key={image.src}
+                            className="overflow-hidden rounded-2xl border border-white/10 bg-black/25"
+                          >
+                            <img
+                              src={image.src}
+                              alt={image.alt}
+                              className="block h-auto w-full"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            <figcaption className="border-t border-white/10 p-4">
+                              <div className="font-semibold text-white/90">{image.title}</div>
+                              <p className="mt-1 text-xs leading-relaxed text-amber-100/70">
+                                {image.caption}
+                              </p>
+                            </figcaption>
+                          </figure>
+                        ))}
+                      </div>
                     </section>
                   ) : null}
                 </div>
@@ -256,7 +349,7 @@ export default function WorkProjectPage() {
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_10px_30px_rgba(0,0,0,.35)]">
                 <h3 className="text-white font-semibold">More projects</h3>
                 <div className="mt-3 space-y-3">
-                  {PROJECTS.filter((p) => p.id !== project.id)
+                  {PROJECTS.filter((p) => !p.draft && p.id !== project.id)
                     .slice(0, 3)
                     .map((p) => (
                       <Link

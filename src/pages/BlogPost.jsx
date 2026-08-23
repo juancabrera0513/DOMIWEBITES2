@@ -81,9 +81,19 @@ export default function BlogPost() {
   const { slug } = useParams();
 
   const post = useMemo(() => blogPosts.find((p) => p.slug === slug), [slug]);
-  const index = useMemo(() => blogPosts.findIndex((p) => p.slug === slug), [slug]);
-  const prev = index > 0 ? blogPosts[index - 1] : null;
-  const next = index >= 0 && index < blogPosts.length - 1 ? blogPosts[index + 1] : null;
+  const publishedPosts = useMemo(
+    () => blogPosts.filter((candidate) => !candidate.draft),
+    []
+  );
+  const index = useMemo(
+    () => publishedPosts.findIndex((p) => p.slug === slug),
+    [publishedPosts, slug]
+  );
+  const prev = index > 0 ? publishedPosts[index - 1] : null;
+  const next =
+    index >= 0 && index < publishedPosts.length - 1
+      ? publishedPosts[index + 1]
+      : null;
 
   if (!post) return <Navigate to="/blog" replace />;
 
@@ -99,7 +109,7 @@ export default function BlogPost() {
     .split(/\s+/)
     .filter(Boolean).length;
 
-  const related = useMemo(() => getRelatedPosts(blogPosts, post.slug), [post.slug]);
+  const related = getRelatedPosts(publishedPosts, post.slug);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -122,6 +132,9 @@ export default function BlogPost() {
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
+        {post.draft ? (
+          <meta name="robots" content="noindex,follow,noarchive" />
+        ) : null}
         <link rel="canonical" href={url} />
 
         <meta property="og:site_name" content="Domi Websites" />
@@ -143,7 +156,9 @@ export default function BlogPost() {
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={image} />
 
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        {!post.draft ? (
+          <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        ) : null}
       </Helmet>
 
       <SeoJsonLd />
@@ -160,6 +175,15 @@ export default function BlogPost() {
               Blog
             </Link>
           </nav>
+
+          {post.draft ? (
+            <div className="mt-6 rounded-2xl border border-amber-300/25 bg-amber-300/10 p-5 text-sm leading-relaxed text-amber-50/90">
+              <strong className="text-amber-100">Private draft:</strong> this
+              article is hidden from the blog, internal recommendations, and the
+              sitemap. Confirm client permission and replace the conceptual image
+              with an approved, redacted screenshot before publishing.
+            </div>
+          ) : null}
 
           <header className="mt-6">
             <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">

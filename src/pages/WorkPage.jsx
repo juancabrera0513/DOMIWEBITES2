@@ -30,6 +30,7 @@ function CategoryPill({ active, children, onClick }) {
 }
 
 const CATEGORIES = PORTFOLIO_CATEGORIES || ["All"];
+const PUBLISHED_PROJECTS = PROJECTS.filter((project) => !project.draft);
 
 export default function WorkPage() {
   const { t } = useTranslation(["meta", "portfolio"]);
@@ -46,8 +47,8 @@ export default function WorkPage() {
   }, []);
 
   const projects = useMemo(() => {
-    if (filter === "All") return PROJECTS;
-    return PROJECTS.filter((p) => p.category === filter);
+    if (filter === "All") return PUBLISHED_PROJECTS;
+    return PUBLISHED_PROJECTS.filter((p) => p.category === filter);
   }, [filter]);
 
   const title =
