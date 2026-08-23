@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SeoJsonLd from "../components/SeoJsonLd";
-import ProjectModal from "../components/ProjectModal";
 
 import { PROJECTS, PORTFOLIO_CATEGORIES } from "../data/projects";
 
@@ -35,15 +34,6 @@ export default function WorkPage() {
   const { t } = useTranslation(["meta", "portfolio"]);
 
   const [filter, setFilter] = useState("All");
-  const [modal, setModal] = useState(null);
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape") setModal(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
 
   const projects = useMemo(() => {
     if (filter === "All") return PROJECTS;
@@ -141,19 +131,10 @@ export default function WorkPage() {
                     key={p.id}
                     className="group rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,.35)] hover:shadow-[0_30px_80px_rgba(0,0,0,.55)] transition-all hover:-translate-y-1"
                   >
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setModal(p)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          setModal(p);
-                        }
-                      }}
+                    <Link
+                      to={`/work/${p.id}`}
                       className="text-left block w-full focus:outline-none"
-                      aria-haspopup="dialog"
-                      aria-label={`Open details for ${projectTitle}`}
+                      aria-label={`View ${projectTitle} project page`}
                     >
                       <div className="relative h-48 bg-black/40">
                         {p.image && (
@@ -177,18 +158,13 @@ export default function WorkPage() {
                         </p>
 
                         <div className="mt-4">
-                          <Link
-                            to={`/work/${p.id}`}
-                            onClick={(e) => e.stopPropagation()}
-                            className="inline-flex items-center gap-2 text-cyan-200/90 text-sm font-medium group-hover:underline underline-offset-4"
-                            aria-label={`View ${projectTitle} details page`}
-                          >
-                            {t("portfolio:view_details", "View details")}
+                          <span className="inline-flex items-center gap-2 text-cyan-200/90 text-sm font-medium group-hover:underline underline-offset-4">
+                            {p.caseStudy ? "Read case study" : "View project"}
                             <span aria-hidden>→</span>
-                          </Link>
+                          </span>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </article>
                 );
               })}
@@ -198,8 +174,6 @@ export default function WorkPage() {
       </main>
 
       <Footer />
-
-      {modal && <ProjectModal project={modal} onClose={() => setModal(null)} />}
     </>
   );
 }

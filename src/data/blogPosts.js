@@ -454,7 +454,7 @@ export const blogPosts = [
       <h2>Connect attendance with scheduling</h2>
       <p>Attendance data is more useful when staff can understand it in context. The platform includes scheduling tools so the team can organize participant and staff activity without relying on a separate workbook for the weekly plan.</p>
 
-      <p>A shared schedule gives authorized staff one place to see what is planned and make updates. It also creates a clearer relationship between the expected session and the clock-in or clock-out record. The system is designed to support a team of more than 10 staff members and more than 50 participants while allowing Gaitway to keep exact operational totals private.</p>
+      <p>A shared schedule gives authorized staff one place to see what is planned and make updates. It also creates a clearer relationship between the expected session and the clock-in or clock-out record. The system is designed to support a growing team of more than 10 staff members and more than 50 participants without adding another layer of manual coordination.</p>
 
       <h2>Calculate program hours automatically</h2>
       <p>Once a valid clock-in and clock-out pair exists, software can calculate the duration consistently. That removes a repetitive step from the staff workflow and reduces dependence on spreadsheet formulas or manual arithmetic.</p>
@@ -477,7 +477,7 @@ export const blogPosts = [
         <li>Capture data as close as possible to the moment it is created.</li>
         <li>Automate repeatable calculations but preserve staff review.</li>
         <li>Design each interface for the person using it, not for every possible feature.</li>
-        <li>Keep exact operational numbers private when they are not needed to explain the result.</li>
+        <li>Choose tools that can grow with the team and participant base.</li>
       </ul>
 
       <h2>From scattered records to one operational system</h2>

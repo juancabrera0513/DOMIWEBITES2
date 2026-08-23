@@ -185,22 +185,6 @@ const resources = {
             "Glo Event Co specializes in photo booth rentals, silent party gear, and event services. The website features a bold neon aesthetic, modern animations, and a booking-driven structure that amplifies engagement and showcases the brand’s unique nightlife vibe."
         },
 
-        bendecidos: {
-          name: "Bendecidos con Propósito",
-          short:
-            "A bilingual non-profit website focused on mission storytelling, volunteering, and donations.",
-          long:
-            "Bendecidos con Propósito supports communities in the Dominican Republic. We built a bilingual platform that highlights their mission, showcases photo galleries, and encourages donations through clear storytelling and structured content."
-        },
-
-        group_travel: {
-          name: "Group Travel Co",
-          short:
-            "A modern travel agency website showcasing group trips, destinations, and quote requests.",
-          long:
-            "Group Travel Co organizes trips for families, schools, churches, and corporate teams. The website features vibrant visuals, destination highlights, and lead-capture funnels designed for quick quote requests and itinerary previews."
-        },
-
         archcity_roofing: {
           name: "ArchCity Roofing & Exteriors",
           short:
@@ -509,22 +493,6 @@ const resources = {
             "Sitio con temática neón para eventos y photo booth, con visuales dinámicos y flujo de reserva.",
           long:
             "Glo Event Co se especializa en alquiler de cabinas fotográficas, equipos para silent party y servicios para eventos. El sitio presenta una estética neón atrevida, animaciones modernas y una estructura orientada a reservas que aumenta el engagement y resalta el estilo único de la marca en el mundo nocturno."
-        },
-
-        bendecidos: {
-          name: "Bendecidos con Propósito",
-          short:
-            "Sitio bilingüe para una organización sin fines de lucro, enfocado en la misión, voluntariado y donaciones.",
-          long:
-            "Bendecidos con Propósito apoya comunidades en la República Dominicana. Construimos una plataforma bilingüe que resalta su misión, muestra galerías de fotos y anima a donar mediante storytelling claro y contenido bien estructurado."
-        },
-
-        group_travel: {
-          name: "Group Travel Co",
-          short:
-            "Agencia de viajes moderna con enfoque en viajes grupales, destinos y solicitudes de cotización.",
-          long:
-            "Group Travel Co organiza viajes para familias, colegios, iglesias y equipos corporativos. El sitio presenta visuales vibrantes, secciones de destinos destacados y embudos de captación diseñados para solicitudes rápidas de cotización y vistas previas de itinerarios."
         },
 
         archcity_roofing: {

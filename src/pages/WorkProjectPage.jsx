@@ -222,7 +222,9 @@ export default function WorkProjectPage() {
 
                   {project.caseStudy?.scale ? (
                     <section>
-                      <h2 className="text-lg font-bold text-white">Designed for real operations</h2>
+                      <h2 className="text-lg font-bold text-white">
+                        {project.caseStudy.scaleTitle || "Designed for growing operations"}
+                      </h2>
                       <p className="mt-2 text-white/65 leading-relaxed">
                         {project.caseStudy.scale}
                       </p>

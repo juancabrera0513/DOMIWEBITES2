@@ -1,3 +1,10 @@
+const PROJECT_DISPLAY_ORDER = [
+  "the-property-cousins",
+  "glo-event-co",
+  "kaes-kitchen",
+  "gaitway-program-hours-platform",
+];
+
 export const PROJECTS = [
   {
     id: "kaes-kitchen",
@@ -54,57 +61,34 @@ export const PROJECTS = [
     type: "real",
   },
   {
-    id: "bendecidos",
-    title: "Bendecidos con Propósito",
-    category: "Non-profit",
+    id: "the-property-cousins",
+    title: "The Property Cousins",
+    category: "Real Estate",
     description:
-      "A bilingual nonprofit website centered on the mission, community stories, volunteering, and donations.",
+      "A real estate website redesign with reliable property search, working inquiry paths, and stronger local credibility for buyers and sellers.",
     challenge:
-      "Bendecidos con Propósito needed to explain its mission across two languages and give supporters clear ways to learn, volunteer, and contribute.",
+      "The Property Cousins already had a website provided through their broker, but it was not optimized for a dependable client experience. Several links did not work, the contact form was broken, and property listings failed to load, making it harder for buyers and sellers to take the next step.",
     solution:
-      "We built a bilingual, story-led website with organized programs, community photography, and visible paths for donations and involvement.",
-    image: "/portfolio/bendecidos-nonprofit-website-design.webp",
-    url: "https://bendecidos.netlify.app/",
+      "We rebuilt their online presence with a reliable MARIS MLS property search, working navigation and contact forms, detailed listings, team storytelling, client reviews, and clear consultation paths.",
+    image: "/portfolio/the-property-cousins-website-screenshot.webp",
+    url: "https://www.thepropertycousins.org/",
     details: [
-      "English and Spanish content",
-      "Mission and program storytelling",
-      "Volunteer and donation paths",
-      "Community photo galleries",
+      "Reliable MARIS MLS property search",
+      "Individual property detail pages",
+      "Working navigation and contact forms",
+      "Buyer and seller-focused messaging",
+      "Team story, awards, and client reviews",
+      "Consultation and contact paths",
+      "Responsive design for mobile home searches",
     ],
     goals: [
-      "Explain the mission with clarity",
-      "Help supporters find ways to participate",
-      "Build trust through transparent storytelling",
+      "Restore a dependable experience for buyers and sellers",
+      "Make active listings consistently accessible",
+      "Showcase the team's local expertise and personal approach",
+      "Turn property interest into qualified conversations",
     ],
-    tags: ["Nonprofit", "Bilingual", "Donations", "Community"],
-    location: "St. Louis, MO",
-    type: "real",
-  },
-  {
-    id: "group-travel-co",
-    title: "Group Travel Co",
-    category: "Travel",
-    description:
-      "A lively travel website that helps groups explore destinations and begin a quote request.",
-    challenge:
-      "Group Travel Co needed to make planning feel less complicated for families, schools, churches, and business groups.",
-    solution:
-      "We created a visual, easy-to-follow experience with destination highlights, trip information, and a focused quote-request path.",
-    image: "/portfolio/group-travel-co-website-design.webp",
-    url: "https://grouptravelco.netlify.app/",
-    details: [
-      "Destination and trip presentation",
-      "Group-focused travel information",
-      "Quote-request flow",
-      "Mobile-friendly browsing",
-    ],
-    goals: [
-      "Make group travel options easier to compare",
-      "Encourage qualified quote requests",
-      "Showcase the experience before the trip begins",
-    ],
-    tags: ["Travel", "Group Trips", "Quote Requests", "Mobile Design"],
-    location: "St. Louis, MO",
+    tags: ["Real Estate", "MLS Search", "Listings", "Lead Generation"],
+    location: "Jefferson County & Greater St. Louis, MO",
     type: "real",
   },
   {
@@ -139,7 +123,8 @@ export const PROJECTS = [
       lead:
         "The platform turns a paper-and-spreadsheet workflow into one connected operational process, from a participant's arrival through the report staff can print later.",
       scale:
-        "The system supports an organization with more than 10 staff members and more than 50 participants without publishing exact client totals.",
+        "The platform supports more than 10 staff members and more than 50 participants while keeping attendance, scheduling, and reporting organized in one shared system.",
+      scaleTitle: "Built to support a growing organization",
       workflow: [
         {
           title: "Capture time at the source",
@@ -175,13 +160,15 @@ export const PROJECTS = [
       ],
     },
   },
-];
+].sort(
+  (a, b) =>
+    PROJECT_DISPLAY_ORDER.indexOf(a.id) - PROJECT_DISPLAY_ORDER.indexOf(b.id)
+);
 
 export const PORTFOLIO_CATEGORIES = [
   "All",
-  "Food & Retail",
+  "Real Estate",
   "Creative & Events",
-  "Non-profit",
-  "Travel",
+  "Food & Retail",
   "Custom Business Software",
 ];

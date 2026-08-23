@@ -171,21 +171,13 @@
     "imageWidth": 1800,
     "imageHeight": 880
   },
-  "/work/bendecidos": {
-    "title": "Bendecidos con Propósito | Domi Websites Portfolio",
-    "description": "A bilingual nonprofit website centered on the mission, community stories, volunteering, and donations.",
+  "/work/the-property-cousins": {
+    "title": "The Property Cousins | Domi Websites Portfolio",
+    "description": "A real estate website redesign with reliable property search, working inquiry paths, and stronger local credibility for buyers and sellers.",
     "type": "website",
-    "image": "https://domiwebsites.com/portfolio/bendecidos-nonprofit-website-design.webp",
-    "imageWidth": 1800,
-    "imageHeight": 880
-  },
-  "/work/group-travel-co": {
-    "title": "Group Travel Co | Domi Websites Portfolio",
-    "description": "A lively travel website that helps groups explore destinations and begin a quote request.",
-    "type": "website",
-    "image": "https://domiwebsites.com/portfolio/group-travel-co-website-design.webp",
-    "imageWidth": 1800,
-    "imageHeight": 880
+    "image": "https://domiwebsites.com/portfolio/the-property-cousins-website-screenshot.webp",
+    "imageWidth": 1668,
+    "imageHeight": 938
   },
   "/work/gaitway-program-hours-platform": {
     "title": "Gaitway Program Hours Platform | Domi Websites Portfolio",
