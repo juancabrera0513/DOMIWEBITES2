@@ -15,7 +15,7 @@ import {
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { JsonLd } from "../lib/jsonld";
-import { supabase } from "../lib/supabaseClient";
+import { normalizeWebsite, sendAuditRequest } from "../lib/auditRequest";
 
 const SITE_URL = "https://domiwebsites.com";
 
@@ -99,6 +99,7 @@ function FaqItem({ q, a }) {
 
 export default function FreeAuditPage() {
   const pageRef = useRef(null);
+  const formRef = useRef(null);
   const [form, setForm] = useState({ name: "", email: "", website: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
@@ -121,36 +122,45 @@ export default function FreeAuditPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
     setStatus("");
+    setStatusType("");
 
-    if (!form.name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()) || !form.website.trim()) {
-      setStatus("Please enter your name, a valid email, and your website URL.");
+    if (formRef.current?.elements?.botcheck?.value) return;
+
+    const website = normalizeWebsite(form.website);
+    if (
+      form.name.trim().length < 2 ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim()) ||
+      !website
+    ) {
+      setStatus("Please enter your name, a valid email, and a valid website URL.");
       setStatusType("error");
-      setLoading(false);
       return;
     }
 
-    const website = /^https?:\/\//i.test(form.website.trim())
-      ? form.website.trim()
-      : `https://${form.website.trim()}`;
+    setLoading(true);
+    try {
+      await sendAuditRequest({ ...form, website });
 
-    const { error } = await supabase.from("website_audit_requests").insert([{
-      name: form.name.trim(),
-      email: form.email.trim(),
-      website,
-      message: form.message.trim() || null,
-    }]);
+      if (window.gtag) {
+        window.gtag("event", "generate_lead", {
+          form_location: "audit_page",
+          method: "emailjs",
+        });
+      }
+      if (typeof window.gtag_report_conversion === "function") {
+        window.gtag_report_conversion();
+      }
 
-    if (error) {
-      setStatus("Something went wrong. Please try again or email admin@domiwebsites.com.");
-      setStatusType("error");
-    } else {
       setStatus(`You're in, ${form.name.trim()}. We'll send your audit within 72 business hours.`);
       setStatusType("success");
       setForm({ name: "", email: "", website: "", message: "" });
+    } catch {
+      setStatus("Something went wrong. Please try again or email admin@domiwebsites.com.");
+      setStatusType("error");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const pageUrl = `${SITE_URL}/audit`;
@@ -383,20 +393,21 @@ export default function FreeAuditPage() {
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="audit-form">
+              <form ref={formRef} onSubmit={handleSubmit} className="audit-form" noValidate>
+                <input type="text" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <label>Name<input name="name" value={form.name} onChange={handleChange} placeholder="Your name" required /></label>
-                  <label>Work email<input type="email" name="email" value={form.email} onChange={handleChange} placeholder="you@company.com" required /></label>
+                  <label>Name<input name="name" value={form.name} onChange={handleChange} placeholder="Your name" autoComplete="name" maxLength={80} disabled={loading} required /></label>
+                  <label>Work email<input type="email" name="email" value={form.email} onChange={handleChange} placeholder="you@company.com" autoComplete="email" maxLength={120} disabled={loading} required /></label>
                 </div>
-                <label>Website URL<input name="website" value={form.website} onChange={handleChange} placeholder="yourwebsite.com" required /></label>
+                <label>Website URL<input name="website" value={form.website} onChange={handleChange} placeholder="yourwebsite.com" autoComplete="url" maxLength={240} disabled={loading} required /></label>
                 <label>
                   What would you like to improve? <span>(optional)</span>
-                  <textarea name="message" value={form.message} onChange={handleChange} rows={4} placeholder="More leads, better Google visibility, a faster site..." />
+                  <textarea name="message" value={form.message} onChange={handleChange} rows={4} placeholder="More leads, better Google visibility, a faster site..." maxLength={2000} disabled={loading} />
                 </label>
                 <button type="submit" disabled={loading} className="btn btn-primary w-full justify-center audit-primary-cta">
                   {loading ? "Submitting..." : "Request my free audit"} {!loading && <ArrowRight size={17} />}
                 </button>
-                {status && <div role="status" className={`audit-status ${statusType}`}>{status}</div>}
+                {status && <div role="status" aria-live="polite" className={`audit-status ${statusType}`}>{status}</div>}
                 <p className="text-center text-xs text-slate-500">Your information stays private. No spam, ever.</p>
               </form>
             </div>
