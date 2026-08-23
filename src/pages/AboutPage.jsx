@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import SeoJsonLd from "../components/SeoJsonLd";
 
 export default function AboutPage() {
   return (
@@ -14,6 +15,7 @@ export default function AboutPage() {
         <link rel="canonical" href="https://domiwebsites.com/about" />
       </Helmet>
 
+      <SeoJsonLd />
       <Header />
 
       <main id="main-content" className="nexus-bg hero-grid relative overflow-hidden">
@@ -26,10 +28,10 @@ export default function AboutPage() {
 
               <h1 className="font-extrabold tracking-tight leading-[1.05]">
                 <span className="block text-[40px] sm:text-[56px] md:text-[72px] text-white">
-                  We build more than websites.
+                  St. Louis websites.
                 </span>
                 <span className="block text-[48px] sm:text-[64px] md:text-[82px] grad-text">
-                  We build business systems.
+                  Practical business systems.
                 </span>
               </h1>
 

@@ -2,6 +2,9 @@
 
 > Domi Websites is a St. Louis web design and custom software company serving small and growing businesses.
 
+Last updated: 2026-08-22
+Canonical website: https://domiwebsites.com/
+
 ## Primary pages
 
 - [Home](https://domiwebsites.com/): Company overview and core value proposition
@@ -27,12 +30,36 @@
 - [Website vs Social Media](https://domiwebsites.com/blog/website-vs-social-media-small-business)
 - [Automating Customer Follow-Up](https://domiwebsites.com/blog/automate-customer-follow-up-small-business)
 
+## Services and starting prices
+
+- Starter Website: from $1,500 for up to five pages, mobile design, a contact form, foundational SEO, and launch support
+- Growth Website: from $2,500 for expanded service content, local visibility, project or article content, and inquiry tracking
+- Website With Follow-Up Tools: from $4,500 for customer organization, automated follow-up, booking, reminders, and a website assistant
+- Custom Business Tool: from $7,500 for private software built around customers, jobs, teams, and workflows
+- Free Website Audit: manual review of SEO, speed, mobile usability, trust, and conversion opportunities
+
+Final scope and pricing are confirmed in writing before work begins. The limited offer at /special has separate eligibility and scope.
+
+## Selected client work
+
+- [Kae's Kitchen](https://domiwebsites.com/work/kaes-kitchen): Bakery website and custom-order inquiry experience
+- [Glo Event Co](https://domiwebsites.com/work/glo-event-co): Event services and booking-focused website
+- [Bendecidos con Propósito](https://domiwebsites.com/work/bendecidos): Bilingual nonprofit website
+- [Group Travel Co](https://domiwebsites.com/work/group-travel-co): Group travel and quote-request website
+
 ## Business information
 
 - Location: St. Louis, Missouri, United States
 - Phone: +1-314-376-9667
-- Email: admin@domiwebsites.com
+- Official email: admin@domiwebsites.com
 - Website: https://domiwebsites.com/
+
+## Authorship
+
+- Founder: Juan Cabrera
+- Role: Founder and Business Solutions Developer
+- Author profile: https://domiwebsites.com/about
+- Languages available: English and Spanish
 
 ## Preferred citation
 

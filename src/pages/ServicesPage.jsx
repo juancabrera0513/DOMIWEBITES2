@@ -150,6 +150,19 @@ export default function ServicesPage() {
       ],
     },
     {
+      icon: "📱",
+      path: "/small-business-websites",
+      title: "Small Business Website Design",
+      tag: "Clear and focused",
+      desc:
+        "Professional websites that explain your services, earn trust, and make contacting your business simple on every device.",
+      bullets: [
+        "A focused structure for your most important services.",
+        "Useful answers to the questions customers ask most.",
+        "Room to add pages and capabilities as you grow.",
+      ],
+    },
+    {
       icon: "🎨",
       path: "/website-redesign-st-louis",
       title: "Website Makeovers",
@@ -160,6 +173,19 @@ export default function ServicesPage() {
         "A modern design that builds confidence.",
         "Simpler pages so visitors know what to do next.",
         "Clearer messages focused on winning inquiries.",
+      ],
+    },
+    {
+      icon: "📍",
+      path: "/local-seo-st-louis",
+      title: "Local SEO in St. Louis",
+      tag: "Get found nearby",
+      desc:
+        "Build a stronger foundation for Google Search and Maps with accurate business information, useful service pages, and local content.",
+      bullets: [
+        "Align your website with your Google Business Profile.",
+        "Create pages around real services and customer needs.",
+        "Improve local trust signals and review processes.",
       ],
     },
     {
@@ -178,14 +204,14 @@ export default function ServicesPage() {
     {
       icon: "⚙️",
       path: "/custom-business-tools",
-      title: "Faster Follow-Up",
-      tag: "Save time",
+      title: "Custom Business Software",
+      tag: "Built for your workflow",
       desc:
-        "Connect your forms, email, and booking so customers receive a faster response and your team has less to do manually.",
+        "Replace scattered spreadsheets and workarounds with a private tool built around your customers, jobs, team, and daily work.",
       bullets: [
-        "Spend less time repeating the same tasks.",
-        "Reply to new inquiries sooner.",
-        "Add more capabilities as your business grows.",
+        "Keep essential business information in one place.",
+        "Give each team member the access they need.",
+        "Expand the system as your process grows.",
       ],
     },
   ];
@@ -207,11 +233,11 @@ export default function ServicesPage() {
 
             <h1 className="mt-4 font-extrabold tracking-tight leading-[1.02] text-white">
               <span className="block text-[40px] sm:text-[52px] md:text-[64px]">
-                Websites + Business Tools
+                Web Design, SEO &
               </span>
 
-              <span className="block mt-2 text-[22px] sm:text-[26px] text-white/80 font-semibold">
-                Built to bring inquiries and make work easier
+              <span className="block mt-2 text-[40px] sm:text-[52px] md:text-[64px] grad-text">
+                Business Tools
               </span>
             </h1>
 

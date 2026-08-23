@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const WHATSAPP = "https://wa.me/13143769667?text=Hi%20Domi%20Websites.%20I%20have%20a%20question.";
 const SMS = "sms:+13143769667?body=Hi%20Domi%20Websites.%20I%20have%20a%20question.";
-const EMAIL = "hello@domiwebsites.com";
+const EMAIL = "admin@domiwebsites.com";
 const CITY = "St. Louis, MO";
 
 const IKAGG_BADGE_SRC = "/assets/badges/ikagg-badge.png";
@@ -56,7 +56,7 @@ export default function Footer() {
 
           <div>
             <h2 className="font-bold text-white">Services</h2>
-            <nav className="mt-4 grid gap-3 text-sm text-white/60">
+            <nav className="mt-4 grid gap-3 text-sm text-white/60" aria-label="Footer services">
               <Link to="/web-design-st-louis" className="hover:text-white">Web design in St. Louis</Link>
               <Link to="/website-redesign-st-louis" className="hover:text-white">Website redesign</Link>
               <Link to="/local-seo-st-louis" className="hover:text-white">Local Google visibility</Link>
@@ -67,7 +67,7 @@ export default function Footer() {
 
           <div>
             <h2 className="font-bold text-white">Explore</h2>
-            <nav className="mt-4 grid gap-3 text-sm text-white/60">
+            <nav className="mt-4 grid gap-3 text-sm text-white/60" aria-label="Footer navigation">
               <Link to="/work" className="hover:text-white">Our work</Link>
               <Link to="/pricing" className="hover:text-white">Pricing</Link>
               <Link to="/audit" className="hover:text-white">Free website review</Link>

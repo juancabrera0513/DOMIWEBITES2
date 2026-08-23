@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SeoJsonLd from "../components/SeoJsonLd";
+import { JsonLd } from "../lib/jsonld";
 import ContactSection from "../sections/ContactSection";
 
 const INCLUDED = [
@@ -102,21 +103,18 @@ const GradientHeading = ({ plain, gradient, level = 2 }) => {
 };
 
 function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-
   return (
-    <div
-      className="rounded-2xl border border-white/10 overflow-hidden transition-all duration-300"
+    <details
+      className="group rounded-2xl border border-white/10 overflow-hidden transition-all duration-300"
       style={{ background: "rgba(255,255,255,0.035)" }}
     >
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-6 py-5 text-left gap-4"
+      <summary
+        className="cursor-pointer list-none w-full flex items-center justify-between px-6 py-5 text-left gap-4"
       >
         <span className="text-white font-medium text-sm md:text-base">{q}</span>
         <span
-          className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center border border-white/15 text-slate-400 transition-transform duration-300"
-          style={{ transform: open ? "rotate(45deg)" : "rotate(0deg)" }}
+          aria-hidden="true"
+          className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center border border-white/15 text-slate-400 transition-transform duration-300 group-open:rotate-45"
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
             <path
@@ -127,13 +125,11 @@ function FaqItem({ q, a }) {
             />
           </svg>
         </span>
-      </button>
-      {open && (
-        <div className="px-6 pb-5 text-slate-400 text-sm leading-relaxed border-t border-white/8 pt-4">
-          {a}
-        </div>
-      )}
-    </div>
+      </summary>
+      <div className="px-6 pb-5 text-slate-400 text-sm leading-relaxed border-t border-white/8 pt-4">
+        {a}
+      </div>
+    </details>
   );
 }
 
@@ -152,19 +148,35 @@ export default function SpecialOfferPage() {
     return () => io.disconnect();
   }, []);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: "Special Website Offer | Domi Websites | St. Louis",
-    description:
-      "Limited website special for qualifying service-based businesses. Get a professional 5-page website for $499. Regular website projects start at $1,500.",
-    url: "https://domiwebsites.com/special",
-    publisher: {
-      "@type": "Organization",
-      name: "Domi Websites",
-      url: "https://domiwebsites.com",
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://domiwebsites.com/special#service",
+      name: "Five-Page Small Business Website Special",
+      description:
+        "A professional five-page website for qualifying service-based businesses, including mobile design, a contact form, foundational SEO, and launch support.",
+      url: "https://domiwebsites.com/special",
+      provider: { "@id": "https://domiwebsites.com#business" },
+      areaServed: { "@type": "Country", name: "United States" },
+      offers: {
+        "@type": "Offer",
+        price: "499",
+        priceCurrency: "USD",
+        availability: "https://schema.org/LimitedAvailability",
+        url: "https://domiwebsites.com/special",
+      },
     },
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQS.map(({ q, a }) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    },
+  ];
 
   return (
     <>
@@ -190,10 +202,13 @@ export default function SpecialOfferPage() {
         />
       </Helmet>
 
-      <SeoJsonLd data={jsonLd} />
+      <SeoJsonLd />
+      {structuredData.map((data) => (
+        <JsonLd key={data["@type"]} data={data} />
+      ))}
       <Header />
 
-      <main ref={revealRef}>
+      <main id="main-content" ref={revealRef}>
 
         {/* Hero */}
         <section className="section relative overflow-hidden nexus-bg hero-grid">

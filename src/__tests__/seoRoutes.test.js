@@ -12,6 +12,9 @@ const sitemap = fs.readFileSync(
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
   (match) => match[1]
 );
+const sitemapLastModified = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map(
+  (match) => match[1]
+);
 const sitemapPaths = sitemapUrls.map((value) => new URL(value).pathname);
 const expectedContentPaths = [
   "/",
@@ -49,6 +52,10 @@ describe("public SEO routes", () => {
       true
     );
     expect(new Set(sitemapUrls).size).toBe(sitemapUrls.length);
+    expect(sitemapLastModified).toHaveLength(sitemapUrls.length);
+    expect(
+      sitemapLastModified.every((date) => /^\d{4}-\d{2}-\d{2}$/.test(date))
+    ).toBe(true);
   });
 
   test("every public route has useful, unique metadata", () => {
@@ -59,6 +66,11 @@ describe("public SEO routes", () => {
       expect(seo.title.length).toBeGreaterThan(20);
       expect(seo.description.length).toBeGreaterThan(70);
       expect(seo.description.length).toBeLessThanOrEqual(170);
+      if (seo.image) {
+        expect(seo.image.startsWith(`${SITE_URL}/`)).toBe(true);
+        expect(seo.imageWidth).toBeGreaterThan(0);
+        expect(seo.imageHeight).toBeGreaterThan(0);
+      }
     }
 
     expect(new Set(entries.map(([, seo]) => seo.title)).size).toBe(

@@ -134,7 +134,8 @@ export default function WorkProjectPage() {
                     src={project.image}
                     alt={`${name} preview`}
                     className="absolute inset-0 w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
+                    fetchpriority="high"
                     decoding="async"
                   />
                 ) : null}

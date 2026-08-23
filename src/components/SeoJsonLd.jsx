@@ -20,18 +20,21 @@ export default function SeoJsonLd() {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["ProfessionalService", "LocalBusiness"],
+        "@type": "Organization",
         "@id": BUSINESS_ID,
         name: "Domi Websites",
+        description:
+          "St. Louis web design, local SEO, automation, and custom business software for small and growing businesses.",
         url: SITE_URL,
         image: `${SITE_URL}/domi-websites-custom-business-software-og.jpg`,
         logo: {
           "@type": "ImageObject",
           url: `${SITE_URL}/DomiLogo.webp`,
+          width: 500,
+          height: 301,
         },
         telephone: "+1-314-376-9667",
         email: "admin@domiwebsites.com",
-        priceRange: "$1,500+",
         address: {
           "@type": "PostalAddress",
           addressLocality: "St. Louis",
@@ -78,12 +81,19 @@ export default function SeoJsonLd() {
         jobTitle: "Founder and Business Solutions Developer",
         image: `${SITE_URL}/images/juan-optimized.webp`,
         worksFor: { "@id": BUSINESS_ID },
+        knowsAbout: [
+          "Web design",
+          "Local SEO",
+          "Business automation",
+          "Custom business software",
+        ],
       },
       {
         "@type": "WebSite",
         "@id": WEBSITE_ID,
         url: `${SITE_URL}/`,
         name: "Domi Websites",
+        alternateName: "Domi Websites St. Louis",
         inLanguage: "en-US",
         publisher: { "@id": BUSINESS_ID },
       },

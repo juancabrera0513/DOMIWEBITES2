@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ContactSection from "../sections/ContactSection";
+import SeoJsonLd from "../components/SeoJsonLd";
 import { useTranslation } from "react-i18next";
 
 export default function ContactPage() {
@@ -16,6 +17,7 @@ export default function ContactPage() {
           content="Contact Domi Websites by WhatsApp, text message, consultation, or project form."
         />
       </Helmet>
+      <SeoJsonLd />
       <Header />
       <main id="main-content">
         <ContactSection standalone />

@@ -106,7 +106,7 @@ export const SERVICE_PAGES = {
     ],
   },
   "/local-seo-st-louis": {
-    name: "Local Google Visibility",
+    name: "Local SEO in St. Louis",
     title: "Help more nearby customers find your business on Google",
     intro:
       "Local visibility starts with clear service pages, accurate business information, a strong Google Business Profile, useful content, and consistent proof that your company serves the area.",
@@ -209,6 +209,7 @@ export default function ServiceDetailPage() {
   if (!service) return null;
 
   const url = `${SITE_URL}${pathname}`;
+  const servesStLouis = pathname.endsWith("-st-louis");
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -216,7 +217,9 @@ export default function ServiceDetailPage() {
     description: service.intro,
     url,
     provider: { "@id": `${SITE_URL}#business` },
-    areaServed: { "@type": "City", name: "St. Louis" },
+    areaServed: servesStLouis
+      ? { "@type": "City", name: "St. Louis" }
+      : { "@type": "Country", name: "United States" },
   };
   const faqSchema = {
     "@context": "https://schema.org",
@@ -238,6 +241,9 @@ export default function ServiceDetailPage() {
         <section className="relative overflow-hidden nexus-bg hero-grid py-20 md:py-28">
           <div className="hero-vignette" />
           <div className="container relative z-10 max-w-5xl text-center">
+            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">
+              {service.name}
+            </p>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.04] text-white">
               {service.title}
             </h1>

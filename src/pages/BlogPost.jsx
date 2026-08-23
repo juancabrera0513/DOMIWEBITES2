@@ -93,6 +93,11 @@ export default function BlogPost() {
   const image = post.image ? `${SITE_URL}${post.image}` : DEFAULT_OG;
   const publishedISO = toISO(post.date);
   const modifiedISO = toISO(post.updated || post.date);
+  const wordCount = post.content
+    .replace(/<[^>]+>/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
 
   const related = useMemo(() => getRelatedPosts(blogPosts, post.slug), [post.slug]);
 
@@ -107,6 +112,9 @@ export default function BlogPost() {
     author: { "@id": `${SITE_URL}#founder` },
     publisher: { "@id": `${SITE_URL}#business` },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    wordCount,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
   };
 
   return (
@@ -122,6 +130,13 @@ export default function BlogPost() {
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={image} />
+        <meta property="article:author" content="Juan Cabrera" />
+        {publishedISO && (
+          <meta property="article:published_time" content={publishedISO} />
+        )}
+        {modifiedISO && (
+          <meta property="article:modified_time" content={modifiedISO} />
+        )}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
@@ -151,8 +166,15 @@ export default function BlogPost() {
               {post.title}
             </h1>
             <p className="mt-3 text-white/55 text-sm">
-              Published {formatDate(post.date)}
-              {post.updated ? ` · Updated ${formatDate(post.updated)}` : ""}
+              By <Link to="/about" rel="author" className="text-cyan-200/90 hover:underline">Juan Cabrera</Link>
+              {" · Published "}
+              <time dateTime={post.date}>{formatDate(post.date)}</time>
+              {post.updated ? (
+                <>
+                  {" · Updated "}
+                  <time dateTime={post.updated}>{formatDate(post.updated)}</time>
+                </>
+              ) : null}
             </p>
           </header>
 
@@ -162,7 +184,8 @@ export default function BlogPost() {
                 src={post.image}
                 alt={post.title}
                 className="w-full h-[240px] md:h-[360px] object-cover"
-                loading="lazy"
+                loading="eager"
+                fetchpriority="high"
                 decoding="async"
               />
             </div>

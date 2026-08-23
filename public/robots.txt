@@ -1,9 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /auth/
-Disallow: /set-password
-Disallow: /forgot-password
-Disallow: /thank-you
 
 Sitemap: https://domiwebsites.com/sitemap.xml

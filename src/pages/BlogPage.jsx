@@ -88,10 +88,10 @@ export default function BlogPage() {
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="font-extrabold tracking-tight leading-[1.06]">
                 <span className="block text-[40px] sm:text-[56px] md:text-[72px] text-white">
-                  Insights for growth.
+                  Web design & local SEO.
                 </span>
                 <span className="block text-[44px] sm:text-[62px] md:text-[80px] grad-text">
-                  Get found, earn trust, and grow.
+                  Practical small business guides.
                 </span>
               </h1>
 
@@ -139,7 +139,10 @@ export default function BlogPage() {
 
                       <div className="p-6">
                         <p className="text-xs text-white/50">
-                          {post.updated ? `Updated ${formatDate(post.updated)}` : formatDate(post.date)}
+                          {post.updated ? "Updated " : "Published "}
+                          <time dateTime={post.updated || post.date}>
+                            {formatDate(post.updated || post.date)}
+                          </time>
                         </p>
                         <h2 className="mt-2 text-xl font-semibold text-white/90 leading-snug">
                           {post.title}

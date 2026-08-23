@@ -87,11 +87,11 @@ export default function WorkPage() {
 
               <h1 className="font-extrabold tracking-tight leading-[1.05] text-center">
                 <span className="block text-[40px] sm:text-[56px] md:text-[72px] lg:text-[88px] text-white">
-                  Websites that convert.
+                  St. Louis web design.
                 </span>
 
                 <span className="block text-[48px] sm:text-[64px] md:text-[82px] lg:text-[98px] grad-text">
-                  Business tools that save time.
+                  Real client projects.
                 </span>
               </h1>
 

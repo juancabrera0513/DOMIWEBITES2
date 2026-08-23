@@ -43,7 +43,7 @@ export default function PrivacyPage() {
 
       <Header />
 
-      <main className="section relative overflow-hidden nexus-bg hero-grid">
+      <main id="main-content" className="section relative overflow-hidden nexus-bg hero-grid">
         <div className="hero-vignette" />
 
         <div className="container relative z-10 max-w-4xl">

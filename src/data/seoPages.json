@@ -71,84 +71,112 @@
     "title": "Why Your Small Business Needs a Website in 2026 | Domi Websites",
     "description": "A good website helps customers find you, trust you, and take the next step, even when your business is closed.",
     "type": "article",
-    "image": "https://domiwebsites.com/blog-images/websites-for-small-business.webp"
+    "image": "https://domiwebsites.com/blog-images/websites-for-small-business.webp",
+    "imageWidth": 2944,
+    "imageHeight": 1664
   },
   "/blog/how-to-choose-web-design-agency-st-louis": {
     "title": "How to Choose a Web Design Agency in St. Louis | Domi Websites",
     "description": "Use these practical questions to compare web designers, understand the real cost, and avoid surprises after launch.",
     "type": "article",
-    "image": "https://domiwebsites.com/blog-images/choose-agency.webp"
+    "image": "https://domiwebsites.com/blog-images/choose-agency.webp",
+    "imageWidth": 2944,
+    "imageHeight": 1664
   },
   "/blog/local-seo-basics-small-business": {
     "title": "Local SEO Basics for Small Businesses in St. Louis | Domi Websites",
     "description": "A practical guide to helping nearby customers find and trust your business in Google Search and Maps.",
     "type": "article",
-    "image": "https://domiwebsites.com/blog-images/local-seo.webp"
+    "image": "https://domiwebsites.com/blog-images/local-seo.webp",
+    "imageWidth": 1472,
+    "imageHeight": 832
   },
   "/blog/common-web-design-mistakes-to-avoid": {
     "title": "Common Small Business Web Design Mistakes to Avoid in 2026 | Domi Websites",
     "description": "These common website problems create confusion, weaken trust, and make it harder for customers to contact your business.",
     "type": "article",
-    "image": "https://domiwebsites.com/blog-images/web-design-mistakes.webp"
+    "image": "https://domiwebsites.com/blog-images/web-design-mistakes.webp",
+    "imageWidth": 1472,
+    "imageHeight": 832
   },
   "/blog/small-business-website-cost-2026": {
     "title": "How Much Does a Small Business Website Cost in 2026? | Domi Websites",
     "description": "Understand the price ranges, what should be included, and which choices have the biggest effect on a business website budget.",
     "type": "article",
-    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg"
+    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg",
+    "imageWidth": 1260,
+    "imageHeight": 630
   },
   "/blog/website-redesign-checklist-business-owners": {
     "title": "Website Redesign Checklist for Business Owners | Domi Websites",
     "description": "Use this practical checklist to protect important content, improve customer experience, and avoid expensive redesign mistakes.",
     "type": "article",
-    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg"
+    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg",
+    "imageWidth": 1260,
+    "imageHeight": 630
   },
   "/blog/how-to-get-more-leads-from-business-website": {
     "title": "How to Get More Leads From Your Business Website | Domi Websites",
     "description": "Improve the message, trust, forms, and follow-up process that turn website visitors into qualified customer inquiries.",
     "type": "article",
-    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg"
+    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg",
+    "imageWidth": 1260,
+    "imageHeight": 630
   },
   "/blog/google-business-profile-optimization-checklist": {
     "title": "Google Business Profile Optimization Checklist for Local Businesses | Domi Websites",
     "description": "A straightforward checklist for improving the accuracy, usefulness, and trust of your business listing in Google Search and Maps.",
     "type": "article",
-    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg"
+    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg",
+    "imageWidth": 1260,
+    "imageHeight": 630
   },
   "/blog/website-vs-social-media-small-business": {
     "title": "Website vs Social Media: What Does a Small Business Need? | Domi Websites",
     "description": "Learn what websites and social media each do well, why they work better together, and where a small business should start.",
     "type": "article",
-    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg"
+    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg",
+    "imageWidth": 1260,
+    "imageHeight": 630
   },
   "/blog/automate-customer-follow-up-small-business": {
     "title": "How to Automate Customer Follow-Up Without Losing the Personal Touch | Domi Websites",
     "description": "Use confirmations, reminders, and simple customer stages to respond faster while keeping important conversations personal.",
     "type": "article",
-    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg"
+    "image": "https://domiwebsites.com/domi-websites-custom-business-software-og.jpg",
+    "imageWidth": 1260,
+    "imageHeight": 630
   },
   "/work/kaes-kitchen": {
     "title": "Kae’s Kitchen | Domi Websites Portfolio",
     "description": "A warm bakery website that makes custom cakes, desserts, and ordering information easy to explore.",
     "type": "website",
-    "image": "https://domiwebsites.com/portfolio/kaes-kitchen-website-design.webp"
+    "image": "https://domiwebsites.com/portfolio/kaes-kitchen-website-design.webp",
+    "imageWidth": 1800,
+    "imageHeight": 847
   },
   "/work/glo-event-co": {
     "title": "Glo Event Co | Domi Websites Portfolio",
     "description": "A bold event website for photo booths, silent parties, and memorable group experiences.",
     "type": "website",
-    "image": "https://domiwebsites.com/portfolio/glo-event-co-website-design.webp"
+    "image": "https://domiwebsites.com/portfolio/glo-event-co-website-design.webp",
+    "imageWidth": 1800,
+    "imageHeight": 880
   },
   "/work/bendecidos": {
     "title": "Bendecidos con Propósito | Domi Websites Portfolio",
     "description": "A bilingual nonprofit website centered on the mission, community stories, volunteering, and donations.",
     "type": "website",
-    "image": "https://domiwebsites.com/portfolio/bendecidos-nonprofit-website-design.webp"
+    "image": "https://domiwebsites.com/portfolio/bendecidos-nonprofit-website-design.webp",
+    "imageWidth": 1800,
+    "imageHeight": 880
   },
   "/work/group-travel-co": {
     "title": "Group Travel Co | Domi Websites Portfolio",
     "description": "A lively travel website that helps groups explore destinations and begin a quote request.",
     "type": "website",
-    "image": "https://domiwebsites.com/portfolio/group-travel-co-website-design.webp"
+    "image": "https://domiwebsites.com/portfolio/group-travel-co-website-design.webp",
+    "imageWidth": 1800,
+    "imageHeight": 880
   }
 }

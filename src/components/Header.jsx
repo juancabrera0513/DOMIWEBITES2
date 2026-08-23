@@ -47,6 +47,12 @@ export default function Header() {
 
   return (
     <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-black"
+      >
+        Skip to main content
+      </a>
       <div className="h-[96px]" />
 
       <div className="fixed top-0 left-0 right-0 h-[140px] -z-10 pointer-events-none">
@@ -60,7 +66,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 pt-4">
           <div className="relative rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,.45)] overflow-hidden">
             <div className="flex items-center justify-between h-[78px] px-6">
-              <a href="/" onClick={handleLogo} className="flex items-center">
+              <a href="/" onClick={handleLogo} className="flex items-center" aria-label="Domi Websites home">
                 <img
                   src="/DomiLogo.webp"
                   alt="Domi Websites"
@@ -70,7 +76,7 @@ export default function Header() {
                 />
               </a>
 
-              <nav className="hidden md:flex items-center gap-2">
+              <nav className="hidden md:flex items-center gap-2" aria-label="Primary navigation">
                 {navItems.map(({ name, path }) => {
                   const isActive = location.pathname === path;
                   return (
@@ -116,6 +122,7 @@ export default function Header() {
                 onClick={() => setMenuOpen(!menuOpen)}
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={menuOpen}
+                aria-controls="mobile-navigation"
               >
                 <span className="text-3xl leading-none">
                   {menuOpen ? "×" : "☰"}
@@ -124,7 +131,7 @@ export default function Header() {
             </div>
 
             {menuOpen && (
-              <div className="md:hidden px-6 pb-6">
+              <div id="mobile-navigation" className="md:hidden px-6 pb-6">
                 <div className="border-t border-white/10 pt-4">
                   <div className="grid gap-3">
                     {navItems.map(({ name, path }) => {

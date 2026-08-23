@@ -94,14 +94,14 @@ export default function PricingSection({ asPage = false }) {
         <div className="text-center max-w-3xl mx-auto">
           {asPage ? (
             <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight">
-              A clear investment for{" "}
+              Website & software pricing for{" "}
               <span className="bg-gradient-to-r from-sky-400 via-indigo-500 to-violet-500 bg-clip-text text-transparent">
                 your next stage of growth
               </span>
             </h1>
           ) : (
             <h2 className="text-3xl md:text-5xl font-extrabold text-white leading-tight">
-              A clear investment for{" "}
+              Website & software pricing for{" "}
               <span className="bg-gradient-to-r from-sky-400 via-indigo-500 to-violet-500 bg-clip-text text-transparent">
                 your next stage of growth
               </span>

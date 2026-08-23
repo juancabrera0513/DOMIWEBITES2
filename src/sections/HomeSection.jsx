@@ -19,15 +19,15 @@ export default function HomeSection() {
         <div className="text-center max-w-5xl mx-auto px-2">
           <h1 className="font-extrabold tracking-tight leading-[1.03]">
             <span className="block text-[38px] sm:text-[50px] md:text-[64px] lg:text-[76px] xl:text-[84px] text-white">
-              We build
+              St. Louis web design
             </span>
 
             <span className="block text-[48px] sm:text-[64px] md:text-[82px] lg:text-[98px] xl:text-[108px] grad-text">
-              websites and tools
+              & custom software
             </span>
 
             <span className="block text-[38px] sm:text-[50px] md:text-[64px] lg:text-[76px] xl:text-[84px] text-white">
-              that help you grow
+              built to help you grow
             </span>
           </h1>
 

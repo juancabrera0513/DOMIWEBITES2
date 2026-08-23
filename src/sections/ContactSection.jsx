@@ -17,7 +17,7 @@ const WHATSAPP =
   "https://wa.me/13143769667?text=Hi%20Domi%20Websites.%20I%20would%20like%20to%20talk%20about%20a%20project.";
 const SMS =
   "sms:+13143769667?body=Hi%20Domi%20Websites.%20I%20would%20like%20to%20talk%20about%20a%20project.";
-const EMAIL_TO = "hello@domiwebsites.com";
+const EMAIL_TO = "admin@domiwebsites.com";
 
 function cx(...a) {
   return a.filter(Boolean).join(" ");
@@ -246,7 +246,11 @@ export default function ContactSection({ standalone = false }) {
                 : "text-3xl md:text-5xl"
             )}
           >
-            Start with a <span className="grad-text">message</span>
+            {standalone ? (
+              <>Contact a <span className="grad-text">St. Louis web designer</span></>
+            ) : (
+              <>Start with a <span className="grad-text">message</span></>
+            )}
           </HeadingTag>
 
           <p className="mt-5 text-base md:text-lg leading-relaxed text-white/65 max-w-2xl mx-auto">

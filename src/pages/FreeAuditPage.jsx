@@ -143,7 +143,7 @@ export default function FreeAuditPage() {
     }]);
 
     if (error) {
-      setStatus("Something went wrong. Please try again or email hello@domiwebsites.com.");
+      setStatus("Something went wrong. Please try again or email admin@domiwebsites.com.");
       setStatusType("error");
     } else {
       setStatus(`You're in, ${form.name.trim()}. We'll send your audit within 72 business hours.`);
@@ -217,7 +217,7 @@ export default function FreeAuditPage() {
       {structuredData.map((data, index) => <JsonLd key={index} data={data} />)}
       <Header />
 
-      <main ref={pageRef} className="audit-page">
+      <main id="main-content" ref={pageRef} className="audit-page">
         <section className="audit-hero relative overflow-hidden">
           <div className="audit-orb audit-orb-a" />
           <div className="audit-orb audit-orb-b" />
@@ -323,12 +323,26 @@ export default function FreeAuditPage() {
                 <div className="grid gap-4">
                   <figure className="audit-proof-card is-before">
                     <figcaption><span>Before optimization</span><strong>Performance gaps</strong></figcaption>
-                    <img src="/images/audit-before.png" alt="Lighthouse scores before website optimization: performance 63, accessibility 80, best practices 58, SEO 100" />
+                    <img
+                      src="/images/audit-before.png"
+                      alt="Lighthouse scores before website optimization: performance 63, accessibility 80, best practices 58, SEO 100"
+                      width="1374"
+                      height="330"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </figure>
                   <div className="audit-proof-arrow"><ArrowRight size={18} /></div>
                   <figure className="audit-proof-card is-after">
                     <figcaption><span>After optimization</span><strong>Measurable improvement</strong></figcaption>
-                    <img src="/images/audit-after.png" alt="Lighthouse scores after website optimization: performance 93, accessibility 91, best practices 100, SEO 100" />
+                    <img
+                      src="/images/audit-after.png"
+                      alt="Lighthouse scores after website optimization: performance 93, accessibility 91, best practices 100, SEO 100"
+                      width="1374"
+                      height="330"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </figure>
                 </div>
               </div>

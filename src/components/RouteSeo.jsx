@@ -15,6 +15,21 @@ const privatePrefixes = [
   "/thank-you",
 ];
 
+const servicePaths = new Set([
+  "/web-design-st-louis",
+  "/small-business-websites",
+  "/website-redesign-st-louis",
+  "/local-seo-st-louis",
+  "/customer-follow-up-tools",
+  "/custom-business-tools",
+]);
+
+function imageMimeType(imageUrl) {
+  if (/\.webp(?:$|\?)/i.test(imageUrl)) return "image/webp";
+  if (/\.png(?:$|\?)/i.test(imageUrl)) return "image/png";
+  return "image/jpeg";
+}
+
 function normalizePath(pathname) {
   if (!pathname || pathname === "/") return "/";
   return pathname.replace(/\/+$/, "");
@@ -43,15 +58,21 @@ export default function RouteSeo() {
     ? "noindex,follow"
     : "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
   const isIndexable = robots.startsWith("index");
+  let pageType = "WebPage";
+  if (path === "/about") pageType = "AboutPage";
+  if (path === "/contact") pageType = "ContactPage";
+  if (path === "/blog" || path === "/work") pageType = "CollectionPage";
+
   const pageSchema = isIndexable
     ? {
         "@context": "https://schema.org",
-        "@type": "WebPage",
+        "@type": pageType,
         "@id": `${canonical}#webpage`,
         url: canonical,
         name: seo.title,
         description: seo.description,
         isPartOf: { "@id": `${SITE_URL}#website` },
+        about: { "@id": `${SITE_URL}#business` },
         primaryImageOfPage: {
           "@type": "ImageObject",
           url: image,
@@ -65,6 +86,8 @@ export default function RouteSeo() {
     breadcrumbItems.push({ name: "Blog", url: `${SITE_URL}/blog` });
   } else if (path.startsWith("/work/")) {
     breadcrumbItems.push({ name: "Our Work", url: `${SITE_URL}/work` });
+  } else if (servicePaths.has(path)) {
+    breadcrumbItems.push({ name: "Services", url: `${SITE_URL}/services` });
   }
   if (path !== "/" && isIndexable) {
     breadcrumbItems.push({
@@ -94,6 +117,12 @@ export default function RouteSeo() {
         <meta name="description" content={seo.description} />
         <meta name="robots" content={robots} />
         <link rel="canonical" href={canonical} />
+        {isIndexable && (
+          <meta
+            name="author"
+            content={type === "article" ? "Juan Cabrera" : "Domi Websites"}
+          />
+        )}
 
         <meta property="og:site_name" content="Domi Websites" />
         <meta property="og:locale" content="en_US" />
@@ -102,9 +131,11 @@ export default function RouteSeo() {
         <meta property="og:title" content={seo.title} />
         <meta property="og:description" content={seo.description} />
         <meta property="og:image" content={image} />
+        <meta property="og:image:secure_url" content={image} />
+        <meta property="og:image:type" content={imageMimeType(image)} />
         <meta property="og:image:alt" content={seo.title} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image:width" content={String(seo.imageWidth || 1260)} />
+        <meta property="og:image:height" content={String(seo.imageHeight || 630)} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={seo.title} />
